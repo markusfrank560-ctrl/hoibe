@@ -1,0 +1,33 @@
+{
+  "ground_truth": {
+    "first_sip_detected": false,
+    "category": "negative_no-sip",
+    "description": "Person holds beer glass but does not drink. No tilt, no mouth contact.",
+    "labeler": "manual",
+    "labeled_at": "2026-04-30"
+  },
+  "video": {
+    "file": "negative_no-sip_001_2026-04-30.mp4",
+    "recorded": "2026-04-30"
+  },
+  "mock_response": {
+    "first_sip_detected": false,
+    "confidence": 0.5,
+    "face_visible": true,
+    "drinking_object_visible": true,
+    "mouth_contact_likely": false,
+    "beer_likely": "true",
+    "beer_fill_level": "full",
+    "reason_short": "Glass is not tilted at a drinking angle, container rim does not appear to be in contact with the lips.",
+    "reasoning": null
+  },
+  "last_run": {
+    "passed": true,
+    "timestamp": "2026-05-03T13:09:18Z",
+    "mode": "full_config",
+    "confidence": 0.2,
+    "first_sip_detected": false,
+    "reasoning": null,
+    "reason_short": "Glass held near mouth without tilt change or motion"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "ground_truth": {
+    "first_sip_detected": true,
+    "category": "positive_first-sip",
+    "description": "Person takes first sip, face partially occluded but drink motion clear.",
+    "labeler": "manual",
+    "labeled_at": "2026-04-30"
+  },
+  "video": {
+    "file": "positive_first-sip_002_2026-04-30.mp4",
+    "recorded": "2026-04-30"
+  },
+  "mock_response": {
+    "first_sip_detected": true,
+    "confidence": 0.95,
+    "face_visible": false,
+    "drinking_object_visible": true,
+    "mouth_contact_likely": true,
+    "beer_likely": "true",
+    "beer_fill_level": "mostly_full",
+    "reason_short": "Glass tilted at drinking angle, rim in contact with lips, liquid flow evidence across frames.",
+    "reasoning": null
+  },
+  "last_run": {
+    "passed": true,
+    "timestamp": "2026-05-03T13:06:36Z",
+    "mode": "full_config",
+    "confidence": 0.95,
+    "first_sip_detected": true,
+    "reasoning": null,
+    "reason_short": "Glass tilts upward and rim contacts lips during drinking motion"
+  }
+}

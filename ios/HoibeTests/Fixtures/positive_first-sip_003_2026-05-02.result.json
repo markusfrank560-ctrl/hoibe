@@ -1,0 +1,33 @@
+{
+  "ground_truth": {
+    "first_sip_detected": true,
+    "category": "positive_first-sip",
+    "description": "Person takes first sip from a full beer glass.",
+    "labeler": "manual",
+    "labeled_at": "2026-05-02"
+  },
+  "video": {
+    "file": "positive_first-sip_003_2026-05-02.mp4",
+    "recorded": "2026-05-02"
+  },
+  "mock_response": {
+    "first_sip_detected": true,
+    "confidence": 0.85,
+    "face_visible": true,
+    "drinking_object_visible": true,
+    "mouth_contact_likely": true,
+    "beer_likely": "true",
+    "beer_fill_level": "full",
+    "reason_short": "Person lifts full beer glass to mouth — first sip detected.",
+    "reasoning": null
+  },
+  "last_run": {
+    "passed": true,
+    "timestamp": "2026-05-03T13:22:44Z",
+    "mode": "full_config",
+    "confidence": 1.0,
+    "first_sip_detected": true,
+    "reasoning": null,
+    "reason_short": "Sustained drinking posture with tilted glass and lip contact across frames"
+  }
+}
