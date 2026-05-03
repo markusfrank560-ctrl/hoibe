@@ -1,0 +1,98 @@
+import CoreImage
+import Foundation
+import MLXLMCommon
+import MLXVLM
+
+/// Manages VLM model download, caching, and inference using MLX Swift.
+final class ModelManager: ModelManaging, @unchecked Sendable {
+
+    private let modelId = "mlx-community/Qwen3-VL-4B-Instruct-MLX-4bit"
+    private var container: ModelContainer?
+    private let lock = NSLock()
+
+    @Published private(set) var state: ModelDownloadState = .notDownloaded
+
+    var isReady: Bool {
+        if case .ready = state { return true }
+        return false
+    }
+
+    func startDownload(allowCellular: Bool) async throws {
+        state = .downloading(progress: 0)
+
+        let container = try await loadModelContainer(id: modelId) { progress in
+            let frac = progress.fractionCompleted
+            Task { @MainActor in
+                self.state = .downloading(progress: frac)
+            }
+        }
+
+        lock.lock()
+        self.container = container
+        lock.unlock()
+
+        state = .ready
+    }
+
+    func pauseDownload() {
+        // Hub API doesn't expose pause; no-op for now
+    }
+
+    func deleteModel() throws {
+        lock.lock()
+        container = nil
+        lock.unlock()
+        state = .notDownloaded
+        // Hub caches in ~/Library/Caches/huggingface; clearing requires file ops
+    }
+
+    func generate(messages: [ChatMessage], maxTokens: Int, temperature: Double) async throws -> String {
+        guard let container else {
+            throw ModelManagerError.modelNotReady
+        }
+
+        let chatMessages: [Chat.Message] = messages.map { msg in
+            let role: Chat.Message.Role = switch msg.role {
+            case .system: .system
+            case .user: .user
+            case .assistant: .assistant
+            }
+            let images: [UserInput.Image] = msg.images.compactMap { data in
+                guard let ciImage = CIImage(data: data) else { return nil }
+                return .ciImage(ciImage)
+            }
+            return Chat.Message(role: role, content: msg.text, images: images)
+        }
+
+        let params = GenerateParameters(maxTokens: maxTokens, temperature: Float(temperature))
+        let session = ChatSession(container, generateParameters: params)
+
+        // Build the user message (last in array) for respond()
+        guard let userMsg = chatMessages.last, userMsg.role == .user else {
+            throw ModelManagerError.invalidMessages
+        }
+
+        // Set system instruction from messages
+        let systemText = messages.first { $0.role == .system }?.text
+
+        let freshSession = ChatSession(
+            container,
+            instructions: systemText,
+            generateParameters: params
+        )
+
+        return try await freshSession.respond(to: userMsg.content, images: userMsg.images, videos: [])
+    }
+}
+
+enum ModelManagerError: LocalizedError {
+    case modelNotReady
+    case invalidMessages
+
+    var errorDescription: String? {
+        switch self {
+        case .modelNotReady: "Model not downloaded or loaded"
+        case .invalidMessages: "Messages must end with a user message"
+        }
+    }
+}
