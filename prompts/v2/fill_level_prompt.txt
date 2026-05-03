@@ -1,0 +1,15 @@
+Look at this image of a drinking glass or container.
+Your ONLY task: estimate how full the container is with liquid.
+
+Calibration guide:
+- "full": liquid reaches the rim or within 1cm of the rim
+- "mostly_full": liquid fills roughly 75-100% of the container
+- "half": liquid fills roughly 40-60% of the container
+- "mostly_empty": liquid fills less than 25% of the container (large empty space above liquid)
+- "empty": no visible liquid at all
+- "unknown": container not visible or cannot determine
+
+IMPORTANT: Ignore foam/head — only count actual liquid. If the glass is tilted, mentally level it to judge the fill.
+
+Respond with ONLY this JSON:
+{"beer_fill_level": "full" or "mostly_full" or "half" or "mostly_empty" or "empty" or "unknown"}

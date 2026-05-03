@@ -1,50 +1,46 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# Hoibe – Project Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Privacy-First (NON-NEGOTIABLE)
+Alle Bild- und Videodaten bleiben lokal. Kein Cloud-Upload, keine externe Übertragung von Nutzerdaten. Verarbeitung erfolgt ausschließlich auf dem Gerät oder in eng gekoppelter lokaler Laufzeitumgebung.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Local Ollama Inference
+Alle ML/AI-Auswertungen nutzen ein Ollama-kompatibles multimodales Modell. Keine proprietären Cloud-APIs. Modelle müssen lokal lauffähig sein (edge/mobile VLM-Klasse bevorzugt).
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Structured Output Only
+Modellausgaben sind ausschließlich maschinenlesbar (JSON). Keine offenen narrativen Antworten. Enge Prompt-Schemata mit definierten Feldern. Reproduzierbarkeit geht vor Flexibilität.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Hybrid Architecture
+Semantische Bewertung (VLM) und harte Regelprüfung (CV/State Machine) sind strikt getrennt. Das Ollama-Modell ist Reviewer, nicht alleinige Wahrheit. Regelbasierte Entscheidungen werden nachgelagert getroffen.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Asynchronous & Resource-Aware
+Wartezeiten von Sekunden bis Minuten sind akzeptabel. Keine Echtzeit-Anforderung. Thermal Throttling vermeiden durch asynchrone Batch-Verarbeitung. Kein permanenter Inference-Prozess.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+### VI. Testability & Precision
+Hohe Precision ist wichtiger als maximaler Recall. Reproduzierbare Ergebnisse bei identischem Modell + Prompt + Frames. Testdatensatz mit klaren Positiv-/Negativ-/Unsicher-Szenarien.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### VII. Versionierung
+Prompt-Versionen, Modellauswahl, Ausgabe-Schema und Frame-Selektionslogik müssen explizit versioniert werden. Keine impliziten Änderungen.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+## Technical Constraints
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+- **Sprache**: Python (Ollama-SDK, OpenCV/ffmpeg für Frame-Extraktion)
+- **Modell-Interface**: Ollama REST API (localhost)
+- **Ausgabeformat**: JSON nach definiertem Schema
+- **Video-Input**: Lokale Dateien, 5–15 Sekunden Clips
+- **Ziel-Plattform (Dev)**: macOS/Linux mit Ollama installiert
+- **Keine Abhängigkeiten** auf Cloud-Services, externe APIs oder Nutzerkonten
+
+## Development Workflow
+
+1. Spec-First: Anforderungen im Lastenheft definieren, bevor Code geschrieben wird
+2. Modularer Aufbau: Frame-Extraktion, Prompt-Engine, Ollama-Client, Result-Parser als getrennte Module
+3. Tests mit gelabelten Clips: Jede Änderung wird gegen Testdatensatz validiert
+4. Prompt-Änderungen erfordern neue `analysis_version`
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+Diese Constitution hat Vorrang vor ad-hoc-Entscheidungen. Änderungen erfordern Dokumentation und Begründung. Bei Konflikten zwischen Performance und Datenschutz gewinnt Datenschutz.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2026-04-30 | **Last Amended**: 2026-04-30

@@ -1,0 +1,19 @@
+Analyze these {num_frames} frames from a video clip. Determine if a first sip from a beer container is happening.
+
+Evaluate each dimension independently:
+1. face_visible: Is a human face clearly visible?
+2. drinking_object_visible: Is a beer glass, bottle, or can visible?
+3. mouth_contact_likely: Is the container touching or very close to the person's mouth?
+4. beer_likely: Does the container plausibly contain beer? (true/false/unknown)
+5. first_sip_detected: Is there clear evidence of an actual drinking action (not just holding, posing, or clinking)?
+
+Respond with ONLY this JSON structure:
+{
+  "first_sip_detected": true or false,
+  "confidence": 0.0 to 1.0,
+  "face_visible": true or false,
+  "drinking_object_visible": true or false,
+  "mouth_contact_likely": true or false,
+  "beer_likely": "true" or "false" or "unknown",
+  "reason_short": "brief explanation in 1-2 sentences"
+}

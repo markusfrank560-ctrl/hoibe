@@ -1,0 +1,33 @@
+{
+  "ground_truth": {
+    "first_sip_detected": true,
+    "category": "positive_first-sip",
+    "description": "Person takes first sip from a full beer glass.",
+    "labeler": "manual",
+    "labeled_at": "2026-05-02"
+  },
+  "video": {
+    "file": "positive_first-sip_003_2026-05-02.mp4",
+    "recorded": "2026-05-02"
+  },
+  "mock_response": {
+    "first_sip_detected": true,
+    "confidence": 0.85,
+    "face_visible": true,
+    "drinking_object_visible": true,
+    "mouth_contact_likely": true,
+    "beer_likely": "true",
+    "beer_fill_level": "full",
+    "reason_short": "Person lifts full beer glass to mouth — first sip detected.",
+    "reasoning": null
+  },
+  "last_run": {
+    "passed": true,
+    "timestamp": "2026-05-02T22:12:04Z",
+    "mode": "full_config",
+    "confidence": 0.95,
+    "first_sip_detected": true,
+    "reasoning": "Frame 1 (0.0s) shows the glass tilted at a drinking angle (>20°) with the rim contacting the lips. Frame 2 (3.0s) demonstrates increased tilt and upward movement of the glass, indicating active drinking motion. The glass is full (beer_fill_level: full), meeting the requirement for a first sip. All four critical conditions are satisfied: tilt >20°, lip contact, liquid flow/swallowing, and temporal motion. Holding or posing without tilt is excluded, but here the action is active drinking.",
+    "reason_short": "Glass tilted >20°, rim in contact with lips, liquid flow observed, and temporal motion of tilting upward"
+  }
+}

@@ -1,0 +1,35 @@
+# Hoibe pipeline configuration
+# Version this file in git to track tuning decisions.
+
+pipeline:
+  analysis_version: v2
+  confidence_threshold: 0.7
+
+gate:
+  model: qwen3-vl:4b
+  max_width: 1024
+  jpeg_quality: 70
+  window: [0.0, 0.10]
+  num_frames: 2
+  num_ctx: 4096
+  temperature: 0.1
+  think: false
+  votes: 1
+  reject_levels:
+    - half
+    - mostly_empty
+    - empty
+
+windows:
+  model: qwen3-vl:4b
+  max_width: 512
+  jpeg_quality: 70
+  num_frames: 2
+  num_ctx: 16384
+  temperature: 0.3
+  think: true
+  count: 3
+  min_span: 0.6
+
+defaults:
+  ollama_host: http://localhost:11434

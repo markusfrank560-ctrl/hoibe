@@ -1,0 +1,33 @@
+Analyze these {num_frames} sequential frames extracted from a video clip
+at the following timestamps:
+{frame_timestamps}
+
+Your task: Determine if a first sip from a beer container is ACTIVELY happening
+(not about to happen, not just finished).
+
+Step-by-step evaluation:
+1. DESCRIBE what you see in each frame (glass position, tilt, person's posture)
+2. COMPARE across frames: Does the glass position CHANGE? Does tilt increase?
+3. EVALUATE each dimension:
+   - face_visible: Is a human face clearly visible in any frame?
+   - drinking_object_visible: Is a beer glass, bottle, or can visible?
+   - glass_tilt: Is the container tilted at a drinking angle (>20° from vertical)?
+   - mouth_contact_likely: Is the container rim touching the lips (not just near)?
+   - beer_likely: Does the container plausibly contain beer?
+   - beer_fill_level: How full is the container? (full/mostly_full/half/mostly_empty/empty/unknown). A mostly_empty or empty glass CANNOT be a first sip.
+   - first_sip_detected: Is there ACTIVE drinking motion across frames? (Must be false if beer_fill_level is mostly_empty or empty.)
+
+REMEMBER: Holding a glass close to the mouth without tilting = NOT drinking.
+
+Respond with ONLY this JSON structure:
+{
+  "first_sip_detected": true or false,
+  "confidence": 0.0 to 1.0,
+  "face_visible": true or false,
+  "drinking_object_visible": true or false,
+  "mouth_contact_likely": true or false,
+  "beer_likely": "true" or "false" or "unknown",
+  "beer_fill_level": "full" or "mostly_full" or "half" or "mostly_empty" or "empty" or "unknown",
+  "reason_short": "brief explanation in 1-2 sentences describing what motion you observed or why it is NOT a sip",
+  "reasoning": "detailed step-by-step analysis: what you see in each frame, how glass position changes, why you reached your conclusion"
+}
