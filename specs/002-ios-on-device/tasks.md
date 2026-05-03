@@ -19,14 +19,14 @@
 
 **Purpose**: Xcode project initialization, Swift Package dependencies, entitlements, bundled resources
 
-- [ ] T001 Create Xcode project `Hoibe` at `ios/Hoibe.xcodeproj` with iOS 17.0 deployment target, Swift 5.9
-- [ ] T002 Add SPM dependency: `ml-explore/mlx-swift-lm` v3.31.3+ in `ios/Hoibe.xcodeproj`
-- [ ] T003 [P] Create directory structure: `ios/Hoibe/App/`, `ios/Hoibe/Models/`, `ios/Hoibe/Services/`, `ios/Hoibe/Resources/Prompts/`
-- [ ] T004 [P] Create `ios/Hoibe/Hoibe.entitlements` with `com.apple.developer.kernel.increased-memory-limit = true`
-- [ ] T005 [P] Bundle prompt templates from `prompts/v3/` into `ios/Hoibe/Resources/Prompts/` (system_prompt.txt, user_prompt_template.txt, fill_level_prompt.txt)
-- [ ] T006 [P] Create `ios/HoibeTests/` directory and add test target to Xcode project
-- [ ] T007 [P] Symlink or copy `tests/fixtures/results/*.json` into `ios/HoibeTests/Fixtures/`
-- [ ] T008 Configure Xcode scheme for debug/release with signing and entitlements
+- [x] T001 Create Xcode project `Hoibe` at `ios/Hoibe.xcodeproj` with iOS 17.0 deployment target, Swift 5.9
+- [x] T002 Add SPM dependency: `ml-explore/mlx-swift-lm` v3.31.3+ in `ios/Hoibe.xcodeproj`
+- [x] T003 [P] Create directory structure: `ios/Hoibe/App/`, `ios/Hoibe/Models/`, `ios/Hoibe/Services/`, `ios/Hoibe/Resources/Prompts/`
+- [x] T004 [P] Create `ios/Hoibe/Hoibe.entitlements` with `com.apple.developer.kernel.increased-memory-limit = true`
+- [x] T005 [P] Bundle prompt templates from `prompts/v3/` into `ios/Hoibe/Resources/Prompts/` (system_prompt.txt, user_prompt_template.txt, fill_level_prompt.txt)
+- [x] T006 [P] Create `ios/HoibeTests/` directory and add test target to Xcode project
+- [x] T007 [P] Symlink or copy `tests/fixtures/results/*.json` into `ios/HoibeTests/Fixtures/`
+- [x] T008 Configure Xcode scheme for debug/release with signing and entitlements
 
 ---
 
@@ -36,13 +36,13 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T009 [P] Implement `BeerFillLevel` enum in `ios/Hoibe/Models/BeerFillLevel.swift` (full, mostlyFull, half, mostlyEmpty, empty, unknown — Codable, Equatable, Sendable)
-- [ ] T010 [P] Implement `AnalysisResult` struct in `ios/Hoibe/Models/AnalysisResult.swift` (Codable with snake_case CodingKeys, matching contract in `contracts/SipDetecting.swift`)
-- [ ] T011 [P] Implement `ModelDownloadState` enum in `ios/Hoibe/Models/ModelDownloadState.swift` (notDownloaded, downloading(progress), paused(bytesDownloaded), ready, error(message) — Equatable)
-- [ ] T012 [P] Implement `AnalysisState` enum in `ios/Hoibe/Models/AnalysisState.swift` (idle, validating, extractingFrames, runningGate, runningWindows, complete, error — Equatable)
-- [ ] T013 [P] Implement `PipelineConfig` struct in `ios/Hoibe/Models/PipelineConfig.swift` with defaults from data-model (gateVotes=3, gateTimeout=45, windowCount=3, windowMinSpan=0.6, windowTimeout=90, numCtx=4096, temperature=0.1, cooldown=2.0, rejectLevels)
-- [ ] T014 [P] Implement `ChatMessage` struct in `ios/Hoibe/Models/ChatMessage.swift` (role enum: system/user/assistant, text, images [Data] — Sendable)
-- [ ] T015 [P] Implement `FrameData` struct in `ios/Hoibe/Models/FrameData.swift` (framesJPEG: [Data], timestamps: [Double], sharpnessScores: [Double] — Sendable)
+- [x] T009 [P] Implement `BeerFillLevel` enum in `ios/Hoibe/Models/BeerFillLevel.swift` (full, mostlyFull, half, mostlyEmpty, empty, unknown — Codable, Equatable, Sendable)
+- [x] T010 [P] Implement `AnalysisResult` struct in `ios/Hoibe/Models/AnalysisResult.swift` (Codable with snake_case CodingKeys, matching contract in `contracts/SipDetecting.swift`)
+- [x] T011 [P] Implement `ModelDownloadState` enum in `ios/Hoibe/Models/ModelDownloadState.swift` (notDownloaded, downloading(progress), paused(bytesDownloaded), ready, error(message) — Equatable)
+- [x] T012 [P] Implement `AnalysisState` enum in `ios/Hoibe/Models/AnalysisState.swift` (idle, validating, extractingFrames, runningGate, runningWindows, complete, error — Equatable)
+- [x] T013 [P] Implement `PipelineConfig` struct in `ios/Hoibe/Models/PipelineConfig.swift` with defaults from data-model (gateVotes=3, gateTimeout=45, windowCount=3, windowMinSpan=0.6, windowTimeout=90, numCtx=4096, temperature=0.1, cooldown=2.0, rejectLevels)
+- [x] T014 [P] Implement `ChatMessage` struct in `ios/Hoibe/Models/ChatMessage.swift` (role enum: system/user/assistant, text, images [Data] — Sendable)
+- [x] T015 [P] Implement `FrameData` struct in `ios/Hoibe/Models/FrameData.swift` (framesJPEG: [Data], timestamps: [Double], sharpnessScores: [Double] — Sendable)
 
 **Checkpoint**: All shared types available — user story implementation can begin
 
@@ -61,13 +61,13 @@
 
 ### Implementation for User Story 4
 
-- [ ] T018 [US4] Implement `ModelManager` class conforming to `ModelManaging` protocol in `ios/Hoibe/Services/ModelManager.swift`
+- [x] T018 [US4] Implement `ModelManager` class conforming to `ModelManaging` protocol in `ios/Hoibe/Services/ModelManager.swift`
 - [ ] T019 [US4] Implement HuggingFace download with URLSession: resumable, `allowsCellularAccess=false` default in `ios/Hoibe/Services/ModelManager.swift`
-- [ ] T020 [US4] Implement progress tracking (published `state` property) for SwiftUI binding in `ios/Hoibe/Services/ModelManager.swift`
+- [x] T020 [US4] Implement progress tracking (published `state` property) for SwiftUI binding in `ios/Hoibe/Services/ModelManager.swift`
 - [ ] T021 [US4] Implement model cache in `Library/Application Support/` with `isExcludedFromBackup = true` in `ios/Hoibe/Services/ModelManager.swift`
 - [ ] T022 [US4] Implement pause/resume download and network-loss recovery in `ios/Hoibe/Services/ModelManager.swift`
-- [ ] T023 [US4] Implement `generate(messages:maxTokens:temperature:)` method wrapping MLX Swift LM inference (think=false) in `ios/Hoibe/Services/ModelManager.swift`
-- [ ] T024 [US4] Implement `deleteModel()` for storage management in `ios/Hoibe/Services/ModelManager.swift`
+- [x] T023 [US4] Implement `generate(messages:maxTokens:temperature:)` method wrapping MLX Swift LM inference (think=false) in `ios/Hoibe/Services/ModelManager.swift`
+- [x] T024 [US4] Implement `deleteModel()` for storage management in `ios/Hoibe/Services/ModelManager.swift`
 
 **Checkpoint**: Model can be downloaded, cached, and used for inference
 
@@ -85,8 +85,8 @@
 
 ### Implementation for User Story 5
 
-- [ ] T026 [US5] Implement camera recording view (UIImagePickerController or AVCaptureSession) with 15s auto-stop in `ios/Hoibe/App/CameraView.swift`
-- [ ] T027 [US5] Implement PhotosPicker integration for library selection (PhotosUI) in `ios/Hoibe/App/VideoPickerView.swift`
+- [x] T026 [US5] Implement camera recording view (UIImagePickerController or AVCaptureSession) with 15s auto-stop in `ios/Hoibe/App/CameraView.swift`
+- [x] T027 [US5] Implement PhotosPicker integration for library selection (PhotosUI) in `ios/Hoibe/App/VideoPickerView.swift`
 - [ ] T028 [US5] Implement video duration validation (5–15s range check, user feedback on invalid) in `ios/Hoibe/Services/VideoValidator.swift`
 - [ ] T029 [US5] Implement codec validation (H.264/HEVC check) in `ios/Hoibe/Services/VideoValidator.swift`
 
@@ -111,19 +111,19 @@
 
 ### Implementation for User Story 1
 
-- [ ] T036 [US1] Implement `FrameExtractor` conforming to `FrameExtracting` protocol in `ios/Hoibe/Services/FrameExtractor.swift`
-- [ ] T037 [US1] Implement AVAssetImageGenerator frame extraction with endpoint-inclusive distribution in `ios/Hoibe/Services/FrameExtractor.swift`
-- [ ] T038 [US1] Implement sharpness ranking via Accelerate framework (Laplacian variance) in `ios/Hoibe/Services/FrameExtractor.swift`
-- [ ] T039 [US1] Implement JPEG encoding with configurable quality and maxWidth downscaling in `ios/Hoibe/Services/FrameExtractor.swift`
-- [ ] T040 [US1] Implement `PromptEngine` conforming to `PromptBuilding` protocol in `ios/Hoibe/Services/PromptEngine.swift`
-- [ ] T041 [US1] Implement `buildFillLevelMessages` loading bundled `fill_level_prompt.txt` in `ios/Hoibe/Services/PromptEngine.swift`
-- [ ] T042 [US1] Implement `buildSipDetectionMessages` loading bundled `system_prompt.txt` + `user_prompt_template.txt` in `ios/Hoibe/Services/PromptEngine.swift`
-- [ ] T043 [US1] Implement `SipDetector` conforming to `SipDetecting` protocol in `ios/Hoibe/Services/SipDetector.swift`
-- [ ] T044 [US1] Implement fill-level gate: N votes (sharpest frame per vote), majority-vote, reject on {half, mostlyEmpty, empty} in `ios/Hoibe/Services/SipDetector.swift`
-- [ ] T045 [US1] Implement sliding-window analysis: 3 overlapping windows (minSpan=0.6), OR-logic, early-exit on first positive in `ios/Hoibe/Services/SipDetector.swift`
-- [ ] T046 [US1] Implement JSON response parsing from VLM output into `AnalysisResult` in `ios/Hoibe/Services/SipDetector.swift`
-- [ ] T047 [US1] Implement `AnalysisState` publishing for UI observation in `ios/Hoibe/Services/SipDetector.swift`
-- [ ] T048 [US1] Implement `cancel()` method with Task cancellation in `ios/Hoibe/Services/SipDetector.swift`
+- [x] T036 [US1] Implement `FrameExtractor` conforming to `FrameExtracting` protocol in `ios/Hoibe/Services/FrameExtractor.swift`
+- [x] T037 [US1] Implement AVAssetImageGenerator frame extraction with endpoint-inclusive distribution in `ios/Hoibe/Services/FrameExtractor.swift`
+- [x] T038 [US1] Implement sharpness ranking via Accelerate framework (Laplacian variance) in `ios/Hoibe/Services/FrameExtractor.swift`
+- [x] T039 [US1] Implement JPEG encoding with configurable quality and maxWidth downscaling in `ios/Hoibe/Services/FrameExtractor.swift`
+- [x] T040 [US1] Implement `PromptEngine` conforming to `PromptBuilding` protocol in `ios/Hoibe/Services/PromptEngine.swift`
+- [x] T041 [US1] Implement `buildFillLevelMessages` loading bundled `fill_level_prompt.txt` in `ios/Hoibe/Services/PromptEngine.swift`
+- [x] T042 [US1] Implement `buildSipDetectionMessages` loading bundled `system_prompt.txt` + `user_prompt_template.txt` in `ios/Hoibe/Services/PromptEngine.swift`
+- [x] T043 [US1] Implement `SipDetector` conforming to `SipDetecting` protocol in `ios/Hoibe/Services/SipDetector.swift`
+- [x] T044 [US1] Implement fill-level gate: N votes (sharpest frame per vote), majority-vote, reject on {half, mostlyEmpty, empty} in `ios/Hoibe/Services/SipDetector.swift`
+- [x] T045 [US1] Implement sliding-window analysis: 3 overlapping windows (minSpan=0.6), OR-logic, early-exit on first positive in `ios/Hoibe/Services/SipDetector.swift`
+- [x] T046 [US1] Implement JSON response parsing from VLM output into `AnalysisResult` in `ios/Hoibe/Services/SipDetector.swift`
+- [x] T047 [US1] Implement `AnalysisState` publishing for UI observation in `ios/Hoibe/Services/SipDetector.swift`
+- [x] T048 [US1] Implement `cancel()` method with Task cancellation in `ios/Hoibe/Services/SipDetector.swift`
 
 **Checkpoint**: Full detection pipeline produces correct positive results for valid first-sip clips
 
@@ -142,8 +142,8 @@
 
 ### Implementation for User Story 2
 
-- [ ] T051 [US2] Validate gate rejects posing scenarios (fill level unchanged = likely not drinking) in `ios/Hoibe/Services/SipDetector.swift`
-- [ ] T052 [US2] Validate sliding-window returns negative when no mouth-contact or drinking motion detected in `ios/Hoibe/Services/SipDetector.swift`
+- [x] T051 [US2] Validate gate rejects posing scenarios (fill level unchanged = likely not drinking) in `ios/Hoibe/Services/SipDetector.swift`
+- [x] T052 [US2] Validate sliding-window returns negative when no mouth-contact or drinking motion detected in `ios/Hoibe/Services/SipDetector.swift`
 
 **Checkpoint**: Pipeline correctly rejects posing/toasting without drinking — precision maintained
 
@@ -193,8 +193,8 @@
 
 ### Implementation for User Story 7
 
-- [ ] T060 [US7] Implement per-call timeout (45s gate, 90s window) with `withTaskCancellationHandler` in `ios/Hoibe/Services/SipDetector.swift`
-- [ ] T061 [US7] Implement cooldown pause (2s `Task.sleep`) between inference calls in `ios/Hoibe/Services/SipDetector.swift`
+- [x] T060 [US7] Implement per-call timeout (45s gate, 90s window) with `withTaskCancellationHandler` in `ios/Hoibe/Services/SipDetector.swift`
+- [x] T061 [US7] Implement cooldown pause (2s `Task.sleep`) between inference calls in `ios/Hoibe/Services/SipDetector.swift`
 - [ ] T062 [US7] Implement graceful error state on timeout (AnalysisState.error with user message) in `ios/Hoibe/Services/SipDetector.swift`
 - [ ] T063 [US7] Read `ProcessInfo.thermalState` and log warning if `.serious` or `.critical` in `ios/Hoibe/Services/SipDetector.swift`
 
@@ -208,13 +208,13 @@
 
 **Independent Test**: Full user flow: launch → download → pick video → see result card
 
-- [ ] T064 [P] Create `HoibeApp.swift` entry point with `@main` in `ios/Hoibe/App/HoibeApp.swift`
-- [ ] T065 Implement `ContentView.swift` as single-screen coordinator in `ios/Hoibe/App/ContentView.swift`
-- [ ] T066 [P] Implement model download UI: progress bar, MB counter, WiFi warning, pause/resume button in `ios/Hoibe/App/ContentView.swift`
-- [ ] T067 [P] Implement video input UI: "Aufnehmen" and "Aus Bibliothek" buttons in `ios/Hoibe/App/ContentView.swift`
-- [ ] T068 Implement analysis progress UI: state-aware display (extracting frames, running gate vote X/Y, running window X/Y) in `ios/Hoibe/App/ContentView.swift`
-- [ ] T069 Implement result card UI: ✅/❌ icon, confidence percentage, reason_short text in `ios/Hoibe/App/ContentView.swift`
-- [ ] T070 Wire `ModelManager`, `SipDetector`, `FrameExtractor`, `PromptEngine` as `@StateObject`/`@EnvironmentObject` in `ios/Hoibe/App/ContentView.swift`
+- [x] T064 [P] Create `HoibeApp.swift` entry point with `@main` in `ios/Hoibe/App/HoibeApp.swift`
+- [x] T065 Implement `ContentView.swift` as single-screen coordinator in `ios/Hoibe/App/ContentView.swift`
+- [x] T066 [P] Implement model download UI: progress bar, MB counter, WiFi warning, pause/resume button in `ios/Hoibe/App/ContentView.swift`
+- [x] T067 [P] Implement video input UI: "Aufnehmen" and "Aus Bibliothek" buttons in `ios/Hoibe/App/ContentView.swift`
+- [x] T068 Implement analysis progress UI: state-aware display (extracting frames, running gate vote X/Y, running window X/Y) in `ios/Hoibe/App/ContentView.swift`
+- [x] T069 Implement result card UI: ✅/❌ icon, confidence percentage, reason_short text in `ios/Hoibe/App/ContentView.swift`
+- [x] T070 Wire `ModelManager`, `SipDetector`, `FrameExtractor`, `PromptEngine` as `@StateObject`/`@EnvironmentObject` in `ios/Hoibe/App/ContentView.swift`
 
 **Checkpoint**: Complete single-screen UI with all user flows
 
@@ -224,8 +224,8 @@
 
 **Purpose**: Integration validation, performance verification, documentation
 
-- [ ] T071 End-to-end test on physical device: positive clip → ✅ result (iPhone 15 Pro)
-- [ ] T072 End-to-end test on physical device: negative clip → ❌ result (iPhone 15 Pro)
+- [x] T071 End-to-end test on physical device: positive clip → ✅ result (iPhone 15 Pro)
+- [x] T072 End-to-end test on physical device: negative clip → ❌ result (iPhone 15 Pro)
 - [ ] T073 RAM measurement via Instruments: verify peak < 6.5 GB during full pipeline
 - [ ] T074 Performance measurement: verify full pipeline completes < 3 minutes on iPhone 15 Pro (15s clip)
 - [ ] T075 [P] Verify fixture JSON compatibility: decode all `tests/fixtures/results/*.json` with iOS `AnalysisResult`
