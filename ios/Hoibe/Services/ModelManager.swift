@@ -21,26 +21,15 @@ final class ModelManager: ModelManaging, @unchecked Sendable {
     var onProgress: (@Sendable (Double) -> Void)?
 
     /// Try to load model from local cache (no download). Returns true if cached and ready.
-    /// Try to load model from local cache (no download). Returns true if cached and ready.
     func tryLoadCached() async -> Bool {
-        // Quick filesystem check: if huggingface dir doesn't exist, model isn't cached
-        let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let modelDir = documents.appendingPathComponent("huggingface/models/\(modelId)")
-        guard FileManager.default.fileExists(atPath: modelDir.path) else {
-            print("[ModelManager] No cache at \(modelDir.path)")
-            return false
-        }
         do {
-            print("[ModelManager] Cache dir found, loading model…")
             let container = try await loadModelContainer(id: modelId) { _ in }
             lock.lock()
             self.container = container
             lock.unlock()
             state = .ready
-            print("[ModelManager] Model loaded from cache ✓")
             return true
         } catch {
-            print("[ModelManager] tryLoadCached failed: \(error)")
             return false
         }
     }
