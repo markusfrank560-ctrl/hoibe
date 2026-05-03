@@ -22,8 +22,7 @@ struct PromptEngine: PromptBuilding {
 
     func buildFillLevelMessages(imageData: Data) -> [ChatMessage] {
         [
-            ChatMessage(role: .system, text: fillLevelPrompt),
-            ChatMessage(role: .user, text: "Analyze this image.", images: [imageData])
+            ChatMessage(role: .user, text: fillLevelPrompt, images: [imageData])
         ]
     }
 
