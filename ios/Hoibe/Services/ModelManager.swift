@@ -20,6 +20,20 @@ final class ModelManager: ModelManaging, @unchecked Sendable {
     /// Progress callback set by the caller before starting download.
     var onProgress: (@Sendable (Double) -> Void)?
 
+    /// Try to load model from local cache (no download). Returns true if cached and ready.
+    func tryLoadCached() async -> Bool {
+        do {
+            let container = try await loadModelContainer(id: modelId) { _ in }
+            lock.lock()
+            self.container = container
+            lock.unlock()
+            state = .ready
+            return true
+        } catch {
+            return false
+        }
+    }
+
     func startDownload(allowCellular: Bool) async throws {
         state = .downloading(progress: 0)
 

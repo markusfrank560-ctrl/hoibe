@@ -4,6 +4,7 @@ import Foundation
 protocol ModelManaging: AnyObject, Sendable {
     var state: ModelDownloadState { get }
     var isReady: Bool { get }
+    func tryLoadCached() async -> Bool
     func startDownload(allowCellular: Bool) async throws
     func pauseDownload()
     func deleteModel() throws

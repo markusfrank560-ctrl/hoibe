@@ -1,6 +1,7 @@
 import SwiftUI
 import PhotosUI
 #if os(iOS)
+import AVFoundation
 import UIKit
 #endif
 
@@ -93,7 +94,7 @@ struct ContentView: View {
                 #if os(iOS)
                 if UIImagePickerController.isSourceTypeAvailable(.camera) {
                     Button {
-                        viewModel.showCamera = true
+                        Task { await viewModel.requestCameraAndShow() }
                     } label: {
                         Label("Aufnehmen", systemImage: "camera.fill")
                     }
@@ -215,7 +216,12 @@ final class ContentViewModel: ObservableObject {
     private lazy var sipDetector = SipDetector(modelManager: modelManager)
 
     init() {
-        if modelManager.isReady {
+        // Check cache on next run loop (async)
+        Task { await checkCachedModel() }
+    }
+
+    func checkCachedModel() async {
+        if await modelManager.tryLoadCached() {
             screenState = .ready
         }
     }
@@ -282,6 +288,21 @@ final class ContentViewModel: ObservableObject {
         capturedVideoURL = nil
         selectedVideo = nil
     }
+
+    #if os(iOS)
+    func requestCameraAndShow() async {
+        let status = AVCaptureDevice.authorizationStatus(for: .video)
+        switch status {
+        case .authorized:
+            showCamera = true
+        case .notDetermined:
+            let granted = await AVCaptureDevice.requestAccess(for: .video)
+            if granted { showCamera = true }
+        default:
+            break
+        }
+    }
+    #endif
 
     private func updateStatusText(_ state: AnalysisState) {
         switch state {
