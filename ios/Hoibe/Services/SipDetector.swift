@@ -65,6 +65,7 @@ final class SipDetector: SipDetecting, @unchecked Sendable {
             }
 
             let level = parseFillLevel(response)
+            print("[SipDetector] Gate vote \(vote+1): response='\(response.prefix(80))' → level=\(level)")
             if config.rejectLevels.contains(level) {
                 rejectCount += 1
             }
@@ -77,9 +78,12 @@ final class SipDetector: SipDetecting, @unchecked Sendable {
         // Majority vote: reject if majority says non-full
         if rejectCount > config.gateVotes / 2 {
             let result = makeNegativeResult(reason: "Glas nicht voll – kein erster Schluck")
+            print("[SipDetector] Gate rejected (\(rejectCount)/\(config.gateVotes) reject votes) → returning negative result")
             analysisState = .complete(result)
             return result
         }
+
+        print("[SipDetector] Gate passed (\(rejectCount)/\(config.gateVotes) reject votes) → proceeding to windows")
 
         // Windows: sliding-window sip detection
         let fullFrames = try await frameExtractor.extractFrames(

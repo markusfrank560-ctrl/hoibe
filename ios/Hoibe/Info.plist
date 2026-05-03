@@ -34,7 +34,5 @@
     </array>
     <key>NSCameraUsageDescription</key>
     <string>Hoibe benötigt Kamerazugriff um den ersten Schluck aufzunehmen.</string>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>Hoibe benötigt Zugriff auf die Fotobibliothek um ein Video auszuwählen.</string>
 </dict>
 </plist>

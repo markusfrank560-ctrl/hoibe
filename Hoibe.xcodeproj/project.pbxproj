@@ -26,6 +26,7 @@
 		A1000015 /* PipelineConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000015 /* PipelineConfig.swift */; };
 		A1000016 /* Prompts in Resources */ = {isa = PBXBuildFile; fileRef = B1000016 /* Prompts */; };
 		A1000017 /* BundleCompat.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000019 /* BundleCompat.swift */; };
+		A1000018 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B1000020 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +50,7 @@
 		B1000017 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B1000018 /* Hoibe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Hoibe.entitlements; sourceTree = "<group>"; };
 		B1000019 /* BundleCompat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleCompat.swift; sourceTree = "<group>"; };
+		B1000020 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				B1000016 /* Prompts */,
+				B1000020 /* Assets.xcassets */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -205,6 +208,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1000016 /* Prompts in Resources */,
+				A1000018 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

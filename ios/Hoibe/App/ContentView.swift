@@ -14,6 +14,9 @@ struct ContentView: View {
                 headerSection
 
                 switch viewModel.screenState {
+                case .loading:
+                    ProgressView("Modell wird geladen…")
+                        .padding()
                 case .downloadNeeded:
                     downloadSection
                 case .downloading:
@@ -197,6 +200,7 @@ struct ContentView: View {
 final class ContentViewModel: ObservableObject {
 
     enum ScreenState {
+        case loading
         case downloadNeeded
         case downloading
         case ready
@@ -205,7 +209,7 @@ final class ContentViewModel: ObservableObject {
         case error(String)
     }
 
-    @Published var screenState: ScreenState = .downloadNeeded
+    @Published var screenState: ScreenState = .loading
     @Published var downloadProgress: Double = 0
     @Published var analysisStatusText: String = ""
     @Published var showCamera = false
@@ -223,6 +227,8 @@ final class ContentViewModel: ObservableObject {
     func checkCachedModel() async {
         if await modelManager.tryLoadCached() {
             screenState = .ready
+        } else {
+            screenState = .downloadNeeded
         }
     }
 
@@ -251,6 +257,18 @@ final class ContentViewModel: ObservableObject {
     }
 
     func analyze(videoURL: URL) async {
+        // Copy to Documents to prevent temp file cleanup during long analysis
+        let stableURL: URL
+        do {
+            let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            stableURL = docs.appendingPathComponent("analysis_input.mov")
+            try? FileManager.default.removeItem(at: stableURL)
+            try FileManager.default.copyItem(at: videoURL, to: stableURL)
+        } catch {
+            screenState = .error("Video konnte nicht vorbereitet werden")
+            return
+        }
+
         screenState = .analyzing
         analysisStatusText = "Frames werden extrahiert…"
 
@@ -265,13 +283,15 @@ final class ContentViewModel: ObservableObject {
         }
 
         do {
-            let result = try await sipDetector.analyze(videoURL: videoURL)
+            let result = try await sipDetector.analyze(videoURL: stableURL)
             screenState = .result(result)
         } catch {
+            print("[ContentView] analyze threw: \(error)")
             screenState = .error("Analyse fehlgeschlagen: \(error.localizedDescription)")
         }
 
         observation.cancel()
+        try? FileManager.default.removeItem(at: stableURL)
     }
 
     func handlePickedVideo() async {

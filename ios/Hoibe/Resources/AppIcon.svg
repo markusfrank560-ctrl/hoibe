@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a73e8;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#4fc3f7;stop-opacity:1"/>
+    </linearGradient>
+    <linearGradient id="beerGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD54F;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#F9A825;stop-opacity:1"/>
+    </linearGradient>
+    <linearGradient id="foamGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#F5F5DC;stop-opacity:1"/>
+    </linearGradient>
+    <linearGradient id="glassGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#E0E0E0;stop-opacity:0.3"/>
+      <stop offset="50%" style="stop-color:#FFFFFF;stop-opacity:0.15"/>
+      <stop offset="100%" style="stop-color:#E0E0E0;stop-opacity:0.3"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background: Bavarian blue-white diamond pattern -->
+  <rect width="1024" height="1024" rx="224" fill="url(#skyGrad)"/>
+
+  <!-- Bavarian diamond pattern (subtle) -->
+  <g opacity="0.12">
+    <path d="M0,0 L64,64 L128,0 L192,64 L256,0 L320,64 L384,0 L448,64 L512,0 L576,64 L640,0 L704,64 L768,0 L832,64 L896,0 L960,64 L1024,0 L1024,128 L960,64 L896,128 L832,64 L768,128 L704,64 L640,128 L576,64 L512,128 L448,64 L384,128 L320,64 L256,128 L192,64 L128,128 L64,64 L0,128Z" fill="white"/>
+    <path d="M0,128 L64,192 L128,128 L192,192 L256,128 L320,192 L384,128 L448,192 L512,128 L576,192 L640,128 L704,192 L768,128 L832,192 L896,128 L960,192 L1024,128 L1024,256 L960,192 L896,256 L832,192 L768,256 L704,192 L640,256 L576,192 L512,256 L448,192 L384,256 L320,192 L256,256 L192,192 L128,256 L64,192 L0,256Z" fill="white"/>
+    <path d="M0,256 L64,320 L128,256 L192,320 L256,256 L320,320 L384,256 L448,320 L512,256 L576,320 L640,256 L704,320 L768,256 L832,320 L896,256 L960,320 L1024,256 L1024,384 L960,320 L896,384 L832,320 L768,384 L704,320 L640,384 L576,320 L512,384 L448,320 L384,384 L320,320 L256,384 L192,320 L128,384 L64,320 L0,384Z" fill="white"/>
+    <path d="M0,384 L64,448 L128,384 L192,448 L256,384 L320,448 L384,384 L448,448 L512,384 L576,448 L640,384 L704,448 L768,384 L832,448 L896,384 L960,448 L1024,384 L1024,512 L960,448 L896,512 L832,448 L768,512 L704,448 L640,512 L576,448 L512,512 L448,448 L384,512 L320,448 L256,512 L192,448 L128,512 L64,448 L0,512Z" fill="white"/>
+    <path d="M0,512 L64,576 L128,512 L192,576 L256,512 L320,576 L384,512 L448,576 L512,512 L576,576 L640,512 L704,576 L768,512 L832,576 L896,512 L960,576 L1024,512 L1024,640 L960,576 L896,640 L832,576 L768,640 L704,576 L640,640 L576,576 L512,640 L448,576 L384,640 L320,576 L256,640 L192,576 L128,640 L64,576 L0,640Z" fill="white"/>
+    <path d="M0,640 L64,704 L128,640 L192,704 L256,640 L320,704 L384,640 L448,704 L512,640 L576,704 L640,640 L704,704 L768,640 L832,704 L896,640 L960,704 L1024,640 L1024,768 L960,704 L896,768 L832,704 L768,768 L704,704 L640,768 L576,704 L512,768 L448,704 L384,768 L320,704 L256,768 L192,704 L128,768 L64,704 L0,768Z" fill="white"/>
+    <path d="M0,768 L64,832 L128,768 L192,832 L256,768 L320,832 L384,768 L448,832 L512,768 L576,832 L640,768 L704,832 L768,768 L832,832 L896,768 L960,832 L1024,768 L1024,896 L960,832 L896,896 L832,832 L768,896 L704,832 L640,896 L576,832 L512,896 L448,832 L384,896 L320,832 L256,896 L192,832 L128,896 L64,832 L0,896Z" fill="white"/>
+    <path d="M0,896 L64,960 L128,896 L192,960 L256,896 L320,960 L384,896 L448,960 L512,896 L576,960 L640,896 L704,960 L768,896 L832,960 L896,896 L960,960 L1024,896 L1024,1024 L960,960 L896,1024 L832,960 L768,1024 L704,960 L640,1024 L576,960 L512,1024 L448,960 L384,1024 L320,960 L256,1024 L192,960 L128,1024 L64,960 L0,1024Z" fill="white"/>
+  </g>
+
+  <!-- Beer Stein (Masskrug) -->
+  <!-- Glass body -->
+  <path d="M340,320 L360,850 C360,880 380,900 420,900 L604,900 C644,900 664,880 664,850 L684,320Z" fill="url(#beerGrad)" stroke="#C68A00" stroke-width="4"/>
+
+  <!-- Glass texture lines -->
+  <line x1="400" y1="360" x2="410" y2="860" stroke="#C68A00" stroke-width="2" opacity="0.3"/>
+  <line x1="460" y1="360" x2="470" y2="860" stroke="#C68A00" stroke-width="2" opacity="0.3"/>
+  <line x1="520" y1="360" x2="530" y2="860" stroke="#C68A00" stroke-width="2" opacity="0.3"/>
+  <line x1="580" y1="360" x2="590" y2="860" stroke="#C68A00" stroke-width="2" opacity="0.3"/>
+  <line x1="640" y1="360" x2="650" y2="860" stroke="#C68A00" stroke-width="2" opacity="0.3"/>
+
+  <!-- Beer foam -->
+  <path d="M330,320 Q340,280 380,290 Q400,250 440,270 Q470,240 512,255 Q554,240 584,270 Q624,250 644,290 Q684,280 694,320Z" fill="url(#foamGrad)" stroke="#E0D5B0" stroke-width="3"/>
+  <!-- Extra foam bubbles -->
+  <circle cx="400" cy="300" r="20" fill="white" opacity="0.7"/>
+  <circle cx="460" cy="285" r="15" fill="white" opacity="0.6"/>
+  <circle cx="530" cy="295" r="18" fill="white" opacity="0.65"/>
+  <circle cx="600" cy="290" r="16" fill="white" opacity="0.6"/>
+  <circle cx="650" cy="305" r="14" fill="white" opacity="0.5"/>
+
+  <!-- Handle -->
+  <path d="M684,380 Q780,380 780,520 Q780,660 684,660" fill="none" stroke="#C68A00" stroke-width="28" stroke-linecap="round"/>
+  <path d="M684,380 Q760,380 760,520 Q760,660 684,660" fill="none" stroke="#F9A825" stroke-width="16" stroke-linecap="round"/>
+
+  <!-- Glass shine -->
+  <path d="M370,350 L380,830 L400,830 L390,350Z" fill="white" opacity="0.2"/>
+
+  <!-- Rising bubbles in beer -->
+  <circle cx="420" cy="600" r="5" fill="white" opacity="0.4"/>
+  <circle cx="500" cy="700" r="4" fill="white" opacity="0.3"/>
+  <circle cx="550" cy="550" r="6" fill="white" opacity="0.35"/>
+  <circle cx="460" cy="450" r="4" fill="white" opacity="0.3"/>
+  <circle cx="600" cy="650" r="5" fill="white" opacity="0.35"/>
+  <circle cx="430" cy="500" r="3" fill="white" opacity="0.3"/>
+
+  <!-- Pretzel (small, top-left corner) -->
+  <g transform="translate(100, 120) scale(0.7)">
+    <path d="M120,180 C80,180 50,150 50,110 C50,70 80,40 120,40 C140,40 155,50 165,65 C175,50 190,40 210,40 C250,40 280,70 280,110 C280,150 250,180 210,180 C190,180 175,170 165,155 C155,170 140,180 120,180Z" fill="#8B4513" stroke="#5D2E0C" stroke-width="6"/>
+    <path d="M165,65 C155,85 140,95 120,95 C100,95 85,80 85,65" fill="none" stroke="#5D2E0C" stroke-width="6"/>
+    <path d="M165,65 C175,85 190,95 210,95 C230,95 245,80 245,65" fill="none" stroke="#5D2E0C" stroke-width="6"/>
+    <!-- Salt dots -->
+    <circle cx="100" cy="120" r="4" fill="#F5F5DC"/>
+    <circle cx="130" cy="100" r="3" fill="#F5F5DC"/>
+    <circle cx="200" cy="100" r="3" fill="#F5F5DC"/>
+    <circle cx="230" cy="120" r="4" fill="#F5F5DC"/>
+    <circle cx="165" cy="140" r="3" fill="#F5F5DC"/>
+  </g>
+
+  <!-- Hop leaves (top-right) -->
+  <g transform="translate(750, 100) scale(0.5)">
+    <ellipse cx="100" cy="80" rx="35" ry="50" fill="#4CAF50" transform="rotate(-15, 100, 80)"/>
+    <ellipse cx="160" cy="60" rx="30" ry="45" fill="#388E3C" transform="rotate(10, 160, 60)"/>
+    <ellipse cx="130" cy="120" rx="28" ry="42" fill="#66BB6A" transform="rotate(-5, 130, 120)"/>
+    <line x1="100" y1="80" x2="100" y2="130" stroke="#2E7D32" stroke-width="3"/>
+    <line x1="160" y1="60" x2="160" y2="110" stroke="#2E7D32" stroke-width="3"/>
+  </g>
+
+  <!-- Wheat stalks (left side, subtle) -->
+  <g transform="translate(120, 500) rotate(-10)" opacity="0.6">
+    <line x1="0" y1="0" x2="0" y2="200" stroke="#8D6E63" stroke-width="4"/>
+    <ellipse cx="0" cy="-10" rx="8" ry="20" fill="#FFD54F"/>
+    <ellipse cx="-8" cy="10" rx="7" ry="18" fill="#FFD54F"/>
+    <ellipse cx="8" cy="10" rx="7" ry="18" fill="#FFD54F"/>
+    <ellipse cx="-6" cy="35" rx="6" ry="16" fill="#FFD54F"/>
+    <ellipse cx="6" cy="35" rx="6" ry="16" fill="#FFD54F"/>
+  </g>
+</svg>
