@@ -23,11 +23,11 @@
   },
   "last_run": {
     "passed": true,
-    "timestamp": "2026-05-02T22:12:04Z",
+    "timestamp": "2026-05-03T10:13:44Z",
     "mode": "full_config",
     "confidence": 0.95,
     "first_sip_detected": true,
-    "reasoning": "Frame 1 (0.0s) shows the glass tilted at a drinking angle (>20°) with the rim contacting the lips. Frame 2 (3.0s) demonstrates increased tilt and upward movement of the glass, indicating active drinking motion. The glass is full (beer_fill_level: full), meeting the requirement for a first sip. All four critical conditions are satisfied: tilt >20°, lip contact, liquid flow/swallowing, and temporal motion. Holding or posing without tilt is excluded, but here the action is active drinking.",
-    "reason_short": "Glass tilted >20°, rim in contact with lips, liquid flow observed, and temporal motion of tilting upward"
+    "reasoning": "Frame 1 (0.0s) shows the glass tilted at a drinking angle (>20°) with the rim near the lips. Frame 2 (3.0s) confirms the glass is tilted further and the person's mouth is engaged with the rim, indicating contact. The glass moves upward (temporal motion) and tilts, meeting all criteria. The beer fill level is full, satisfying the requirement for a first sip. Holding near the mouth without tilt is excluded, but here the tilt and contact confirm active drinking.",
+    "reason_short": "Glass tilted at drinking angle (>20°), rim contacts lips, and motion shows upward movement with tilt increase across frames."
   }
 }

@@ -19,6 +19,7 @@ _DEFAULT_CONFIG_PATHS = [
 class GateConfig(BaseModel):
     """Configuration for the fill-level pre-check gate."""
 
+    enabled: bool = True
     model: str = "qwen3-vl:4b"
     max_width: int = Field(default=1024, ge=128, le=4096)
     jpeg_quality: int = Field(default=70, ge=10, le=100)
@@ -52,6 +53,8 @@ class PipelineConfig(BaseModel):
 
     analysis_version: str = "v2"
     confidence_threshold: float = Field(default=0.7, ge=0.0, le=1.0)
+    stage_cooldown: float = Field(default=2.0, ge=0.0, le=30.0)
+    unload_between_calls: bool = True
 
 
 class DefaultsConfig(BaseModel):

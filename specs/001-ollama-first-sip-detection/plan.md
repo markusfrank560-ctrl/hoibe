@@ -2,7 +2,7 @@
 
 **Branch**: `001-ollama-first-sip-detection` | **Date**: 2026-04-30 | **Spec**: [spec.md](spec.md)
 **Input**: Feature specification from `specs/001-ollama-first-sip-detection/spec.md`
-**Last Updated**: 2026-05-02
+**Last Updated**: 2026-05-03
 
 ## Summary
 
@@ -125,9 +125,10 @@ AnalysisResult (JSON)
 - **v2 System-Prompt**: Strenge Rollenanweisung als Precision-Drink-Detection-System
 - **v2 User-Prompt**: Frame-Beschreibung + Step-by-Step-Evaluation + JSON-Schema
 - **v2 Fill-Level-Prompt**: Einzelframe-Analyse nur für Füllstand (leichtgewichtig)
-- Temperatur: 0.0 (maximal deterministisch)
-- Thinking Mode: `think=True` + `num_ctx=16384` für Hauptinferenz
-- Light Mode: `think=False` + `num_ctx=4096` für Fill-Level-Gate
+- Temperatur: 0.1 (beide Stufen)
+- Thinking Mode: `think=false` für beide Stufen (funktioniert korrekt bei 1024px)
+- Gate: `num_ctx=4096`, Windows: `num_ctx=16384`
+- Konfiguration vollständig externalisiert in `hoibe.yaml`
 
 ### Modellauswahl (evaluiert)
 
@@ -138,35 +139,39 @@ AnalysisResult (JSON)
 | llama3.2-vision:11b | 11GB | ✅ | Gut aber zu langsam |
 | **qwen3-vl:4b** | **2.8GB** | ✅ | **Gewählt**: Bester Tradeoff Geschwindigkeit/Qualität/JSON-Compliance |
 
-Produktionsmodell: `qwen3-vl:4b` mit think=True für Chain-of-Thought-Reasoning.
+Produktionsmodell: `qwen3-vl:4b` mit `think=false` (ausreichend bei 1024px Auflösung).
 
 ## Dependencies
 
 ```
-# pyproject.toml / requirements.txt
+# pyproject.toml
 ollama>=0.4.0
 opencv-python>=4.8.0
 pydantic>=2.0
 click>=8.0        # CLI
+pyyaml>=6.0       # hoibe.yaml config loading
 ```
 
 Dev-Dependencies:
 ```
 pytest>=8.0
 pytest-asyncio>=0.23
+pytest-dotenv>=0.5    # loads .env (NO_PROXY) automatically before tests
+syrupy>=4.0
 ```
 
 ## Risks & Mitigations
 
 | Risiko | Mitigation |
 |--------|-----------|
-| Modell liefert kein valides JSON | Regex-Fallback-Parser; Markdown-Block-Extraktion; think=True für bessere Compliance |
-| Halluzination (false positive) | Temperatur 0.0; Fill-Level-Gate als Pre-Filter; Confidence-Threshold ≥ 0.7 |
+| Modell liefert kein valides JSON | Regex-Fallback-Parser; Markdown-Block-Extraktion; 1024px für bessere Compliance |
+| Halluzination (false positive) | Temperatur 0.1; Fill-Level-Gate (votes=3); 1024px/quality 90; Confidence-Threshold ≥ 0.7 |
 | Schlechte Frame-Auswahl | Endpoint-inclusive Sampling; Sharpness-basierte Frame-Selektion im Gate |
 | Ollama nicht installiert | Klare ConnectionError + Setup-Anleitung in CLI |
-| Zu langsam auf Zielgerät | 2 Frames Default; call_ollama_light für Gate; Timeouts (90s/30s) |
+| Zu langsam auf Zielgerät | 2 Frames Default; leichtgewichtiger Gate-Pfad; Timeouts (300s/60s) |
 | VLM-Nondeterminismus | Majority-Vote (3×) im Fill-Level-Gate; Sliding-Window OR-Logik |
 | Model hängt / OOM | asyncio.wait_for Timeouts; RuntimeError bei Überschreitung |
+| KV-Cache-Pollution zwischen Calls | unload_model() + 15s Cooldown zwischen jeder Inferenz |
 
 ## Out of Scope (explizit)
 

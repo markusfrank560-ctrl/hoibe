@@ -4,17 +4,20 @@
 pipeline:
   analysis_version: v2
   confidence_threshold: 0.7
+  stage_cooldown: 15.0
+  unload_between_calls: true
 
 gate:
+  enabled: true
   model: qwen3-vl:4b
   max_width: 1024
   jpeg_quality: 70
   window: [0.0, 0.10]
-  num_frames: 2
+  num_frames: 4
   num_ctx: 4096
   temperature: 0.1
   think: false
-  votes: 1
+  votes: 3
   reject_levels:
     - half
     - mostly_empty
@@ -22,12 +25,12 @@ gate:
 
 windows:
   model: qwen3-vl:4b
-  max_width: 512
-  jpeg_quality: 70
+  max_width: 1024
+  jpeg_quality: 90
   num_frames: 2
   num_ctx: 16384
-  temperature: 0.3
-  think: true
+  temperature: 0.1
+  think: false
   count: 3
   min_span: 0.6
 

@@ -21,6 +21,16 @@ logger = logging.getLogger("hoibe")
 SLIDING_WINDOW_MIN_SPAN = 0.6
 SLIDING_WINDOW_COUNT = 3
 
+
+async def _cooldown_cycle(config: AnalysisConfig, hoibe_cfg: HoibeConfig) -> None:
+    """Unload model and sleep between inference calls for clean KV cache and thermal recovery."""
+    pipeline = hoibe_cfg.pipeline
+    if pipeline.unload_between_calls:
+        await unload_model(config.ollama_host, config.model_name)
+    if pipeline.stage_cooldown > 0:
+        logger.debug("Cooldown: %.1fs", pipeline.stage_cooldown)
+        await asyncio.sleep(pipeline.stage_cooldown)
+
 _DEFINITIVE_NEGATIVE_FILL_LEVELS = {
     BeerFillLevel.mostly_empty,
     BeerFillLevel.empty,
@@ -134,7 +144,9 @@ async def _check_fill_level(
     messages = build_fill_level_messages(best_b64, gate_config)
 
     votes: list[BeerFillLevel] = []
-    for _ in range(gate_config.fill_level_votes):
+    for i in range(gate_config.fill_level_votes):
+        if i > 0:
+            await _cooldown_cycle(gate_config, hoibe_cfg)
         try:
             raw = await call_ollama_light(messages, gate_config)
             level = _parse_fill_level(raw)
@@ -286,9 +298,16 @@ async def analyze_clip_sliding(
     gate_reject_levels = {
         BeerFillLevel(level) for level in hoibe_cfg.gate.reject_levels
     }
+    gate_runtime_config = config.model_copy(update={
+        "model_name": hoibe_cfg.gate.model,
+    })
 
     # --- Fill-level pre-check gate (Layers 1, 3, 4, 5) ---
-    pre_check_level = await _check_fill_level(video_path, config, hoibe_cfg)
+    if not hoibe_cfg.gate.enabled:
+        logger.debug("Gate SKIPPED (disabled in config)")
+        pre_check_level = BeerFillLevel.full
+    else:
+        pre_check_level = await _check_fill_level(video_path, config, hoibe_cfg)
     if pre_check_level in gate_reject_levels:
         logger.debug("Gate REJECTED: fill_level=%s → early negative", pre_check_level.value)
         result = AnalysisResult(
@@ -310,8 +329,14 @@ async def analyze_clip_sliding(
         window_config.sliding_window_count,
     )
     logger.debug("Gate PASSED: fill_level=%s → running %d windows", pre_check_level.value, len(windows))
+
+    # Cooldown after gate before first window (clean KV cache for different num_ctx)
+    await _cooldown_cycle(gate_runtime_config, hoibe_cfg)
+
     results: list[AnalysisResult] = []
     for index, window in enumerate(windows, start=1):
+        if index > 1:
+            await _cooldown_cycle(window_config, hoibe_cfg)
         frame_data = extract_frames(
             video_path,
             num_frames=window_config.num_frames,

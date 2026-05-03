@@ -23,11 +23,11 @@
   },
   "last_run": {
     "passed": true,
-    "timestamp": "2026-05-02T20:39:16Z",
+    "timestamp": "2026-05-03T10:11:18Z",
     "mode": "full_config",
-    "confidence": 0.95,
+    "confidence": 0.0,
     "first_sip_detected": false,
-    "reasoning": "Frame 1 shows the glass held up to the mouth with a tilt. Frame 2 shows the glass tilted more, with the rim in contact with the lips. The beer fill level is mostly full, meeting the requirement for a first sip. The glass moves upward and tilts across frames, indicating active drinking motion. All four conditions for a first sip are satisfied: tilt >20°, rim contact, liquid flow/swallowing motion, and temporal motion.",
-    "reason_short": "Sipping detected but fill=mostly_full indicates a subsequent sip, not first."
+    "reasoning": null,
+    "reason_short": "Fill-level pre-check: glass is half — cannot be a first sip."
   }
 }

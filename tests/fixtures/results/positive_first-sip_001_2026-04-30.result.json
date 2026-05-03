@@ -23,11 +23,11 @@
   },
   "last_run": {
     "passed": true,
-    "timestamp": "2026-05-03T07:43:40Z",
+    "timestamp": "2026-05-03T10:06:39Z",
     "mode": "full_config",
     "confidence": 0.95,
     "first_sip_detected": true,
-    "reasoning": "Frame 1 (0.0s) shows the glass held upright (no tilt), while Frame 2 (2.3s) shows the glass tilted (>20° from vertical), rim touching lips, liquid flow (foam visible), and upward movement. All criteria for a first sip are met: glass tilted, rim contact, liquid flow, and temporal motion. Beer fill level is full, satisfying the requirement for a nearly full glass. Thus, first_sip_detected is true.",
-    "reason_short": "Glass tilted at drinking angle, rim in contact with lips, liquid flow observed, and glass moves upward then tilts across frames"
+    "reasoning": "Frame 1 (0.0s) shows the glass held upright with no tilt, mouth not near the glass. Frame 2 (2.3s) shows the glass tilted (>20° from vertical), rim in contact with lips, and liquid flow/swallowing motion. The glass moves upward then tilts, meeting all criteria. Beer fill level is full, so first sip is valid. Holding near mouth without tilt (Frame 1) is not drinking, but Frame 2 confirms active drinking.",
+    "reason_short": "Frame 2 shows glass tilted (>20°), rim in contact with lips, liquid flow, and upward motion across frames."
   }
 }

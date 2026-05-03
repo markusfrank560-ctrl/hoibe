@@ -23,11 +23,11 @@
   },
   "last_run": {
     "passed": true,
-    "timestamp": "2026-05-02T20:37:03Z",
+    "timestamp": "2026-05-03T09:53:09Z",
     "mode": "full_config",
-    "confidence": 0.2,
+    "confidence": 0.1,
     "first_sip_detected": false,
-    "reasoning": "Frame 1 (0.0s): Glass held vertically, mouth not near rim. Frame 2 (2.3s): Glass tilted (>20°), mouth near rim but not confirmed contact. No liquid flow/swallowing motion. Beer fill level is full, but absence of rim-to-lips contact and lack of liquid flow disqualifies first sip. Holding near mouth without contact is not drinking.",
-    "reason_short": "Glass is tilted but rim is not in contact with lips; no liquid flow/swallowing motion observed."
+    "reasoning": "In Frame 1 (0.8s) and Frame 2 (3.1s), the beer glass is held upright (tilt <20° from vertical), with no evidence of liquid flow or swallowing motion. The container rim is not in contact with the lips (only near), and the glass position does not change across frames. While the beer fill level is full, the absence of tilt, contact, and motion disqualifies it as an active first sip. The glass is static, so temporal motion (upward tilt) is not present.",
+    "reason_short": "Glass is held vertically without tilt; no liquid flow or mouth contact observed."
   }
 }

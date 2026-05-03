@@ -2,7 +2,7 @@
 
 **Input**: Design documents from `specs/001-ollama-first-sip-detection/`
 **Prerequisites**: plan.md (required), spec.md (required for user stories)
-**Last Updated**: 2026-05-02
+**Last Updated**: 2026-05-03
 
 ## Format: `[ID] [P?] [Story] Description`
 
@@ -29,7 +29,7 @@
 - [x] T005 [US1] Unit-Tests Frame Extractor: `tests/test_frame_extractor.py` – Tests mit kurzem Testvideo
 - [x] T006 [US1] Prompt Engine implementieren: `src/prompt_engine.py` – Template aus `prompts/v2/` laden, Frames einbetten, System+User-Prompt bauen
 - [x] T007 [US1] Prompt-Template erstellen: `prompts/v2/system_prompt.txt` + `user_prompt_template.txt` – Rolle, JSON-Schema-Vorgabe, Bewertungsdimensionen
-- [x] T008 [US1] Ollama Client implementieren: `src/ollama_client.py` – Async-Aufruf an Ollama API, think=True, num_ctx=16384, Temperatur 0.0
+- [x] T008 [US1] Ollama Client implementieren: `src/ollama_client.py` – Async-Aufruf an Ollama API, think per-stage konfigurierbar, num_ctx konfigurierbar, Temperatur konfigurierbar
 - [x] T009 [US1] Unit-Tests Ollama Client: `tests/test_ollama_client.py` – Mock-Tests für API-Aufruf und Fehlerbehandlung
 - [x] T010 [US1] Result Parser implementieren: `src/result_parser.py` – Ollama-Antwort → Pydantic AnalysisResult validieren + Fallback-Parsing
 - [x] T011 [US1] Unit-Tests Result Parser: `tests/test_result_parser.py` – Valide/invalide JSON-Antworten testen
@@ -94,15 +94,30 @@
 **Purpose**: Live-Validierung gegen echte Ollama-Instanz
 
 - [x] T038 E2E-Test-Framework: `tests/test_analyzer_e2e.py` mit `--run-e2e`, `--e2e-full-config`, `--e2e-case`, `--e2e-isolate`
-- [x] T039 Golden Fixtures: 4 `.result.json` Dateien (2× positiv, 1× no_sip, 1× sip_not_first) mit ground_truth + config + last_run
+- [x] T039 Golden Fixtures: 4 `.result.json` Dateien (3× positiv, 1× no_sip, 1× sip_not_first) mit ground_truth + last_run; alle 5/5 passend (2026-05-03)
 - [x] T040 Fixture-Auto-Update: `_update_fixture_on_pass()` schreibt last_run bei erfolgreichem E2E-Pass
 - [x] T041 Model-Isolation: `unload_model()` + Cooldown zwischen Cases für konsistente Ergebnisse
 
 ---
 
-## Phase 9: Noch offen
+## Phase 10: Konfiguration & Tuning ✅
 
-**Purpose**: Verbleibende Lücken für Produktionsreife
+**Purpose**: Pipeline-Konfiguration externalisieren, Genauigkeit durch Auflösungs-/Parametertuning auf 5/5 bringen
+
+- [x] T044 YAML-Konfiguration: `hoibe.yaml` als Single Source of Truth für alle Pipeline-Parameter (gate, windows, pipeline, defaults)
+- [x] T045 `src/config.py`: Pydantic-Validierung für `hoibe.yaml` (`GateConfig`, `WindowsConfig`, `PipelineConfig`, `HoibeConfig`); `load_config()` mit Such-Pfad-Fallback
+- [x] T046 `gate.enabled` Flag: Gate per Konfiguration deaktivierbar (`gate.enabled: false`)
+- [x] T047 Cooldown-Zyklus: `_cooldown_cycle()` in `analyzer.py` – `unload_model()` + `asyncio.sleep(stage_cooldown)` zwischen jeder Inferenz
+- [x] T048 Auflösungs-Tuning: Windows auf `max_width=1024`, `jpeg_quality=90` erhöht – eliminiert False Positives bei Clips mit Glas nah am Mund
+- [x] T049 Temperatur-Tuning: Beide Stufen auf `temperature=0.1` (vorher 0.3)
+- [x] T050 Gate-Robustheit: `votes=3`, `num_frames=4` – toleriert einen Ausreißer-Frame
+- [x] T051 `.env` + `pytest-dotenv`: `NO_PROXY` über `.env`-Datei, automatisch von pytest geladen (kein manuelles `export` mehr)
+
+---
+
+## Phase 11: Noch offen
+
+**Purpose**: Verbleibende Lücken für Produktionsreife (Stand 2026-05-03)
 
 - [ ] T021 [US4] Test teilweise Verdeckung: E2E-Fixture mit verdecktem Gesicht → `confidence < 0.5`
 - [ ] T022 [US4] Test schlechte Beleuchtung: Dunkler Clip → kein erzwungenes Positiv

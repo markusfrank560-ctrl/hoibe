@@ -23,11 +23,11 @@
   },
   "last_run": {
     "passed": true,
-    "timestamp": "2026-05-03T07:44:41Z",
+    "timestamp": "2026-05-03T10:09:49Z",
     "mode": "full_config",
     "confidence": 0.95,
     "first_sip_detected": true,
-    "reasoning": "Frame 1 (0.0s): Person holds a full beer glass upright, mouth not near the glass. Frame 2 (2.3s): Person is drinking, glass tilted (>20°), rim in contact with lips, liquid flow visible. Temporal motion: glass moves upward then tilts between frames. All four conditions for first sip are met: tilt, contact, liquid flow, and temporal motion. Beer fill level is full, so it qualifies as a first sip.",
-    "reason_short": "Frame 2 shows glass tilted, rim in contact with lips, liquid flow, and temporal motion from holding to drinking"
+    "reasoning": "Frame 1 (0.0s): Glass held vertically, no tilt, mouth not near rim. Frame 2 (2.3s): Glass tilted (>20°), rim in contact with lips, mouth open to drink, and liquid flow observed. Temporal motion shows upward movement and tilting. Beer fill level is full (plausible beer container with head). All first sip criteria met: tilt >20°, contact, liquid flow, and temporal motion. Holding without tilt (Frame 1) is not drinking, but Frame 2 shows active drinking.",
+    "reason_short": "Frame 2 shows glass tilted (>20°), rim in contact with lips, and liquid flow; temporal motion indicates upward movement and tilting."
   }
 }
