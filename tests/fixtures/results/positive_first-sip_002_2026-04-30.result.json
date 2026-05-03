@@ -23,11 +23,11 @@
   },
   "last_run": {
     "passed": true,
-    "timestamp": "2026-05-03T10:09:49Z",
+    "timestamp": "2026-05-03T13:06:36Z",
     "mode": "full_config",
     "confidence": 0.95,
     "first_sip_detected": true,
-    "reasoning": "Frame 1 (0.0s): Glass held vertically, no tilt, mouth not near rim. Frame 2 (2.3s): Glass tilted (>20°), rim in contact with lips, mouth open to drink, and liquid flow observed. Temporal motion shows upward movement and tilting. Beer fill level is full (plausible beer container with head). All first sip criteria met: tilt >20°, contact, liquid flow, and temporal motion. Holding without tilt (Frame 1) is not drinking, but Frame 2 shows active drinking.",
-    "reason_short": "Frame 2 shows glass tilted (>20°), rim in contact with lips, and liquid flow; temporal motion indicates upward movement and tilting."
+    "reasoning": null,
+    "reason_short": "Glass tilts upward and rim contacts lips during drinking motion"
   }
 }

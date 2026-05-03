@@ -73,14 +73,15 @@ async def call_ollama(
     if config.think:
         chat_kwargs["think"] = True
 
+    timeout = config.call_timeout if config.call_timeout else _CALL_TIMEOUT
     try:
         response = await asyncio.wait_for(
             client.chat(**chat_kwargs),
-            timeout=_CALL_TIMEOUT,
+            timeout=timeout,
         )
     except asyncio.TimeoutError:
         raise RuntimeError(
-            f"Ollama call timed out after {_CALL_TIMEOUT}s. "
+            f"Ollama call timed out after {timeout}s. "
             "Model may be overloaded or stuck."
         )
     except Exception as e:
@@ -124,14 +125,15 @@ async def call_ollama_light(
     if config.think:
         chat_kwargs["think"] = True
 
+    timeout = config.call_timeout if config.call_timeout else _CALL_LIGHT_TIMEOUT
     try:
         response = await asyncio.wait_for(
             client.chat(**chat_kwargs),
-            timeout=_CALL_LIGHT_TIMEOUT,
+            timeout=timeout,
         )
     except asyncio.TimeoutError:
         raise RuntimeError(
-            f"Ollama light call timed out after {_CALL_LIGHT_TIMEOUT}s. "
+            f"Ollama light call timed out after {timeout}s. "
             "Model may be overloaded or stuck."
         )
     except Exception as e:

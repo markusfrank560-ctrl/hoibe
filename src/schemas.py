@@ -59,6 +59,7 @@ class AnalysisConfig(BaseModel):
     max_width: int = Field(default=512, ge=128, le=4096)
     jpeg_quality: int = Field(default=70, ge=10, le=100)
     think: bool = True
+    call_timeout: float = Field(default=120.0, ge=10.0, description="Per-call timeout in seconds")
 
 
 class FrameData(BaseModel):

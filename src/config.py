@@ -32,6 +32,7 @@ class GateConfig(BaseModel):
     reject_levels: list[str] = Field(
         default_factory=lambda: ["half", "mostly_empty", "empty"]
     )
+    call_timeout: float = Field(default=60.0, ge=10.0, description="Per-vote inference timeout in seconds")
 
 
 class WindowsConfig(BaseModel):
@@ -46,6 +47,8 @@ class WindowsConfig(BaseModel):
     think: bool = True
     count: int = Field(default=3, ge=1)
     min_span: float = Field(default=0.6, gt=0.0, le=1.0)
+    call_timeout: float = Field(default=120.0, ge=10.0, description="Per-window inference timeout in seconds")
+    prompt_version: str = Field(default="v2", description="Prompt version directory to use")
 
 
 class PipelineConfig(BaseModel):

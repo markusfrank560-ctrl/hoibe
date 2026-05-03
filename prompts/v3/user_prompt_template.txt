@@ -1,0 +1,10 @@
+These {num_frames} frames are from a video at timestamps: {frame_timestamps}
+
+Is there ACTIVE drinking motion between these frames?
+
+Respond with ONLY this JSON:
+{
+  "first_sip_detected": true or false,
+  "confidence": 0.0 to 1.0,
+  "reason_short": "one sentence: what motion you see or why not drinking"
+}

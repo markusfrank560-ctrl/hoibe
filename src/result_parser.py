@@ -29,10 +29,21 @@ def parse_result(raw_response: str, config: AnalysisConfig) -> AnalysisResult:
     data["model_name"] = config.model_name
     data["analysis_version"] = config.analysis_version
 
-    # Apply confidence threshold for first_sip_detected
+    # Confidence threshold — only gates positive claims.
+    # If the model says detected=true but confidence is below threshold,
+    # override to false. A model returning detected=false is never flipped;
+    # the confidence value is stored but has no effect on the decision.
     confidence = float(data.get("confidence", 0.0))
     if confidence < config.confidence_threshold:
         data["first_sip_detected"] = False
+
+    # v3 prompts return minimal fields — backfill defaults for gate-proven facts
+    if config.analysis_version == "v3":
+        data.setdefault("face_visible", True)
+        data.setdefault("drinking_object_visible", True)
+        data.setdefault("mouth_contact_likely", data.get("first_sip_detected", False))
+        data.setdefault("beer_likely", "true")
+        data.setdefault("beer_fill_level", "full")
 
     try:
         return AnalysisResult.model_validate(data)

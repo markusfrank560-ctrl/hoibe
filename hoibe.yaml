@@ -2,9 +2,9 @@
 # Version this file in git to track tuning decisions.
 
 pipeline:
-  analysis_version: v2
+  analysis_version: v3
   confidence_threshold: 0.7
-  stage_cooldown: 15.0
+  stage_cooldown: 10.0
   unload_between_calls: true
 
 gate:
@@ -12,12 +12,12 @@ gate:
   model: qwen3-vl:4b
   max_width: 1024
   jpeg_quality: 70
-  window: [0.0, 0.10]
-  num_frames: 4
+  window: [0.0, 0.05]
   num_ctx: 4096
   temperature: 0.1
   think: false
   votes: 3
+  call_timeout: 45
   reject_levels:
     - half
     - mostly_empty
@@ -28,11 +28,13 @@ windows:
   max_width: 1024
   jpeg_quality: 90
   num_frames: 2
-  num_ctx: 16384
+  num_ctx: 4096
   temperature: 0.1
   think: false
   count: 3
   min_span: 0.6
+  call_timeout: 90
+  prompt_version: v3
 
 defaults:
   ollama_host: http://localhost:11434

@@ -97,8 +97,8 @@ async def _check_fill_level(
     """Pre-check fill level using a dedicated prompt on the sharpest rest-frame.
 
     Extracts 2 frames from the start of the clip, selects the sharpest one
-    (highest Laplacian variance), then runs the fill-level prompt multiple
-    times for majority vote. Uses lightweight (think=False) calls for speed.
+    (highest Laplacian variance), then runs the fill-level prompt on each
+    frame separately for majority vote. Each vote sees a different frame.
     """
     import cv2
     import numpy as np
@@ -113,40 +113,40 @@ async def _check_fill_level(
         "model_name": gate.model,
         "num_ctx": gate.num_ctx,
         "temperature": gate.temperature,
-        "num_frames": gate.num_frames,
+        "num_frames": gate.votes,
         "max_width": gate.max_width,
         "jpeg_quality": gate.jpeg_quality,
         "fill_level_votes": gate.votes,
         "think": gate.think,
+        "call_timeout": gate.call_timeout,
     })
 
-    # Extract candidate frames from configured gate window
+    # Extract candidate frames — more than needed so we can pick the sharpest
+    num_candidates = max(gate.votes * 2, 6)
     frame_data = extract_frames(
         video_path,
-        num_frames=gate_config.num_frames,
+        num_frames=num_candidates,
         window=tuple(gate.window),
         max_width=gate_config.max_width,
         jpeg_quality=gate_config.jpeg_quality,
     )
 
-    # Pick the sharpest frame (highest Laplacian variance = most in-focus)
-    best_b64 = frame_data.frames_base64[0]
-    best_sharpness = -1.0
+    # Rank frames by sharpness (Laplacian variance), pick top N for votes
+    scored: list[tuple[float, str]] = []
     for b64 in frame_data.frames_base64:
         raw_bytes = base64.b64decode(b64)
         arr = np.frombuffer(raw_bytes, dtype=np.uint8)
         img = cv2.imdecode(arr, cv2.IMREAD_GRAYSCALE)
         sharpness = cv2.Laplacian(img, cv2.CV_64F).var()
-        if sharpness > best_sharpness:
-            best_sharpness = sharpness
-            best_b64 = b64
-
-    messages = build_fill_level_messages(best_b64, gate_config)
+        scored.append((sharpness, b64))
+    scored.sort(key=lambda x: x[0], reverse=True)
+    top_frames = scored[:gate.votes]
 
     votes: list[BeerFillLevel] = []
-    for i in range(gate_config.fill_level_votes):
+    for i, (sharpness, frame_b64) in enumerate(top_frames):
         if i > 0:
             await _cooldown_cycle(gate_config, hoibe_cfg)
+        messages = build_fill_level_messages(frame_b64, gate_config)
         try:
             raw = await call_ollama_light(messages, gate_config)
             level = _parse_fill_level(raw)
@@ -159,8 +159,9 @@ async def _check_fill_level(
         return BeerFillLevel.unknown
     counter = Counter(votes)
     majority_level, _ = counter.most_common(1)[0]
+    avg_sharpness = sum(s for s, _ in top_frames) / len(top_frames)
     logger.debug("Fill-level gate: votes=%s → majority=%s (sharpness=%.0f)", 
-                 [v.value for v in votes], majority_level.value, best_sharpness)
+                 [v.value for v in votes], majority_level.value, avg_sharpness)
     return majority_level
 
 
@@ -292,6 +293,8 @@ async def analyze_clip_sliding(
         "sliding_window_count": win_cfg.count,
         "sliding_window_min_span": win_cfg.min_span,
         "think": win_cfg.think,
+        "call_timeout": win_cfg.call_timeout,
+        "analysis_version": win_cfg.prompt_version,
     })
 
     # Build gate reject set from config
