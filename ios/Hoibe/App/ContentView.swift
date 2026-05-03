@@ -1,5 +1,8 @@
 import SwiftUI
 import PhotosUI
+#if os(iOS)
+import UIKit
+#endif
 
 struct ContentView: View {
     @StateObject private var viewModel = ContentViewModel()
@@ -87,12 +90,16 @@ struct ContentView: View {
                 .font(.headline)
 
             HStack(spacing: 16) {
-                Button {
-                    viewModel.showCamera = true
-                } label: {
-                    Label("Aufnehmen", systemImage: "camera.fill")
+                #if os(iOS)
+                if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                    Button {
+                        viewModel.showCamera = true
+                    } label: {
+                        Label("Aufnehmen", systemImage: "camera.fill")
+                    }
+                    .buttonStyle(.borderedProminent)
                 }
-                .buttonStyle(.borderedProminent)
+                #endif
 
                 PhotosPicker(
                     selection: $viewModel.selectedVideo,
@@ -215,6 +222,11 @@ final class ContentViewModel: ObservableObject {
 
     func startDownload() async {
         screenState = .downloading
+        modelManager.onProgress = { [weak self] frac in
+            Task { @MainActor in
+                self?.downloadProgress = frac
+            }
+        }
         do {
             try await modelManager.startDownload(allowCellular: false)
             screenState = .ready

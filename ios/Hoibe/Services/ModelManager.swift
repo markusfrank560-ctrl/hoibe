@@ -6,7 +6,7 @@ import MLXVLM
 /// Manages VLM model download, caching, and inference using MLX Swift.
 final class ModelManager: ModelManaging, @unchecked Sendable {
 
-    private let modelId = "mlx-community/Qwen3-VL-4B-Instruct-MLX-4bit"
+    private let modelId = "lmstudio-community/Qwen3-VL-4B-Instruct-MLX-4bit"
     private var container: ModelContainer?
     private let lock = NSLock()
 
@@ -17,14 +17,16 @@ final class ModelManager: ModelManaging, @unchecked Sendable {
         return false
     }
 
+    /// Progress callback set by the caller before starting download.
+    var onProgress: (@Sendable (Double) -> Void)?
+
     func startDownload(allowCellular: Bool) async throws {
         state = .downloading(progress: 0)
 
+        let onProgress = self.onProgress
         let container = try await loadModelContainer(id: modelId) { progress in
             let frac = progress.fractionCompleted
-            Task { @MainActor in
-                self.state = .downloading(progress: frac)
-            }
+            onProgress?(frac)
         }
 
         lock.lock()
