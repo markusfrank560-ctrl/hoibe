@@ -41,6 +41,9 @@ final class SipDetector: SipDetecting, @unchecked Sendable {
     // MARK: - Pipeline
 
     private func runPipeline(videoURL: URL) async throws -> AnalysisResult {
+        DiagnosticLog.clear()
+        DiagnosticLog.log("[SipDetector] Pipeline start: \(videoURL.lastPathComponent)")
+
         // Gate: fill-level check
         analysisState = .extractingFrames
 
@@ -58,14 +61,14 @@ final class SipDetector: SipDetecting, @unchecked Sendable {
             try Task.checkCancellation()
             analysisState = .runningGate(vote: vote + 1, total: config.gateVotes)
 
-            let messages = promptEngine.buildFillLevelMessages(imageData: gateFrames.framesJPEG[vote])
+            let messages = promptEngine.buildFillLevelMessages(imageData: gateFrames.framesJPEG[vote], think: config.think)
 
             let response = try await withTimeout(config.gateTimeout) { [self] in
                 try await modelManager.generate(messages: messages, maxTokens: 50, temperature: config.temperature)
             }
 
             let level = parseFillLevel(response)
-            print("[SipDetector] Gate vote \(vote+1): response='\(response.prefix(80))' → level=\(level)")
+            DiagnosticLog.log("[SipDetector] Gate vote \(vote+1): response='\(response.prefix(200))' → level=\(level)")
             if config.rejectLevels.contains(level) {
                 rejectCount += 1
             }
@@ -78,12 +81,12 @@ final class SipDetector: SipDetecting, @unchecked Sendable {
         // Majority vote: reject if majority says non-full
         if rejectCount > config.gateVotes / 2 {
             let result = makeNegativeResult(reason: "Glas nicht voll – kein erster Schluck")
-            print("[SipDetector] Gate rejected (\(rejectCount)/\(config.gateVotes) reject votes) → returning negative result")
+            DiagnosticLog.log("[SipDetector] Gate rejected (\(rejectCount)/\(config.gateVotes) reject votes) → returning negative result")
             analysisState = .complete(result)
             return result
         }
 
-        print("[SipDetector] Gate passed (\(rejectCount)/\(config.gateVotes) reject votes) → proceeding to windows")
+        DiagnosticLog.log("[SipDetector] Gate passed (\(rejectCount)/\(config.gateVotes) reject votes) → proceeding to windows")
 
         // Windows: sliding-window sip detection
         let fullFrames = try await frameExtractor.extractFrames(
@@ -105,7 +108,7 @@ final class SipDetector: SipDetecting, @unchecked Sendable {
             let windowFrames = Array(fullFrames.framesJPEG[startIdx..<endIdx])
             let windowTimestamps = Array(fullFrames.timestamps[startIdx..<endIdx]).map { String(format: "%.2fs", $0) }
 
-            let messages = promptEngine.buildSipDetectionMessages(framesData: windowFrames, timestamps: windowTimestamps)
+            let messages = promptEngine.buildSipDetectionMessages(framesData: windowFrames, timestamps: windowTimestamps, think: config.think)
 
             do {
                 let response = try await withTimeout(config.windowTimeout) { [self] in
@@ -136,8 +139,23 @@ final class SipDetector: SipDetecting, @unchecked Sendable {
     // MARK: - Parsing
 
     private func parseFillLevel(_ response: String) -> BeerFillLevel {
-        let lower = response.lowercased()
-        for level in BeerFillLevel.allCases {
+        // Strip <think>...</think> blocks that Qwen3 may prepend
+        var cleaned = response
+        if let thinkEnd = cleaned.range(of: "</think>") {
+            cleaned = String(cleaned[thinkEnd.upperBound...])
+        }
+        let lower = cleaned.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+
+        // Try JSON extraction first: {"beer_fill_level": "..."}
+        if let data = lower.data(using: .utf8),
+           let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+           let value = json["beer_fill_level"] as? String {
+            return BeerFillLevel(rawValue: value) ?? .unknown
+        }
+
+        // Fallback: match longest rawValues first to avoid "empty" matching inside "mostly_empty"
+        let sortedCases = BeerFillLevel.allCases.sorted { $0.rawValue.count > $1.rawValue.count }
+        for level in sortedCases {
             if lower.contains(level.rawValue.replacingOccurrences(of: "_", with: " ")) || lower.contains(level.rawValue) {
                 return level
             }

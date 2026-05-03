@@ -27,6 +27,7 @@
 		A1000016 /* Prompts in Resources */ = {isa = PBXBuildFile; fileRef = B1000016 /* Prompts */; };
 		A1000017 /* BundleCompat.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000019 /* BundleCompat.swift */; };
 		A1000018 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B1000020 /* Assets.xcassets */; };
+		A1000021 /* DiagnosticLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000021 /* DiagnosticLog.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +52,7 @@
 		B1000018 /* Hoibe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Hoibe.entitlements; sourceTree = "<group>"; };
 		B1000019 /* BundleCompat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleCompat.swift; sourceTree = "<group>"; };
 		B1000020 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B1000021 /* DiagnosticLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticLog.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 				B1000006 /* PromptEngine.swift */,
 				B1000007 /* SipDetector.swift */,
 				B1000008 /* Protocols.swift */,
+				B1000021 /* DiagnosticLog.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -235,6 +238,7 @@
 				A1000014 /* ModelDownloadState.swift in Sources */,
 				A1000015 /* PipelineConfig.swift in Sources */,
 				A1000017 /* BundleCompat.swift in Sources */,
+				A1000021 /* DiagnosticLog.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

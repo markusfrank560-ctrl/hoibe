@@ -11,6 +11,11 @@ struct CameraView: UIViewControllerRepresentable {
 
     func makeUIViewController(context: Context) -> UIImagePickerController {
         let picker = UIImagePickerController()
+        guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
+            // Fallback: dismiss immediately if no camera
+            DispatchQueue.main.async { self.dismiss() }
+            return picker
+        }
         picker.sourceType = .camera
         picker.mediaTypes = ["public.movie"]
         picker.videoMaximumDuration = 15

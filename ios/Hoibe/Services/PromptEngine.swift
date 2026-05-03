@@ -20,15 +20,17 @@ struct PromptEngine: PromptBuilding {
         self.fillLevelPrompt = loadPrompt("fill_level_prompt")
     }
 
-    func buildFillLevelMessages(imageData: Data) -> [ChatMessage] {
-        [
-            ChatMessage(role: .user, text: fillLevelPrompt, images: [imageData])
+    func buildFillLevelMessages(imageData: Data, think: Bool = false) -> [ChatMessage] {
+        let suffix = think ? "" : "\n/no_think"
+        return [
+            ChatMessage(role: .user, text: fillLevelPrompt + suffix, images: [imageData])
         ]
     }
 
-    func buildSipDetectionMessages(framesData: [Data], timestamps: [String]) -> [ChatMessage] {
+    func buildSipDetectionMessages(framesData: [Data], timestamps: [String], think: Bool = false) -> [ChatMessage] {
         let timestampList = timestamps.joined(separator: ", ")
-        let userText = userPromptTemplate.replacingOccurrences(of: "{{TIMESTAMPS}}", with: timestampList)
+        let suffix = think ? "" : "\n/no_think"
+        let userText = userPromptTemplate.replacingOccurrences(of: "{{TIMESTAMPS}}", with: timestampList) + suffix
         return [
             ChatMessage(role: .system, text: systemPrompt),
             ChatMessage(role: .user, text: userText, images: framesData)

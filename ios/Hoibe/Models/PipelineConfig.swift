@@ -4,15 +4,16 @@ import Foundation
 struct PipelineConfig: Codable, Sendable {
     var gateVotes: Int = 3
     var gateTimeout: TimeInterval = 45
-    var gateWindow: (start: Double, end: Double) = (0.0, 0.05)
+    var gateWindow: (start: Double, end: Double) = (0.0, 0.10)
     var windowCount: Int = 3
     var windowMinSpan: Double = 0.6
     var windowTimeout: TimeInterval = 90
     var numCtx: Int = 4096
     var temperature: Double = 0.1
     var maxWidth: Int = 1024
-    var jpegQuality: Double = 0.9
+    var jpegQuality: Double = 1.0
     var cooldown: TimeInterval = 2.0
+    var think: Bool = false
     var rejectLevels: Set<BeerFillLevel> = [.half, .mostlyEmpty, .empty]
 
     enum CodingKeys: String, CodingKey {

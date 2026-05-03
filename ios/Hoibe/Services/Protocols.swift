@@ -33,8 +33,8 @@ protocol FrameExtracting: Sendable {
 
 /// Builds chat messages from prompt templates for VLM inference.
 protocol PromptBuilding: Sendable {
-    func buildFillLevelMessages(imageData: Data) -> [ChatMessage]
-    func buildSipDetectionMessages(framesData: [Data], timestamps: [String]) -> [ChatMessage]
+    func buildFillLevelMessages(imageData: Data, think: Bool) -> [ChatMessage]
+    func buildSipDetectionMessages(framesData: [Data], timestamps: [String], think: Bool) -> [ChatMessage]
 }
 
 /// Orchestrates the full detection pipeline.

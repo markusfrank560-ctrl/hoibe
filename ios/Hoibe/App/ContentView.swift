@@ -261,7 +261,8 @@ final class ContentViewModel: ObservableObject {
         let stableURL: URL
         do {
             let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-            stableURL = docs.appendingPathComponent("analysis_input.mov")
+            let ext = videoURL.pathExtension.isEmpty ? "mov" : videoURL.pathExtension
+            stableURL = docs.appendingPathComponent("analysis_input.\(ext)")
             try? FileManager.default.removeItem(at: stableURL)
             try FileManager.default.copyItem(at: videoURL, to: stableURL)
         } catch {
@@ -287,7 +288,7 @@ final class ContentViewModel: ObservableObject {
             screenState = .result(result)
         } catch {
             print("[ContentView] analyze threw: \(error)")
-            screenState = .error("Analyse fehlgeschlagen: \(error.localizedDescription)")
+            screenState = .error("\(error)")
         }
 
         observation.cancel()
@@ -310,6 +311,7 @@ final class ContentViewModel: ObservableObject {
     }
 
     #if os(iOS)
+    @MainActor
     func requestCameraAndShow() async {
         let status = AVCaptureDevice.authorizationStatus(for: .video)
         switch status {
@@ -317,7 +319,11 @@ final class ContentViewModel: ObservableObject {
             showCamera = true
         case .notDetermined:
             let granted = await AVCaptureDevice.requestAccess(for: .video)
-            if granted { showCamera = true }
+            if granted {
+                // Small delay to let permission dialog dismiss fully
+                try? await Task.sleep(for: .milliseconds(500))
+                showCamera = true
+            }
         default:
             break
         }
@@ -346,9 +352,10 @@ struct VideoTransferable: Transferable {
         FileRepresentation(contentType: .movie) { video in
             SentTransferredFile(video.url)
         } importing: { received in
+            let ext = received.file.pathExtension.isEmpty ? "mov" : received.file.pathExtension
             let tempURL = FileManager.default.temporaryDirectory
                 .appendingPathComponent(UUID().uuidString)
-                .appendingPathExtension("mov")
+                .appendingPathExtension(ext)
             try FileManager.default.copyItem(at: received.file, to: tempURL)
             return Self(url: tempURL)
         }

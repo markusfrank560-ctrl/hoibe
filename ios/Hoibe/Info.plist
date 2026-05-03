@@ -34,5 +34,7 @@
     </array>
     <key>NSCameraUsageDescription</key>
     <string>Hoibe benötigt Kamerazugriff um den ersten Schluck aufzunehmen.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Hoibe benötigt Mikrofonzugriff für die Videoaufnahme.</string>
 </dict>
 </plist>
