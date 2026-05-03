@@ -14,7 +14,7 @@ struct PipelineConfig: Codable, Sendable {
     var jpegQuality: Double = 1.0
     var cooldown: TimeInterval = 2.0
     var think: Bool = false
-    var rejectLevels: Set<BeerFillLevel> = [.half, .mostlyEmpty, .empty]
+    var rejectLevels: Set<BeerFillLevel> = [.half, .mostlyEmpty, .empty, .unknown]
 
     enum CodingKeys: String, CodingKey {
         case gateVotes = "gate_votes"
