@@ -222,6 +222,11 @@ final class ContentViewModel: ObservableObject {
 
     func startDownload() async {
         screenState = .downloading
+
+        #if os(iOS)
+        UIApplication.shared.isIdleTimerDisabled = true
+        #endif
+
         modelManager.onProgress = { [weak self] frac in
             Task { @MainActor in
                 self?.downloadProgress = frac
@@ -233,6 +238,10 @@ final class ContentViewModel: ObservableObject {
         } catch {
             screenState = .error("Download fehlgeschlagen: \(error.localizedDescription)")
         }
+
+        #if os(iOS)
+        UIApplication.shared.isIdleTimerDisabled = false
+        #endif
     }
 
     func analyze(videoURL: URL) async {
@@ -253,7 +262,7 @@ final class ContentViewModel: ObservableObject {
             let result = try await sipDetector.analyze(videoURL: videoURL)
             screenState = .result(result)
         } catch {
-            screenState = .error(error.localizedDescription)
+            screenState = .error("Analyse fehlgeschlagen: \(error.localizedDescription)")
         }
 
         observation.cancel()

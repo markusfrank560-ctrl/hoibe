@@ -76,7 +76,7 @@ final class SipDetector: SipDetecting, @unchecked Sendable {
 
         // Majority vote: reject if majority says non-full
         if rejectCount > config.gateVotes / 2 {
-            let result = makeNegativeResult(reason: "Beer not full – likely not a first sip")
+            let result = makeNegativeResult(reason: "Glas nicht voll – kein erster Schluck")
             analysisState = .complete(result)
             return result
         }
@@ -124,7 +124,7 @@ final class SipDetector: SipDetecting, @unchecked Sendable {
             }
         }
 
-        let result = makeNegativeResult(reason: "No first sip detected in any window")
+        let result = makeNegativeResult(reason: "Kein erster Schluck in den Analysefenstern erkannt")
         analysisState = .complete(result)
         return result
     }

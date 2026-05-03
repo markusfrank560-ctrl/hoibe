@@ -1,0 +1,396 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0D5B8DCF2FA79D3E00C1AE50 /* MLXVLM in Frameworks */ = {isa = PBXBuildFile; productRef = P1000001 /* MLXVLM */; };
+		0D5B8DD02FA79D3E00C1AE50 /* MLXLMCommon in Frameworks */ = {isa = PBXBuildFile; productRef = P1000002 /* MLXLMCommon */; };
+		A1000001 /* HoibeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000001 /* HoibeApp.swift */; };
+		A1000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000002 /* ContentView.swift */; };
+		A1000003 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000003 /* CameraView.swift */; };
+		A1000004 /* ModelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000004 /* ModelManager.swift */; };
+		A1000005 /* FrameExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000005 /* FrameExtractor.swift */; };
+		A1000006 /* PromptEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000006 /* PromptEngine.swift */; };
+		A1000007 /* SipDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000007 /* SipDetector.swift */; };
+		A1000008 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000008 /* Protocols.swift */; };
+		A1000009 /* AnalysisResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000009 /* AnalysisResult.swift */; };
+		A1000010 /* AnalysisState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000010 /* AnalysisState.swift */; };
+		A1000011 /* BeerFillLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000011 /* BeerFillLevel.swift */; };
+		A1000012 /* ChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000012 /* ChatMessage.swift */; };
+		A1000013 /* FrameData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000013 /* FrameData.swift */; };
+		A1000014 /* ModelDownloadState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000014 /* ModelDownloadState.swift */; };
+		A1000015 /* PipelineConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000015 /* PipelineConfig.swift */; };
+		A1000016 /* Prompts in Resources */ = {isa = PBXBuildFile; fileRef = B1000016 /* Prompts */; };
+		A1000017 /* BundleCompat.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000019 /* BundleCompat.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		B1000000 /* Hoibe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hoibe.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B1000001 /* HoibeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoibeApp.swift; sourceTree = "<group>"; };
+		B1000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B1000003 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		B1000004 /* ModelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelManager.swift; sourceTree = "<group>"; };
+		B1000005 /* FrameExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameExtractor.swift; sourceTree = "<group>"; };
+		B1000006 /* PromptEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptEngine.swift; sourceTree = "<group>"; };
+		B1000007 /* SipDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SipDetector.swift; sourceTree = "<group>"; };
+		B1000008 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
+		B1000009 /* AnalysisResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisResult.swift; sourceTree = "<group>"; };
+		B1000010 /* AnalysisState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisState.swift; sourceTree = "<group>"; };
+		B1000011 /* BeerFillLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeerFillLevel.swift; sourceTree = "<group>"; };
+		B1000012 /* ChatMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessage.swift; sourceTree = "<group>"; };
+		B1000013 /* FrameData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameData.swift; sourceTree = "<group>"; };
+		B1000014 /* ModelDownloadState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelDownloadState.swift; sourceTree = "<group>"; };
+		B1000015 /* PipelineConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineConfig.swift; sourceTree = "<group>"; };
+		B1000016 /* Prompts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Prompts; sourceTree = "<group>"; };
+		B1000017 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B1000018 /* Hoibe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Hoibe.entitlements; sourceTree = "<group>"; };
+		B1000019 /* BundleCompat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleCompat.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C1000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0D5B8DD02FA79D3E00C1AE50 /* MLXLMCommon in Frameworks */,
+				0D5B8DCF2FA79D3E00C1AE50 /* MLXVLM in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D1000000 = {
+			isa = PBXGroup;
+			children = (
+				D1000001 /* ios/Hoibe */,
+				D1000005 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D1000001 /* ios/Hoibe */ = {
+			isa = PBXGroup;
+			children = (
+				D1000002 /* App */,
+				D1000003 /* Services */,
+				D1000004 /* Models */,
+				D1000006 /* Resources */,
+				B1000017 /* Info.plist */,
+				B1000018 /* Hoibe.entitlements */,
+			);
+			path = ios/Hoibe;
+			sourceTree = "<group>";
+		};
+		D1000002 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				B1000001 /* HoibeApp.swift */,
+				B1000002 /* ContentView.swift */,
+				B1000003 /* CameraView.swift */,
+				B1000019 /* BundleCompat.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		D1000003 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				B1000004 /* ModelManager.swift */,
+				B1000005 /* FrameExtractor.swift */,
+				B1000006 /* PromptEngine.swift */,
+				B1000007 /* SipDetector.swift */,
+				B1000008 /* Protocols.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		D1000004 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B1000009 /* AnalysisResult.swift */,
+				B1000010 /* AnalysisState.swift */,
+				B1000011 /* BeerFillLevel.swift */,
+				B1000012 /* ChatMessage.swift */,
+				B1000013 /* FrameData.swift */,
+				B1000014 /* ModelDownloadState.swift */,
+				B1000015 /* PipelineConfig.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		D1000005 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B1000000 /* Hoibe.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D1000006 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B1000016 /* Prompts */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E1000001 /* Hoibe */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F1000003 /* Build configuration list for PBXNativeTarget "Hoibe" */;
+			buildPhases = (
+				E1000002 /* Sources */,
+				C1000001 /* Frameworks */,
+				E1000003 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Hoibe;
+			packageProductDependencies = (
+				P1000001 /* MLXVLM */,
+				P1000002 /* MLXLMCommon */,
+			);
+			productName = Hoibe;
+			productReference = B1000000 /* Hoibe.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D1000099 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					E1000001 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
+			};
+			buildConfigurationList = F1000001 /* Build configuration list for PBXProject "Hoibe" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				de,
+			);
+			mainGroup = D1000000;
+			packageReferences = (
+				R1000001 /* XCRemoteSwiftPackageReference "mlx-swift-examples" */,
+			);
+			productRefGroup = D1000005 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E1000001 /* Hoibe */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E1000003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1000016 /* Prompts in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E1000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1000001 /* HoibeApp.swift in Sources */,
+				A1000002 /* ContentView.swift in Sources */,
+				A1000003 /* CameraView.swift in Sources */,
+				A1000004 /* ModelManager.swift in Sources */,
+				A1000005 /* FrameExtractor.swift in Sources */,
+				A1000006 /* PromptEngine.swift in Sources */,
+				A1000007 /* SipDetector.swift in Sources */,
+				A1000008 /* Protocols.swift in Sources */,
+				A1000009 /* AnalysisResult.swift in Sources */,
+				A1000010 /* AnalysisState.swift in Sources */,
+				A1000011 /* BeerFillLevel.swift in Sources */,
+				A1000012 /* ChatMessage.swift in Sources */,
+				A1000013 /* FrameData.swift in Sources */,
+				A1000014 /* ModelDownloadState.swift in Sources */,
+				A1000015 /* PipelineConfig.swift in Sources */,
+				A1000017 /* BundleCompat.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		F1000010 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		F1000011 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 5.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F1000020 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ios/Hoibe/Hoibe.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XB5H84M34T;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ios/Hoibe/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Hoibe;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hoibe.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F1000021 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ios/Hoibe/Hoibe.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XB5H84M34T;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ios/Hoibe/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Hoibe;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hoibe.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F1000001 /* Build configuration list for PBXProject "Hoibe" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F1000010 /* Debug */,
+				F1000011 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F1000003 /* Build configuration list for PBXNativeTarget "Hoibe" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F1000020 /* Debug */,
+				F1000021 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		R1000001 /* XCRemoteSwiftPackageReference "mlx-swift-examples" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ml-explore/mlx-swift-examples.git";
+			requirement = {
+				kind = exactVersion;
+				version = 2.29.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		P1000001 /* MLXVLM */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = R1000001 /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
+			productName = MLXVLM;
+		};
+		P1000002 /* MLXLMCommon */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = R1000001 /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
+			productName = MLXLMCommon;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = D1000099 /* Project object */;
+}
