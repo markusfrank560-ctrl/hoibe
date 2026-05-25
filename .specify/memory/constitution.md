@@ -28,7 +28,7 @@ Prompt-Versionen, Modellauswahl, Ausgabe-Schema und Frame-Selektionslogik müsse
 - **Sprache**: Python (Ollama-SDK, OpenCV/ffmpeg für Frame-Extraktion); Swift (MLX Swift LM, AVFoundation für iOS)
 - **Modell-Interface**: Ollama REST API (localhost) auf macOS; MLX Swift LM auf iOS
 - **Ausgabeformat**: JSON nach definiertem Schema
-- **Video-Input**: Lokale Dateien, 5–15 Sekunden Clips
+- **Video-Input**: Lokale Dateien. Clip-Dauer feature-abhängig: 5–15s (Sip Detection), 15–90s (Cat Profiling)
 - **Ziel-Plattform (Dev)**: macOS/Linux mit Ollama installiert
 - **Ziel-Plattform (iOS)**: iPhone 15 Pro+, iOS 17.0+, 8 GB RAM, MLX Swift LM
 - **Keine Abhängigkeiten** auf Cloud-Services, externe APIs oder Nutzerkonten
@@ -44,4 +44,4 @@ Prompt-Versionen, Modellauswahl, Ausgabe-Schema und Frame-Selektionslogik müsse
 
 Diese Constitution hat Vorrang vor ad-hoc-Entscheidungen. Änderungen erfordern Dokumentation und Begründung. Bei Konflikten zwischen Performance und Datenschutz gewinnt Datenschutz.
 
-**Version**: 1.1.0 | **Ratified**: 2026-04-30 | **Last Amended**: 2026-05-03
+**Version**: 1.2.0 | **Ratified**: 2026-04-30 | **Last Amended**: 2026-05-25

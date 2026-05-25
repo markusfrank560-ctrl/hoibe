@@ -81,7 +81,7 @@ Das Hauptergebnis ist eine visuell ansprechende „Cat Persona Card" — eine te
 **Acceptance Scenarios**:
 
 1. **Given** eine abgeschlossene Analyse, **When** die Persona Card angezeigt wird, **Then** enthält sie: Feline-Five Radar-Chart, Archetyp-Label, Top-3 Verhaltensbeobachtungen, und Breed-Affinity
-2. **Given** eine Persona Card, **When** der Nutzer auf „Teilen" tippt, **Then** wird eine 9:16-Grafik generiert und der iOS-Sharesheet geöffnet
+2. **`[v2]`** ~~**Given** eine Persona Card, **When** der Nutzer auf „Teilen" tippt, **Then** wird eine 9:16-Grafik generiert und der iOS-Sharesheet geöffnet~~
 3. **Given** die Analyse ergibt Stressindikatoren, **When** die Persona Card angezeigt wird, **Then** enthält sie einen dezenten Hinweis „Worth monitoring" mit Erklärung
 
 ---
@@ -154,6 +154,7 @@ Der Breed & Archetype Agent vermutet anhand visueller Merkmale die wahrscheinlic
 - Was bei schneller Bewegung (Unschärfe)? → Frame-Extraktor wählt schärfste Frames; Agenten melden `motion_blur_detected` für betroffene Bereiche
 - Was bei teilweise verdeckter Katze? → Verfügbare Körperteile analysieren, nicht sichtbare als `not_observable` melden
 - Was bei Agent-Timeout? → Coordinator synthetisiert aus den verfügbaren Agent-Ergebnissen; fehlende Agenten werden als `timed_out` markiert
+- Was wenn alle 6 Agenten `not_observable` oder `timed_out` liefern? → Analyse gilt als fehlgeschlagen, User erhält Fehlermeldung mit Empfehlung (bessere Beleuchtung, längerer Clip, Katze sichtbarer)
 
 ## Requirements *(mandatory)*
 
@@ -167,7 +168,7 @@ Der Breed & Archetype Agent vermutet anhand visueller Merkmale die wahrscheinlic
 
 **Cat Gate (analog zu Fill-Level Gate in 002)**:
 
-- **FR-004**: System MUSS vor der Detail-Analyse einen Cat Gate ausführen: Ist überhaupt eine Katze im Bild? Majority-Vote über N Frames (analog 002 Fill-Level Gate)
+- **FR-004**: System MUSS vor der Detail-Analyse einen Cat Gate ausführen: Ist überhaupt eine Katze im Bild? Majority-Vote über 3 Frames (schärfste Frames, analog 002 Fill-Level Gate). Ergebnis: Mehrheit (≥ 2/3) entscheidet
 - **FR-005**: Cat Gate MUSS `cat_detected`, `no_cat_detected`, oder `not_a_cat` (mit Tierart-Vermutung) zurückgeben. Bei `no_cat_detected`/`not_a_cat` werden keine Detail-Agenten gestartet
 
 **Multi-Agent Pipeline**:
@@ -187,21 +188,22 @@ Der Breed & Archetype Agent vermutet anhand visueller Merkmale die wahrscheinlic
 **Coordinator & Synthesis (Hybrid)**:
 
 - **FR-010**: System MUSS einen Hybrid-Coordinator implementieren:
-  - **Code-basiert** (deterministic): Feline-Five-Score-Aggregation (gewichteter Durchschnitt), Archetyp-Lookup aus der definierten Tabelle, Stress-/Gesundheitsflags-Sammlung
-  - **VLM-basiert** (1 Inference-Call): Generiert die menschenlesbare Persona-Beschreibung, Top-Beobachtungen, und kontextuelle Erklärungen aus den aggregierten Agent-Ergebnissen
+  - **Code-basiert** (deterministic): Feline-Five-Score-Aggregation (confidence-gewichteter Durchschnitt über alle Agenten die Trait-Scores liefern), Archetyp-Lookup aus der definierten Tabelle, Stress-/Gesundheitsflags-Sammlung
+  - **VLM-basiert** (1 Inference-Call): Generiert die menschenlesbare Persona-Beschreibung, Top-Beobachtungen, und kontextuelle Erklärungen aus den aggregierten Agent-Ergebnissen. Output ist strukturiertes JSON mit narrativen Feldern (`persona_description`, `top_observations[]`, `contextual_notes[]`) — JSON-Envelope erfüllt Principle III, narrative Inhalte dienen ausschließlich der User-Facing-Darstellung
 - **FR-011**: Coordinator MUSS auch bei teilweisen Agent-Ergebnissen (Timeout, `not_observable`) ein sinnvolles Profil generieren können. Code-basierte Aggregation arbeitet mit verfügbaren Scores; VLM-Call erhält Hinweis auf fehlende Agenten
 
 **Output & Persistence**:
 
-- **FR-012**: System MUSS ein `CompositeProfile` als strukturiertes JSON speichern mit allen Pflichtfeldern
-- **FR-013**: System MUSS eine Cat Persona Card generieren: Feline-Five Radar-Chart, Archetyp-Label, Top-Beobachtungen, Breed-Affinity, optionale Stress-/Gesundheitshinweise
-- **FR-014**: System MUSS Persona Cards als 9:16-Grafik exportierbar machen (iOS Sharesheet)
-- **FR-015**: System MUSS ein Langzeit-CatProfile pro Katze pflegen das Einzelanalysen aggregiert und Verhaltenstrends abbildet
-- **FR-016**: System MUSS Ergebnisse lokal auf dem Gerät speichern. Kein Sync, kein Cloud-Backup
+- **FR-012**: System MUSS ein `CompositeProfile` als strukturiertes JSON speichern mit allen Pflichtfeldern. v1: in-memory für aktuelle Session, keine Persistenz über App-Neustarts hinweg
+- **FR-013**: System MUSS eine Cat Persona Card generieren: Feline-Five Radar-Chart, Archetyp-Label, Top-Beobachtungen, Breed-Affinity. Stress-/Gesundheitshinweise werden als Felder im CompositeProfile mitgeliefert und auf der Card inline angezeigt (keine separate Stress-UI)
+- **FR-014** `[v2]`: System MUSS Persona Cards als 9:16-Grafik exportierbar machen (iOS Sharesheet)
+- **FR-015** `[v2]`: System MUSS ein Langzeit-CatProfile pro Katze pflegen das Einzelanalysen aggregiert und Verhaltenstrends abbildet
+- **FR-016** `[v2]`: System MUSS Ergebnisse persistent lokal auf dem Gerät speichern. Kein Sync, kein Cloud-Backup
 
 **Input & Frame Extraction (reusing 002)**:
 
-- **FR-017**: System MUSS Video-Clips (15–90s, MP4/MOV) und Einzelfotos (JPEG/HEIC/PNG) als Eingabe verarbeiten
+- **FR-017**: System MUSS Video-Clips (15–90s, MP4/MOV) als Eingabe verarbeiten
+- **FR-017b** `[v2]`: System MUSS Einzelfotos (JPEG/HEIC/PNG) als Eingabe verarbeiten
 - **FR-018**: System MUSS Schlüsselbilder aus Video-Clips extrahieren (konfigurierbar, Default: 4–8 Frames, schärfste Frames bevorzugt) — wiederverwendet `FrameExtracting`-Protokoll aus 002
 - **FR-019**: System MUSS Timeouts pro Agent-Aufruf einhalten (konfigurierbar via PipelineConfig-Erweiterung). Bei Timeout wird Agent als `timed_out` markiert
 
@@ -212,6 +214,8 @@ Der Breed & Archetype Agent vermutet anhand visueller Merkmale die wahrscheinlic
   - **Quick Profile** (`windowsPerAgent: 1`): 1 Aufruf pro Agent mit 2–3 Frames. Gesamtzeit ~8–12 Minuten. Default-Modus
   - **Deep Profile** (`windowsPerAgent: 3`): 3 Sliding-Window-Aufrufe pro Agent mit je 2–3 Frames. Gesamtzeit ~20–30 Minuten. Opt-in via UI-Toggle
 - **FR-022**: UI MUSS Fortschritt pro Agent anzeigen (z.B. „Agent 3/6: Stress & Welfare…")
+- **FR-023**: System MUSS laufende Analyse abbrechen können (User-Cancel). Bei Abbruch werden bis dahin vorliegende Agent-Ergebnisse verworfen, UI kehrt zum Startbildschirm zurück
+- **FR-024**: Agent-Prompt-Versionen MÜSSEN dem Schema `{agent_id}/v{N}/system.txt` folgen (z.B. `personality/v1/system.txt`). Jede Prompt-Änderung erfordert Version-Bump. `analysis_version` im Output enthält die verwendete Prompt-Version
 
 ### Non-Functional Requirements
 
@@ -220,10 +224,11 @@ Der Breed & Archetype Agent vermutet anhand visueller Merkmale die wahrscheinlic
 - **NFR-003**: Keine Netzwerk-Requests während der Analyse
 - **NFR-004**: iOS 17.0+ Minimum
 - **NFR-005**: Unterstützte Geräte: iPhone 15 Pro, iPhone 16 Pro, iPhone 16e (8 GB RAM)
+- **NFR-006**: Thermische Überwachung: Bei `ProcessInfo.thermalState >= .serious` MUSS Cooldown zwischen Agent-Aufrufen auf 5s erhöht werden. Bei `.critical` wird Analyse pausiert mit User-Hinweis
 
 ### Key Entities
 
-- **CatProfile**: Langzeit-Profil einer Katze, aggregiert aus mehreren AnalysisSessions. Enthält Name, Foto, Verhaltenstrends, stabile Feline-Five-Scores
+- **CatProfile** `[v2]`: Langzeit-Profil einer Katze, aggregiert aus mehreren AnalysisSessions. Enthält Name, Foto, Verhaltenstrends, stabile Feline-Five-Scores
 - **AnalysisSession**: Einzelne Analyse-Durchführung mit Input-Medium, Zeitstempel, und AgentResults
 - **AgentResult**: Strukturiertes Teilergebnis eines spezialisierten Agenten. Schema: `{ agent_id, domain, trait_scores, observations[], flags[], confidence, status }`
 - **CompositeProfile**: Coordinator-Output: zusammengeführtes Profil aus allen AgentResults einer Session. Schema: `{ feline_five_scores, archetype_label, overall_mood, breed_estimate, stress_indicators, health_flags, confidence_per_agent }`
@@ -242,22 +247,34 @@ Das Profilierungssystem basiert auf validierten akademischen Frameworks:
 
 Die App mappt video-detektierte Verhaltensweisen (Bewegungsgeschwindigkeit, Haltung, Interaktionsstil, Putzverhalten, Schreckreaktion) auf diese Trait-Achsen.
 
+### Scoring Scale
+
+Alle Feline-Five-Scores werden auf einer **0.0–1.0 Skala** normiert:
+- **0.0** = Trait nicht beobachtet / minimal ausgeprägt
+- **0.5** = durchschnittlich / unauffällig
+- **1.0** = Trait stark ausgeprägt
+
+Schwellenwerte für Archetyp-Zuordnung:
+- **High** = Score > 0.7
+- **Low** = Score < 0.3
+- **Mid** = 0.3–0.7 (kein Archetyp-Signal)
+
 ## Archetype System
 
 Archetypen werden aus Feline-Five-Score-Kombinationen abgeleitet:
 
 | Archetype | Trait Pattern |
 |---|---|
-| The Midnight Gremlin | High Impulsiveness + High Extraversion |
-| The Royal Aristocat | High Dominance + Low Impulsiveness |
-| The Lone Strategist | High Dominance + Low Agreeableness |
-| The Anxious Explorer | High Neuroticism + High Extraversion |
-| The Gentle Soul | High Agreeableness + Low Dominance |
-| The Couch Philosopher | Low Extraversion + Low Impulsiveness |
-| The Social Butterfly | High Agreeableness + High Extraversion |
-| The Chaotic Acrobat | High Extraversion + High Impulsiveness + Low Neuroticism |
+| The Midnight Gremlin | High Impulsiveness (>0.7) + High Extraversion (>0.7) |
+| The Royal Aristocat | High Dominance (>0.7) + Low Impulsiveness (<0.3) |
+| The Lone Strategist | High Dominance (>0.7) + Low Agreeableness (<0.3) |
+| The Anxious Explorer | High Neuroticism (>0.7) + High Extraversion (>0.7) |
+| The Gentle Soul | High Agreeableness (>0.7) + Low Dominance (<0.3) |
+| The Couch Philosopher | Low Extraversion (<0.3) + Low Impulsiveness (<0.3) |
+| The Social Butterfly | High Agreeableness (>0.7) + High Extraversion (>0.7) |
+| The Chaotic Acrobat | High Extraversion (>0.7) + High Impulsiveness (>0.7) + Low Neuroticism (<0.3) |
 
-*Archetyp-Tabelle wird im Coordinator-Prompt versioniert und ist erweiterbar.*
+*Wenn keine Archetyp-Bedingung erfüllt ist, wird „The Everyday Cat" als Fallback-Label zugewiesen. Archetyp-Tabelle wird im Coordinator-Prompt versioniert und ist erweiterbar.*
 
 ## Success Criteria *(mandatory)*
 
@@ -283,14 +300,14 @@ Archetypen werden aus Feline-Five-Score-Kombinationen abgeleitet:
 
 ### Measurable Outcomes
 
-- **SC-001**: Nutzer können innerhalb von 2 Minuten nach App-Start eine erste Katzenanalyse starten (Onboarding + Clip-Auswahl + Start)
+- **SC-001**: Nutzer können innerhalb von 2 Minuten nach App-Start (Modell bereits gecacht, Warm-Launch) eine erste Katzenanalyse starten (Clip-Auswahl + Start)
 - **SC-002**: Quick Profile eines 60s-Video-Clips ist innerhalb von 12 Minuten abgeschlossen; Deep Profile innerhalb von 30 Minuten (Gate + 6 Agenten + Coordinator, lokale Inference)
 - **SC-003**: Mindestens 4 von 6 Agenten liefern bei einem Standard-Katzenclip (Katze frontal, gute Beleuchtung) verwertbare Ergebnisse (Confidence ≥ 0.5)
 - **SC-004**: Keine Netzwerk-Requests an externe Server während Analyse (verifizierbar via Instruments)
-- **SC-005**: Bei 5 Wiederholungen derselben Analyse liefern ≥ 80% der Agenten konsistente Bewertungen (gleicher Trend, ähnliche Confidence)
+- **SC-005**: Bei 5 Wiederholungen derselben Analyse liefern ≥ 80% der Agenten konsistente Bewertungen (Trait-Scores innerhalb ±0.15 auf 0.0–1.0 Skala, gleicher Archetyp)
 - **SC-006**: False-Positive-Rate für „Katze erkannt" bei Nicht-Katzen-Input liegt bei ≤ 5%
 - **SC-007**: 80% der Nutzer finden die Profilbeschreibungen ihrer Katze zutreffend (qualitative Nutzer-Validierung)
-- **SC-008**: Persona Card wird von ≥ 50% der Nutzer mindestens einmal geteilt (Share-Rate als Viral-Metrik)
+- **SC-008** `[v2]`: Persona Card wird von ≥ 50% der Nutzer mindestens einmal geteilt (Share-Rate als Viral-Metrik — messbar erst mit Share-Feature)
 
 ## Assumptions
 
