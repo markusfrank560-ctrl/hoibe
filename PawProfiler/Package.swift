@@ -2,30 +2,30 @@
 import PackageDescription
 
 let package = Package(
-    name: "Hoibe",
+    name: "PawProfiler",
     platforms: [
         .iOS(.v17),
         .macOS(.v14)
     ],
     dependencies: [
-        .package(path: "VLMPipeline"),
+        .package(path: "../VLMPipeline"),
     ],
     targets: [
         .executableTarget(
-            name: "Hoibe",
+            name: "PawProfiler",
             dependencies: [
                 .product(name: "VLMPipeline", package: "VLMPipeline"),
             ],
-            path: "ios/Hoibe",
-            exclude: ["Hoibe.entitlements"],
+            path: "PawProfiler",
+            exclude: ["PawProfiler.entitlements"],
             resources: [
                 .copy("Resources/Prompts")
             ]
         ),
         .testTarget(
-            name: "HoibeTests",
-            dependencies: ["Hoibe"],
-            path: "ios/HoibeTests",
+            name: "PawProfilerTests",
+            dependencies: ["PawProfiler"],
+            path: "PawProfilerTests",
             resources: [
                 .copy("Fixtures")
             ]

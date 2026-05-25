@@ -1,7 +1,8 @@
 import Foundation
+import VLMPipeline
 
 /// Loads bundled prompt templates and builds ChatMessage arrays for VLM inference.
-struct PromptEngine: PromptBuilding {
+struct PromptEngine: SipPromptBuilding {
 
     private let systemPrompt: String
     private let userPromptTemplate: String

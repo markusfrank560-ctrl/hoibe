@@ -1,0 +1,17 @@
+{
+  "ground_truth": {
+    "category": "multiple-cats",
+    "description": "Two cats on windowsill, one tabby and one black",
+    "expected_gate": "cat_detected",
+    "expected_archetype": "The Social Butterfly",
+    "expected_traits": { "agreeableness": "high", "extraversion": "high" },
+    "expected_stress": false,
+    "labeler": "manual",
+    "labeled_at": "2026-05-25"
+  },
+  "mock_responses": {
+    "gate": "{\"frame_assessments\":[{\"frame_index\":0,\"cat_detected\":true,\"confidence\":0.93,\"species_guess\":null,\"multiple_cats\":true},{\"frame_index\":1,\"cat_detected\":true,\"confidence\":0.91,\"species_guess\":null,\"multiple_cats\":true},{\"frame_index\":2,\"cat_detected\":true,\"confidence\":0.92,\"species_guess\":null,\"multiple_cats\":true}],\"majority_vote\":{\"cat_detected\":true,\"status\":\"cat_detected\",\"confidence\":0.92,\"species_guess\":null,\"multiple_cats\":true}}",
+    "personality": "{\"agent_id\":\"personality\",\"domain\":\"Personality & Traits\",\"status\":\"completed\",\"trait_scores\":{\"neuroticism\":0.2,\"extraversion\":0.75,\"dominance\":0.4,\"impulsiveness\":0.3,\"agreeableness\":0.8},\"observations\":[\"Dominant cat shows relaxed proximity to companion\",\"No aggressive posturing between cats\"],\"flags\":[],\"confidence\":0.7,\"reasoning\":\"Analyzing larger/dominant cat as primary subject\",\"prompt_version\":\"v1\"}",
+    "social": "{\"agent_id\":\"social\",\"domain\":\"Social Behavior & Human Bonding\",\"status\":\"completed\",\"trait_scores\":{\"agreeableness\":0.85,\"extraversion\":0.7},\"observations\":[\"Close proximity to other cat without tension\",\"Shared space on windowsill suggests high social tolerance\"],\"flags\":[],\"confidence\":0.8,\"reasoning\":\"Cat-cat social dynamics clearly visible\",\"prompt_version\":\"v1\"}"
+  }
+}

@@ -28,14 +28,14 @@
 
 **⚠️ GATE**: Hoibe must build and all existing tests must pass after extraction (T006) before proceeding.
 
-- [ ] T001 Create VLMPipeline/Package.swift with MLX Swift LM dependency and library target
-- [ ] T002 [P] Extract protocols to VLMPipeline: FrameExtracting.swift, ModelManaging.swift, PromptBuilding.swift from ios/Hoibe/Services/Protocols.swift → VLMPipeline/Sources/VLMPipeline/Protocols/
-- [ ] T003 [P] Extract models to VLMPipeline: ChatMessage.swift, FrameData.swift, ModelDownloadState.swift, PipelineConfig.swift from ios/Hoibe/Models/ → VLMPipeline/Sources/VLMPipeline/Models/
-- [ ] T004 [P] Extract services to VLMPipeline: FrameExtractor.swift, ModelManager.swift from ios/Hoibe/Services/ → VLMPipeline/Sources/VLMPipeline/Services/
-- [ ] T005 Update Hoibe to import VLMPipeline as local package dependency (update Hoibe.xcodeproj, replace direct source with `import VLMPipeline`)
-- [ ] T006 Verify Hoibe builds and all existing tests pass after VLMPipeline extraction (xcodebuild test)
-- [ ] T007 Create PawProfiler Xcode project with SwiftUI lifecycle (PawProfilerApp.swift, ContentView.swift stub) in PawProfiler/
-- [ ] T008 Add VLMPipeline + MLX Swift LM as SPM dependencies and add extended memory entitlement in PawProfiler/PawProfiler.entitlements
+- [x] T001 Create VLMPipeline/Package.swift with MLX Swift LM dependency and library target
+- [x] T002 [P] Extract protocols to VLMPipeline: FrameExtracting.swift, ModelManaging.swift, PromptBuilding.swift from ios/Hoibe/Services/Protocols.swift → VLMPipeline/Sources/VLMPipeline/Protocols/
+- [x] T003 [P] Extract models to VLMPipeline: ChatMessage.swift, FrameData.swift, ModelDownloadState.swift, PipelineConfig.swift from ios/Hoibe/Models/ → VLMPipeline/Sources/VLMPipeline/Models/
+- [x] T004 [P] Extract services to VLMPipeline: FrameExtractor.swift, ModelManager.swift from ios/Hoibe/Services/ → VLMPipeline/Sources/VLMPipeline/Services/
+- [x] T005 Update Hoibe to import VLMPipeline as local package dependency (update Hoibe.xcodeproj, replace direct source with `import VLMPipeline`)
+- [x] T006 Verify Hoibe builds and all existing tests pass after VLMPipeline extraction (xcodebuild test)
+- [x] T007 Create PawProfiler Xcode project with SwiftUI lifecycle (PawProfilerApp.swift, ContentView.swift stub) in PawProfiler/
+- [x] T008 Add VLMPipeline + MLX Swift LM as SPM dependencies and add extended memory entitlement in PawProfiler/PawProfiler.entitlements
 
 ---
 

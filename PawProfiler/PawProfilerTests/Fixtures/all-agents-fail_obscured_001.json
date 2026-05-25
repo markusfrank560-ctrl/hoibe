@@ -1,0 +1,22 @@
+{
+  "ground_truth": {
+    "category": "all-agents-fail",
+    "description": "Cat detected by gate but all 6 agents fail or return not_observable",
+    "expected_gate": "cat_detected",
+    "expected_archetype": null,
+    "expected_traits": null,
+    "expected_stress": null,
+    "labeler": "manual",
+    "labeled_at": "2026-05-25",
+    "notes": "Edge case: gate passes but all agents fail. Profile should be marked as insufficient (<3 completed agents)."
+  },
+  "mock_responses": {
+    "gate": "{\"frame_assessments\":[{\"frame_index\":0,\"cat_detected\":true,\"confidence\":0.6,\"species_guess\":null,\"multiple_cats\":false},{\"frame_index\":1,\"cat_detected\":true,\"confidence\":0.55,\"species_guess\":null,\"multiple_cats\":false},{\"frame_index\":2,\"cat_detected\":true,\"confidence\":0.58,\"species_guess\":null,\"multiple_cats\":false}],\"majority_vote\":{\"cat_detected\":true,\"status\":\"cat_detected\",\"confidence\":0.58,\"species_guess\":null,\"multiple_cats\":false}}",
+    "personality": "{\"agent_id\":\"personality\",\"domain\":\"Personality & Traits\",\"status\":\"not_observable\",\"trait_scores\":null,\"observations\":[],\"flags\":[],\"confidence\":0.0,\"reasoning\":\"Cat obscured, cannot assess personality\",\"prompt_version\":\"v1\"}",
+    "social": "{\"agent_id\":\"social\",\"domain\":\"Social Behavior & Human Bonding\",\"status\":\"not_observable\",\"trait_scores\":null,\"observations\":[],\"flags\":[],\"confidence\":0.0,\"reasoning\":\"No social context visible\",\"prompt_version\":\"v1\"}",
+    "play": "{\"agent_id\":\"play\",\"domain\":\"Play, Activity & Predatory Behavior\",\"status\":\"timed_out\",\"trait_scores\":null,\"observations\":[],\"flags\":[],\"confidence\":0.0,\"reasoning\":\"Agent timed out\",\"prompt_version\":\"v1\"}",
+    "stress": "{\"agent_id\":\"stress\",\"domain\":\"Stress, Anxiety & Welfare\",\"status\":\"not_observable\",\"trait_scores\":null,\"observations\":[],\"flags\":[],\"confidence\":0.0,\"reasoning\":\"Cannot assess stress from available frames\",\"prompt_version\":\"v1\"}",
+    "health": "{\"agent_id\":\"health\",\"domain\":\"Health-Behavior Correlation\",\"status\":\"failed\",\"trait_scores\":null,\"observations\":[],\"flags\":[],\"confidence\":0.0,\"reasoning\":\"Agent failed to produce valid output\",\"prompt_version\":\"v1\"}",
+    "breed": "{\"agent_id\":\"breed\",\"domain\":\"Breed & Archetype\",\"status\":\"not_observable\",\"trait_scores\":null,\"observations\":[],\"flags\":[],\"confidence\":0.0,\"reasoning\":\"Cat too obscured for breed assessment\",\"prompt_version\":\"v1\"}"
+  }
+}

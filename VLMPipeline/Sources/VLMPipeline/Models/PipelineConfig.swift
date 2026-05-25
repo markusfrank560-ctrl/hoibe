@@ -1,20 +1,19 @@
 import Foundation
 
 /// Pipeline configuration with defaults matching the validated Mac config.
-struct PipelineConfig: Codable, Sendable {
-    var gateVotes: Int = 3
-    var gateTimeout: TimeInterval = 45
-    var gateWindow: (start: Double, end: Double) = (0.0, 0.10)
-    var windowCount: Int = 3
-    var windowMinSpan: Double = 0.6
-    var windowTimeout: TimeInterval = 90
-    var numCtx: Int = 4096
-    var temperature: Double = 0.1
-    var maxWidth: Int = 1024
-    var jpegQuality: Double = 1.0
-    var cooldown: TimeInterval = 2.0
-    var think: Bool = false
-    var rejectLevels: Set<BeerFillLevel> = [.half, .mostlyEmpty, .empty, .unknown]
+public struct PipelineConfig: Codable, Sendable {
+    public var gateVotes: Int = 3
+    public var gateTimeout: TimeInterval = 45
+    public var gateWindow: (start: Double, end: Double) = (0.0, 0.10)
+    public var windowCount: Int = 3
+    public var windowMinSpan: Double = 0.6
+    public var windowTimeout: TimeInterval = 90
+    public var numCtx: Int = 4096
+    public var temperature: Double = 0.1
+    public var maxWidth: Int = 1024
+    public var jpegQuality: Double = 1.0
+    public var cooldown: TimeInterval = 2.0
+    public var think: Bool = false
 
     enum CodingKeys: String, CodingKey {
         case gateVotes = "gate_votes"
@@ -29,10 +28,9 @@ struct PipelineConfig: Codable, Sendable {
         case cooldown
     }
 
-    // Custom coding for non-Codable properties
-    init() {}
+    public init() {}
 
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         gateVotes = try container.decodeIfPresent(Int.self, forKey: .gateVotes) ?? 3
         gateTimeout = try container.decodeIfPresent(TimeInterval.self, forKey: .gateTimeout) ?? 45
@@ -46,7 +44,7 @@ struct PipelineConfig: Codable, Sendable {
         cooldown = try container.decodeIfPresent(TimeInterval.self, forKey: .cooldown) ?? 2.0
     }
 
-    func encode(to encoder: Encoder) throws {
+    public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(gateVotes, forKey: .gateVotes)
         try container.encode(gateTimeout, forKey: .gateTimeout)

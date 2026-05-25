@@ -1,5 +1,6 @@
 import SwiftUI
 import PhotosUI
+import VLMPipeline
 #if os(iOS)
 import AVFoundation
 import UIKit

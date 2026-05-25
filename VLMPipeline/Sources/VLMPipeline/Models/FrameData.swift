@@ -1,16 +1,22 @@
 import Foundation
 
 /// Extracted video frames with metadata for pipeline consumption.
-struct FrameData: Sendable {
+public struct FrameData: Sendable {
     /// JPEG-encoded frame data, ordered by timestamp.
-    let framesJPEG: [Data]
+    public let framesJPEG: [Data]
     /// Timestamps (seconds) of each extracted frame.
-    let timestamps: [Double]
+    public let timestamps: [Double]
     /// Sharpness score (Laplacian variance) for each frame.
-    let sharpnessScores: [Double]
+    public let sharpnessScores: [Double]
+
+    public init(framesJPEG: [Data], timestamps: [Double], sharpnessScores: [Double]) {
+        self.framesJPEG = framesJPEG
+        self.timestamps = timestamps
+        self.sharpnessScores = sharpnessScores
+    }
 
     /// Returns indices sorted by sharpness (highest first).
-    var indicesBySharpness: [Int] {
+    public var indicesBySharpness: [Int] {
         sharpnessScores.enumerated()
             .sorted { $0.element > $1.element }
             .map(\.offset)

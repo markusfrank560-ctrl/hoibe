@@ -1,0 +1,17 @@
+{
+  "ground_truth": {
+    "category": "stressed-cat",
+    "description": "Cat with flattened ears, crouched posture, near loud noise source",
+    "expected_gate": "cat_detected",
+    "expected_archetype": "The Anxious Explorer",
+    "expected_traits": { "neuroticism": "high" },
+    "expected_stress": true,
+    "labeler": "manual",
+    "labeled_at": "2026-05-25"
+  },
+  "mock_responses": {
+    "gate": "{\"frame_assessments\":[{\"frame_index\":0,\"cat_detected\":true,\"confidence\":0.88,\"species_guess\":null,\"multiple_cats\":false},{\"frame_index\":1,\"cat_detected\":true,\"confidence\":0.85,\"species_guess\":null,\"multiple_cats\":false},{\"frame_index\":2,\"cat_detected\":true,\"confidence\":0.87,\"species_guess\":null,\"multiple_cats\":false}],\"majority_vote\":{\"cat_detected\":true,\"status\":\"cat_detected\",\"confidence\":0.87,\"species_guess\":null,\"multiple_cats\":false}}",
+    "personality": "{\"agent_id\":\"personality\",\"domain\":\"Personality & Traits\",\"status\":\"completed\",\"trait_scores\":{\"neuroticism\":0.8,\"extraversion\":0.4,\"dominance\":0.2,\"impulsiveness\":0.3,\"agreeableness\":0.3},\"observations\":[\"Flattened ears and wide eyes consistent with high neuroticism\",\"Crouched posture suggests anxiety\"],\"flags\":[],\"confidence\":0.75,\"reasoning\":\"Stress posture clearly visible\",\"prompt_version\":\"v1\"}",
+    "stress": "{\"agent_id\":\"stress\",\"domain\":\"Stress, Anxiety & Welfare\",\"status\":\"completed\",\"trait_scores\":{\"neuroticism\":0.85},\"observations\":[\"Ears flattened sideways consistent with anxiety per Kessler & Turner\",\"Crouched body posture with tucked limbs suggests CSS 5-6\",\"Dilated pupils in well-lit environment indicates arousal/fear\"],\"flags\":[\"stress_detected\"],\"confidence\":0.8,\"reasoning\":\"Multiple stress indicators visible across frames\",\"prompt_version\":\"v1\"}"
+  }
+}

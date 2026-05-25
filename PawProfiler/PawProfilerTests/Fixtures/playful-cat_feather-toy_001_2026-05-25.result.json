@@ -1,0 +1,23 @@
+{
+  "ground_truth": {
+    "category": "playful-cat",
+    "description": "Orange tabby playing with feather toy, full body visible, good lighting",
+    "expected_gate": "cat_detected",
+    "expected_archetype": "The Midnight Gremlin",
+    "expected_traits": { "extraversion": "high", "impulsiveness": "high" },
+    "expected_stress": false,
+    "labeler": "manual",
+    "labeled_at": "2026-05-25"
+  },
+  "mock_responses": {
+    "gate": "{\"frame_assessments\":[{\"frame_index\":0,\"cat_detected\":true,\"confidence\":0.95,\"species_guess\":null,\"multiple_cats\":false},{\"frame_index\":1,\"cat_detected\":true,\"confidence\":0.92,\"species_guess\":null,\"multiple_cats\":false},{\"frame_index\":2,\"cat_detected\":true,\"confidence\":0.94,\"species_guess\":null,\"multiple_cats\":false}],\"majority_vote\":{\"cat_detected\":true,\"status\":\"cat_detected\",\"confidence\":0.94,\"species_guess\":null,\"multiple_cats\":false}}",
+    "personality": "{\"agent_id\":\"personality\",\"domain\":\"Personality & Traits\",\"status\":\"completed\",\"trait_scores\":{\"neuroticism\":0.2,\"extraversion\":0.85,\"dominance\":0.5,\"impulsiveness\":0.8,\"agreeableness\":0.6},\"observations\":[\"High activity level with sustained focus on toy\",\"Rapid behavioral transitions between stalking and pouncing\"],\"flags\":[],\"confidence\":0.8,\"reasoning\":\"Clear body posture and facial expression visible\",\"prompt_version\":\"v1\"}",
+    "social": "{\"agent_id\":\"social\",\"domain\":\"Social Behavior & Human Bonding\",\"status\":\"completed\",\"trait_scores\":{\"agreeableness\":0.6,\"extraversion\":0.7},\"observations\":[\"Plays near human, comfortable with proximity\"],\"flags\":[],\"confidence\":0.65,\"reasoning\":\"Social context visible in frames\",\"prompt_version\":\"v1\"}",
+    "play": "{\"agent_id\":\"play\",\"domain\":\"Play, Activity & Predatory Behavior\",\"status\":\"completed\",\"trait_scores\":{\"extraversion\":0.9,\"impulsiveness\":0.75},\"observations\":[\"Full predatory sequence: stalk-pounce-bat observed\",\"High engagement with feather toy\"],\"flags\":[],\"confidence\":0.85,\"reasoning\":\"Active play sequence across multiple frames\",\"prompt_version\":\"v1\"}",
+    "stress": "{\"agent_id\":\"stress\",\"domain\":\"Stress, Anxiety & Welfare\",\"status\":\"completed\",\"trait_scores\":{\"neuroticism\":0.15},\"observations\":[\"No stress indicators detected\",\"Relaxed ear position during play\"],\"flags\":[],\"confidence\":0.75,\"reasoning\":\"Clear view of body posture\",\"prompt_version\":\"v1\"}",
+    "health": "{\"agent_id\":\"health\",\"domain\":\"Health-Behavior Correlation\",\"status\":\"completed\",\"trait_scores\":{},\"observations\":[\"Normal mobility, smooth jumping and landing\"],\"flags\":[],\"confidence\":0.6,\"reasoning\":\"Limited health assessment from play clip\",\"prompt_version\":\"v1\"}",
+    "breed": "{\"agent_id\":\"breed\",\"domain\":\"Breed & Archetype\",\"status\":\"completed\",\"trait_scores\":{\"extraversion\":0.7},\"observations\":[\"Orange tabby coat pattern\"],\"breed_estimates\":[{\"breed\":\"Domestic Shorthair\",\"confidence\":0.7,\"traits\":[\"tabby pattern\",\"medium build\"]},{\"breed\":\"American Shorthair\",\"confidence\":0.15,\"traits\":[\"round face\"]}],\"flags\":[],\"confidence\":0.6,\"reasoning\":\"Standard domestic cat features\",\"prompt_version\":\"v1\"}",
+    "coordinator": "{\"persona_description\":\"A true Midnight Gremlin — your cat combines boundless energy with a mischievous streak that keeps life interesting. The enthusiastic feather-toy stalking and rapid-fire pouncing reveal a cat who lives life at full speed, driven by curiosity and an irrepressible playful spirit.\",\"top_observations\":[\"Full predatory play sequence observed with high engagement\",\"Rapid behavioral transitions suggest high impulsiveness\",\"Comfortable playing near humans indicates social confidence\"],\"contextual_notes\":[\"High activity level is normal for this personality profile\"],\"overall_mood\":\"playful\"}"
+  },
+  "last_run": null
+}

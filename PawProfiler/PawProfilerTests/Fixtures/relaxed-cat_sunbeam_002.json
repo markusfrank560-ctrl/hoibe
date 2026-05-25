@@ -1,0 +1,16 @@
+{
+  "ground_truth": {
+    "category": "relaxed-cat",
+    "description": "Siamese cat lounging in sunbeam, half-closed eyes",
+    "expected_gate": "cat_detected",
+    "expected_archetype": "The Gentle Soul",
+    "expected_traits": { "agreeableness": "high", "dominance": "low" },
+    "expected_stress": false,
+    "labeler": "manual",
+    "labeled_at": "2026-05-25"
+  },
+  "mock_responses": {
+    "gate": "{\"frame_assessments\":[{\"frame_index\":0,\"cat_detected\":true,\"confidence\":0.92,\"species_guess\":null,\"multiple_cats\":false},{\"frame_index\":1,\"cat_detected\":true,\"confidence\":0.9,\"species_guess\":null,\"multiple_cats\":false},{\"frame_index\":2,\"cat_detected\":true,\"confidence\":0.93,\"species_guess\":null,\"multiple_cats\":false}],\"majority_vote\":{\"cat_detected\":true,\"status\":\"cat_detected\",\"confidence\":0.92,\"species_guess\":null,\"multiple_cats\":false}}",
+    "personality": "{\"agent_id\":\"personality\",\"domain\":\"Personality & Traits\",\"status\":\"completed\",\"trait_scores\":{\"neuroticism\":0.15,\"extraversion\":0.3,\"dominance\":0.2,\"impulsiveness\":0.15,\"agreeableness\":0.8},\"observations\":[\"Slow blink visible, relaxed ear position\",\"Open body posture suggests high agreeableness\"],\"flags\":[],\"confidence\":0.75,\"reasoning\":\"Face and body clearly visible in sunlight\",\"prompt_version\":\"v1\"}"
+  }
+}

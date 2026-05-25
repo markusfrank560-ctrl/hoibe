@@ -4,9 +4,11 @@ import CoreImage
 import Foundation
 
 /// Extracts frames from video, computes sharpness, and returns JPEG data.
-struct FrameExtractor: FrameExtracting {
+public struct FrameExtractor: FrameExtracting {
 
-    func extractFrames(
+    public init() {}
+
+    public func extractFrames(
         from url: URL,
         count: Int,
         window: (start: Double, end: Double),
@@ -49,7 +51,7 @@ struct FrameExtractor: FrameExtracting {
         return FrameData(framesJPEG: framesJPEG, timestamps: timestamps, sharpnessScores: sharpnessScores)
     }
 
-    func extractSharpestFrames(
+    public func extractSharpestFrames(
         from url: URL,
         topN: Int,
         candidateCount: Int,

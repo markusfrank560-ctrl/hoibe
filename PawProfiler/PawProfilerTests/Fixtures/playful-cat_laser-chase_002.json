@@ -1,0 +1,17 @@
+{
+  "ground_truth": {
+    "category": "playful-cat",
+    "description": "Grey cat chasing laser pointer, multiple rooms visible",
+    "expected_gate": "cat_detected",
+    "expected_archetype": "The Chaotic Acrobat",
+    "expected_traits": { "extraversion": "high", "impulsiveness": "high", "neuroticism": "low" },
+    "expected_stress": false,
+    "labeler": "manual",
+    "labeled_at": "2026-05-25"
+  },
+  "mock_responses": {
+    "gate": "{\"frame_assessments\":[{\"frame_index\":0,\"cat_detected\":true,\"confidence\":0.9,\"species_guess\":null,\"multiple_cats\":false},{\"frame_index\":1,\"cat_detected\":true,\"confidence\":0.88,\"species_guess\":null,\"multiple_cats\":false},{\"frame_index\":2,\"cat_detected\":true,\"confidence\":0.91,\"species_guess\":null,\"multiple_cats\":false}],\"majority_vote\":{\"cat_detected\":true,\"status\":\"cat_detected\",\"confidence\":0.9,\"species_guess\":null,\"multiple_cats\":false}}",
+    "personality": "{\"agent_id\":\"personality\",\"domain\":\"Personality & Traits\",\"status\":\"completed\",\"trait_scores\":{\"neuroticism\":0.15,\"extraversion\":0.9,\"dominance\":0.45,\"impulsiveness\":0.85,\"agreeableness\":0.5},\"observations\":[\"Fearless pursuit across rooms\",\"Extremely rapid behavioral transitions\"],\"flags\":[],\"confidence\":0.8,\"reasoning\":\"Full body visible in motion\",\"prompt_version\":\"v1\"}",
+    "stress": "{\"agent_id\":\"stress\",\"domain\":\"Stress, Anxiety & Welfare\",\"status\":\"completed\",\"trait_scores\":{\"neuroticism\":0.1},\"observations\":[\"No stress indicators, fully engaged in play\"],\"flags\":[],\"confidence\":0.8,\"reasoning\":\"Relaxed posture throughout\",\"prompt_version\":\"v1\"}"
+  }
+}

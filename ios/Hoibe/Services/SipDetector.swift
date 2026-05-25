@@ -1,12 +1,14 @@
 import Foundation
+import VLMPipeline
 
 /// Orchestrates the full first-sip detection pipeline: gate → windows → result.
 final class SipDetector: SipDetecting, @unchecked Sendable {
 
     private let modelManager: ModelManaging
     private let frameExtractor: FrameExtracting
-    private let promptEngine: PromptBuilding
+    private let promptEngine: SipPromptBuilding
     private let config: PipelineConfig
+    private let rejectLevels: Set<BeerFillLevel> = [.half, .mostlyEmpty, .empty, .unknown]
 
     private var currentTask: Task<AnalysisResult, Error>?
 
@@ -15,7 +17,7 @@ final class SipDetector: SipDetecting, @unchecked Sendable {
     init(
         modelManager: ModelManaging,
         frameExtractor: FrameExtracting = FrameExtractor(),
-        promptEngine: PromptBuilding = PromptEngine(),
+        promptEngine: SipPromptBuilding = PromptEngine(),
         config: PipelineConfig = PipelineConfig()
     ) {
         self.modelManager = modelManager
@@ -69,7 +71,7 @@ final class SipDetector: SipDetecting, @unchecked Sendable {
 
             let level = parseFillLevel(response)
             DiagnosticLog.log("[SipDetector] Gate vote \(vote+1): response='\(response.prefix(200))' → level=\(level)")
-            if config.rejectLevels.contains(level) {
+            if rejectLevels.contains(level) {
                 rejectCount += 1
             }
 

@@ -4,24 +4,26 @@ import MLXLMCommon
 import MLXVLM
 
 /// Manages VLM model download, caching, and inference using MLX Swift.
-final class ModelManager: ModelManaging, @unchecked Sendable {
+public final class ModelManager: ModelManaging, @unchecked Sendable {
 
     private let modelId = "lmstudio-community/Qwen3-VL-4B-Instruct-MLX-4bit"
     private var container: ModelContainer?
     private let lock = NSLock()
 
-    @Published private(set) var state: ModelDownloadState = .notDownloaded
+    @Published public private(set) var state: ModelDownloadState = .notDownloaded
 
-    var isReady: Bool {
+    public var isReady: Bool {
         if case .ready = state { return true }
         return false
     }
 
     /// Progress callback set by the caller before starting download.
-    var onProgress: (@Sendable (Double) -> Void)?
+    public var onProgress: (@Sendable (Double) -> Void)?
+
+    public init() {}
 
     /// Try to load model from local cache (no download). Returns true if cached and ready.
-    func tryLoadCached() async -> Bool {
+    public func tryLoadCached() async -> Bool {
         do {
             let container = try await loadModelContainer(id: modelId) { _ in }
             lock.lock()
@@ -34,7 +36,7 @@ final class ModelManager: ModelManaging, @unchecked Sendable {
         }
     }
 
-    func startDownload(allowCellular: Bool) async throws {
+    public func startDownload(allowCellular: Bool) async throws {
         state = .downloading(progress: 0)
 
         let onProgress = self.onProgress
@@ -50,11 +52,11 @@ final class ModelManager: ModelManaging, @unchecked Sendable {
         state = .ready
     }
 
-    func pauseDownload() {
+    public func pauseDownload() {
         // Hub API doesn't expose pause; no-op for now
     }
 
-    func deleteModel() throws {
+    public func deleteModel() throws {
         lock.lock()
         container = nil
         lock.unlock()
@@ -62,7 +64,7 @@ final class ModelManager: ModelManaging, @unchecked Sendable {
         // Hub caches in ~/Library/Caches/huggingface; clearing requires file ops
     }
 
-    func generate(messages: [ChatMessage], maxTokens: Int, temperature: Double) async throws -> String {
+    public func generate(messages: [ChatMessage], maxTokens: Int, temperature: Double) async throws -> String {
         guard let container else {
             throw ModelManagerError.modelNotReady
         }
@@ -81,12 +83,6 @@ final class ModelManager: ModelManaging, @unchecked Sendable {
         }
 
         let params = GenerateParameters(maxTokens: maxTokens, temperature: Float(temperature))
-        let session = ChatSession(container, generateParameters: params)
-
-        // Build the user message (last in array) for respond()
-        guard let userMsg = chatMessages.last, userMsg.role == .user else {
-            throw ModelManagerError.invalidMessages
-        }
 
         // Set system instruction from messages
         let systemText = messages.first { $0.role == .system }?.text
@@ -97,15 +93,20 @@ final class ModelManager: ModelManaging, @unchecked Sendable {
             generateParameters: params
         )
 
+        // Build the user message (last in array) for respond()
+        guard let userMsg = chatMessages.last, userMsg.role == .user else {
+            throw ModelManagerError.invalidMessages
+        }
+
         return try await freshSession.respond(to: userMsg.content, images: userMsg.images, videos: [])
     }
 }
 
-enum ModelManagerError: LocalizedError {
+public enum ModelManagerError: LocalizedError {
     case modelNotReady
     case invalidMessages
 
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
         case .modelNotReady: "Model not downloaded or loaded"
         case .invalidMessages: "Messages must end with a user message"

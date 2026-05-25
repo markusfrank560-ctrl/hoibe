@@ -1,0 +1,15 @@
+{
+  "ground_truth": {
+    "category": "no-cat",
+    "description": "Empty living room with sofa and coffee table",
+    "expected_gate": "no_cat_detected",
+    "expected_archetype": null,
+    "expected_traits": null,
+    "expected_stress": null,
+    "labeler": "manual",
+    "labeled_at": "2026-05-25"
+  },
+  "mock_responses": {
+    "gate": "{\"frame_assessments\":[{\"frame_index\":0,\"cat_detected\":false,\"confidence\":0.95,\"species_guess\":null,\"multiple_cats\":false},{\"frame_index\":1,\"cat_detected\":false,\"confidence\":0.93,\"species_guess\":null,\"multiple_cats\":false},{\"frame_index\":2,\"cat_detected\":false,\"confidence\":0.94,\"species_guess\":null,\"multiple_cats\":false}],\"majority_vote\":{\"cat_detected\":false,\"status\":\"no_cat_detected\",\"confidence\":0.94,\"species_guess\":null,\"multiple_cats\":false}}"
+  }
+}
