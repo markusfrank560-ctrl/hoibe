@@ -2,7 +2,7 @@
 
 **Feature Branch**: `003-paw-profiler`  
 **Created**: 2026-05-25  
-**Status**: Draft  
+**Status**: Draft (clarified)  
 **Input**: PawProfiler — A new iOS app that uses expert cat behavior agents based on local Ollama/MLX models to create science-backed personality and behavior profiles of cats.  
 **Base Feature**: `002-ios-on-device`
 
@@ -24,7 +24,17 @@ PawProfiler reuses this infrastructure but replaces the sip-detection pipeline w
 | Binary result (sip/no-sip) | Composite profile (traits, mood, stress, breed) |
 | Single AnalysisResult | AgentResult[] → CompositeProfile → CatProfile |
 
-The pipeline pattern is: **Gate → Parallel Agent Dispatch → Coordinator Synthesis → Profile Output**.
+The pipeline pattern is: **Gate → Sequential Agent Dispatch → Hybrid Coordinator → Profile Output**.
+
+### Clarified Design Decisions
+
+| Decision | Choice | Rationale |
+|---|---|---|
+| Coordinator type | Hybrid: code aggregates scores + archetype lookup; VLM generates persona description text | Deterministic scores & archetype, natural-language quality for user-facing prose |
+| Agent execution | Sequential, all agents share same extracted frame set | Single MLX inference at a time on iPhone; clean progress UI ("Agent 3/6: Stress...") |
+| Frames per agent | Configurable: `windowsPerAgent: 1` (Quick Profile, ~10 min) or `3` (Deep Profile, ~25 min) | Quick = 1 call/agent with 2–3 frames; Deep = 3 sliding windows/agent for temporal behavior changes |
+| v1 scope boundary | Core v1: Gate + 6 Agents + Coordinator + Persona Card (radar, archetype, observations) | No share-as-image, no photo input, no Langzeit-Profil, no stress-specific UI. Single-session only |
+| Project structure | Local Swift Package (`VLMPipeline`) for shared pipeline infra; PawProfiler as separate Xcode project importing it | Clean separation; Hoibe also imports the package; enables future pipeline apps |
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -152,7 +162,7 @@ Der Breed & Archetype Agent vermutet anhand visueller Merkmale die wahrscheinlic
 **Pipeline Infrastructure (extending 002)**:
 
 - **FR-001**: System MUSS die bestehende 002-Pipeline-Infrastruktur wiederverwenden: `FrameExtracting`, `ModelManaging`, `PromptBuilding`-Protokolle, `PipelineConfig`-Muster
-- **FR-002**: System MUSS als eigenständige iOS App („PawProfiler") gebaut werden, die als neues Target im bestehenden Xcode-Projekt oder als separates Projekt die geteilten Module importiert
+- **FR-002**: System MUSS als eigenständige iOS App („PawProfiler") in einem separaten Xcode-Projekt gebaut werden. Geteilte Pipeline-Infrastruktur (`FrameExtracting`, `ModelManaging`, `PromptBuilding`, `PipelineConfig`) wird in ein lokales Swift Package (`VLMPipeline`) extrahiert, das beide Apps (Hoibe, PawProfiler) importieren
 - **FR-003**: System MUSS lokal auf dem Gerät via MLX Swift LM inferieren. Keine Cloud-APIs, keine externe Datenübertragung von Bild-/Videomaterial. Gleiche Privacy-Garantien wie 002
 
 **Cat Gate (analog zu Fill-Level Gate in 002)**:
@@ -174,10 +184,12 @@ Der Breed & Archetype Agent vermutet anhand visueller Merkmale die wahrscheinlic
 - **FR-008**: Jeder Agent-Prompt MUSS domänenspezifische Forschungsliteratur als Kontext eingebettet haben (Key Findings, nicht Volltext). Sprache: „consistent with", „suggests", „may indicate" — nie „diagnoses" oder „is"
 - **FR-009**: Agenten die keine verwertbaren Signale finden MÜSSEN `not_observable` mit Begründung melden statt Vermutungen zu erzwingen
 
-**Coordinator & Synthesis**:
+**Coordinator & Synthesis (Hybrid)**:
 
-- **FR-010**: System MUSS einen Coordinator-Agent implementieren der alle 6 Agent-Ergebnisse empfängt und zu einem `CompositeProfile` synthetisiert: Feline-Five-Scores (aggregiert), Archetyp-Label, Gesamtstimmung, Gesundheitsflags
-- **FR-011**: Coordinator MUSS auch bei teilweisen Agent-Ergebnissen (Timeout, `not_observable`) ein sinnvolles Profil generieren können
+- **FR-010**: System MUSS einen Hybrid-Coordinator implementieren:
+  - **Code-basiert** (deterministic): Feline-Five-Score-Aggregation (gewichteter Durchschnitt), Archetyp-Lookup aus der definierten Tabelle, Stress-/Gesundheitsflags-Sammlung
+  - **VLM-basiert** (1 Inference-Call): Generiert die menschenlesbare Persona-Beschreibung, Top-Beobachtungen, und kontextuelle Erklärungen aus den aggregierten Agent-Ergebnissen
+- **FR-011**: Coordinator MUSS auch bei teilweisen Agent-Ergebnissen (Timeout, `not_observable`) ein sinnvolles Profil generieren können. Code-basierte Aggregation arbeitet mit verfügbaren Scores; VLM-Call erhält Hinweis auf fehlende Agenten
 
 **Output & Persistence**:
 
@@ -193,9 +205,17 @@ Der Breed & Archetype Agent vermutet anhand visueller Merkmale die wahrscheinlic
 - **FR-018**: System MUSS Schlüsselbilder aus Video-Clips extrahieren (konfigurierbar, Default: 4–8 Frames, schärfste Frames bevorzugt) — wiederverwendet `FrameExtracting`-Protokoll aus 002
 - **FR-019**: System MUSS Timeouts pro Agent-Aufruf einhalten (konfigurierbar via PipelineConfig-Erweiterung). Bei Timeout wird Agent als `timed_out` markiert
 
+**Agent Execution Model**:
+
+- **FR-020**: Agenten MÜSSEN sequentiell ausgeführt werden (eine MLX-Inference gleichzeitig). Alle Agenten erhalten denselben extrahierten Frame-Satz
+- **FR-021**: System MUSS zwei Analyse-Modi unterstützen:
+  - **Quick Profile** (`windowsPerAgent: 1`): 1 Aufruf pro Agent mit 2–3 Frames. Gesamtzeit ~8–12 Minuten. Default-Modus
+  - **Deep Profile** (`windowsPerAgent: 3`): 3 Sliding-Window-Aufrufe pro Agent mit je 2–3 Frames. Gesamtzeit ~20–30 Minuten. Opt-in via UI-Toggle
+- **FR-022**: UI MUSS Fortschritt pro Agent anzeigen (z.B. „Agent 3/6: Stress & Welfare…")
+
 ### Non-Functional Requirements
 
-- **NFR-001**: Vollständige Pipeline (Gate + 6 Agenten + Coordinator) innerhalb von 10 Minuten auf iPhone 15 Pro für einen 60s-Clip
+- **NFR-001**: Quick Profile Pipeline (Gate + 6 Agenten × 1 Window + Coordinator) innerhalb von 12 Minuten auf iPhone 15 Pro für einen 60s-Clip; Deep Profile innerhalb von 30 Minuten
 - **NFR-002**: RAM-Spitze < 6.5 GB (identisch zu 002 — gleiches Modell, gleiche Geräte-Constraints)
 - **NFR-003**: Keine Netzwerk-Requests während der Analyse
 - **NFR-004**: iOS 17.0+ Minimum
@@ -241,10 +261,30 @@ Archetypen werden aus Feline-Five-Score-Kombinationen abgeleitet:
 
 ## Success Criteria *(mandatory)*
 
+### v1 Scope Boundary
+
+**In scope (v1 Core)**:
+- Cat Gate (pre-check)
+- 6 Specialist Agents (sequential, shared frames)
+- Hybrid Coordinator (code aggregation + VLM persona text)
+- Persona Card UI (radar chart, archetype label, observations)
+- Quick Profile mode (default) + Deep Profile mode (opt-in)
+- Video input only (15–90s clips)
+- Single-session results (no persistence across sessions)
+- Local Swift Package extraction (`VLMPipeline`)
+
+**Deferred (v2+)**:
+- Share-as-image (9:16 export, iOS Sharesheet) — US-3 AS-2
+- Photo-based analysis — US-4
+- Langzeit-Profil / CatProfile aggregation — US-5
+- Stress-specific UI section — US-6 (agent runs, but no dedicated UI beyond Persona Card)
+- Agent-specific frame selection — optimization for per-agent frame strategies
+- Internationalization
+
 ### Measurable Outcomes
 
 - **SC-001**: Nutzer können innerhalb von 2 Minuten nach App-Start eine erste Katzenanalyse starten (Onboarding + Clip-Auswahl + Start)
-- **SC-002**: Analyse eines 60s-Video-Clips ist innerhalb von 10 Minuten abgeschlossen (Gate + 6 Agenten + Coordinator, lokale Inference)
+- **SC-002**: Quick Profile eines 60s-Video-Clips ist innerhalb von 12 Minuten abgeschlossen; Deep Profile innerhalb von 30 Minuten (Gate + 6 Agenten + Coordinator, lokale Inference)
 - **SC-003**: Mindestens 4 von 6 Agenten liefern bei einem Standard-Katzenclip (Katze frontal, gute Beleuchtung) verwertbare Ergebnisse (Confidence ≥ 0.5)
 - **SC-004**: Keine Netzwerk-Requests an externe Server während Analyse (verifizierbar via Instruments)
 - **SC-005**: Bei 5 Wiederholungen derselben Analyse liefern ≥ 80% der Agenten konsistente Bewertungen (gleicher Trend, ähnliche Confidence)
@@ -262,5 +302,6 @@ Archetypen werden aus Feline-Five-Score-Kombinationen abgeleitet:
 - Veterinärmedizinische Diagnosen sind explizit NICHT Bestandteil — Stressindikatoren und Gesundheitsflags sind informativ, nie diagnostisch
 - Sprache des Agent-Outputs: Deutsch (Nutzer-facing), Englisch (JSON-Keys und wissenschaftliche Referenzen)
 - Internationalisierung ist nicht Teil der ersten Version
-- Die bestehende Hoibe-App bleibt unverändert; PawProfiler ist ein separates App-Target das geteilte Module importiert
-- Model-Download und -Management wird 1:1 aus 002 übernommen
+- Die bestehende Hoibe-App wird refactored: geteilte Pipeline-Module werden in ein lokales Swift Package (`VLMPipeline`) extrahiert. Hoibe importiert das Package statt direkte Quelldateien
+- PawProfiler ist ein separates Xcode-Projekt das `VLMPipeline` importiert
+- Model-Download und -Management wird 1:1 aus 002 übernommen (via VLMPipeline-Package)
