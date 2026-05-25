@@ -309,6 +309,97 @@ Archetypen werden aus Feline-Five-Score-Kombinationen abgeleitet:
 - **SC-007**: 80% der Nutzer finden die Profilbeschreibungen ihrer Katze zutreffend (qualitative Nutzer-Validierung)
 - **SC-008** `[v2]`: Persona Card wird von ≥ 50% der Nutzer mindestens einmal geteilt (Share-Rate als Viral-Metrik — messbar erst mit Share-Feature)
 
+## Test Strategy
+
+### Fixture Pattern (extending 001/002)
+
+Fixtures follow the established hoibe pattern: labeled JSON files with ground truth, mock VLM responses, and last-run results. Adapted for multi-agent output.
+
+**Fixture Naming**: `{category}_{description}_{seq}_{date}.result.json`
+
+**Test Categories** (minimum corpus for v1):
+
+| Category | Description | Expected Gate | Expected Agents | Min. Fixtures |
+|---|---|---|---|---|
+| `playful-cat` | Katze in Spielhaltung, aktiv, gute Sichtbarkeit | `cat_detected` | All 6 agents produce results, high Extraversion/Impulsiveness | 2 |
+| `relaxed-cat` | Katze ruhend/liegend, entspannt | `cat_detected` | Mood: relaxed, low Activity scores | 2 |
+| `stressed-cat` | Katze mit Stresssignalen (angelegte Ohren, Ducken) | `cat_detected` | Stress agent flags indicators | 1 |
+| `no-cat` | Szene ohne Katze (leerer Raum, Möbel) | `no_cat_detected` | Keine Agenten gestartet | 2 |
+| `not-a-cat` | Anderes Tier (Hund, Kaninchen) | `not_a_cat` | Keine Agenten gestartet | 1 |
+| `dark-clip` | Katze bei schlechter Beleuchtung | `cat_detected` | Low confidence, quality warning | 1 |
+| `multiple-cats` | Mehrere Katzen im Bild | `cat_detected` | Analyse der dominanten Katze, Hinweis | 1 |
+
+**Minimum v1 corpus**: 10 labeled fixtures
+
+### Fixture Schema
+
+```json
+{
+  "ground_truth": {
+    "category": "playful-cat",
+    "description": "Orange tabby playing with feather toy, full body visible, good lighting.",
+    "expected_gate": "cat_detected",
+    "expected_archetype": "The Midnight Gremlin",
+    "expected_traits": {
+      "extraversion": "high",
+      "impulsiveness": "high"
+    },
+    "expected_stress": false,
+    "labeler": "manual",
+    "labeled_at": "2026-05-25"
+  },
+  "video": {
+    "file": "playful-cat_feather-toy_001_2026-05-25.mp4",
+    "duration_s": 30,
+    "recorded": "2026-05-25"
+  },
+  "mock_responses": {
+    "gate": { "cat_detected": true, "confidence": 0.95 },
+    "personality_agent": {
+      "agent_id": "personality",
+      "status": "completed",
+      "trait_scores": {
+        "neuroticism": 0.2,
+        "extraversion": 0.85,
+        "dominance": 0.5,
+        "impulsiveness": 0.8,
+        "agreeableness": 0.6
+      },
+      "observations": ["High activity level with sustained focus on toy"],
+      "confidence": 0.8
+    },
+    "stress_agent": {
+      "agent_id": "stress",
+      "status": "completed",
+      "stress_detected": false,
+      "indicators": [],
+      "confidence": 0.75
+    }
+  },
+  "last_run": null
+}
+```
+
+*`mock_responses` enthält pro Agent einen vollständigen AgentResult. Nur die für den jeweiligen Test relevanten Agenten müssen gemockt werden — fehlende Agenten werden als `not_tested` behandelt.*
+
+### Test Layers
+
+| Layer | What | How | Framework |
+|---|---|---|---|
+| **Schema Parsing** | AgentResult, CompositeProfile, CatGateResult JSON decoding | Fixture JSON → Codable decode → field assertions | XCTest / Swift Testing |
+| **Agent Unit** | Einzelner Agent produziert korrektes Schema bei gegebenem Mock-Input | Mock `ModelManaging.generate()` → return fixture `mock_responses.{agent}` → verify schema | XCTest + Mock |
+| **Gate Unit** | Cat Gate majority-vote Logik | 3 mock gate responses → verify `cat_detected`/`no_cat_detected` threshold | XCTest |
+| **Coordinator Unit** | Score aggregation, archetype lookup, partial-result handling | Feed 6 AgentResults (some `not_observable`) → verify CompositeProfile | XCTest |
+| **Pipeline Integration** | Gate → Agents → Coordinator end-to-end mit mocked VLM | Full pipeline with `MockModelManager` returning fixture responses | XCTest |
+| **E2E (on-device)** | Real VLM inference auf echtem Clip | Labeled test clip → real inference → compare with ground truth | Manual / CI on device |
+
+### Mock Strategy
+
+`MockModelManager` (analog zu 002-Tests) gibt voraufgenommene VLM-Antworten zurück statt echte Inference zu starten. Dies ermöglicht:
+- Deterministische Tests ohne Modell-Download
+- CI-fähig (kein GPU/MLX nötig)
+- Fixture-basierte Regression bei Prompt-Änderungen
+
 ## Assumptions
 
 - PawProfiler baut auf der 002-Pipeline-Infrastruktur auf (FrameExtracting, ModelManaging, PromptBuilding, PipelineConfig)
