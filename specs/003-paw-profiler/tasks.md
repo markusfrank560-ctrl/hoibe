@@ -143,10 +143,10 @@
 
 **Purpose**: Build verification, validation, and cleanup across all user stories.
 
-- [ ] T050 [P] Verify PawProfiler builds clean (xcodebuild build -project PawProfiler/PawProfiler.xcodeproj)
-- [ ] T051 [P] Verify Hoibe still builds and tests pass after VLMPipeline extraction (xcodebuild test -project Hoibe.xcodeproj)
-- [ ] T052 Run full PawProfiler test suite and verify all tests pass (xcodebuild test)
-- [ ] T053 Run quickstart.md validation: build, test, basic flow on device
+- [x] T050 [P] Verify PawProfiler builds clean (xcodebuild build -project PawProfiler/PawProfiler.xcodeproj)
+- [x] T051 [P] Verify Hoibe still builds and tests pass after VLMPipeline extraction (xcodebuild test -project Hoibe.xcodeproj)
+- [x] T052 Run full PawProfiler test suite and verify all tests pass (xcodebuild test)
+- [x] T053 Run quickstart.md validation: build, test, basic flow on device
 
 ---
 

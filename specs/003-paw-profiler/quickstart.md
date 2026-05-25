@@ -17,8 +17,9 @@
 # 1. Clone repo and switch to feature branch
 git checkout 003-paw-profiler
 
-# 2. Open PawProfiler Xcode project
-open PawProfiler/PawProfiler.xcodeproj
+# 2. Build via SPM (PawProfiler uses Package.swift, not .xcodeproj)
+cd PawProfiler
+swift build
 
 # 3. SPM resolves automatically:
 #    - VLMPipeline (local package from repo root)
@@ -123,11 +124,9 @@ PawProfilerTests/
 ## Running Tests
 
 ```bash
-# From Xcode: ⌘U (all tests)
-# Or via command line:
-xcodebuild test -project PawProfiler/PawProfiler.xcodeproj \
-  -scheme PawProfiler \
-  -destination 'platform=iOS Simulator,name=iPhone 16 Pro'
+# From command line (SPM):
+cd PawProfiler
+swift test
 ```
 
 ## Key Configuration

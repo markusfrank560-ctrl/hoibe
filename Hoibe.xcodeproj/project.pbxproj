@@ -12,18 +12,12 @@
 		A1000001 /* HoibeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000001 /* HoibeApp.swift */; };
 		A1000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000002 /* ContentView.swift */; };
 		A1000003 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000003 /* CameraView.swift */; };
-		A1000004 /* ModelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000004 /* ModelManager.swift */; };
-		A1000005 /* FrameExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000005 /* FrameExtractor.swift */; };
 		A1000006 /* PromptEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000006 /* PromptEngine.swift */; };
 		A1000007 /* SipDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000007 /* SipDetector.swift */; };
 		A1000008 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000008 /* Protocols.swift */; };
 		A1000009 /* AnalysisResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000009 /* AnalysisResult.swift */; };
 		A1000010 /* AnalysisState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000010 /* AnalysisState.swift */; };
 		A1000011 /* BeerFillLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000011 /* BeerFillLevel.swift */; };
-		A1000012 /* ChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000012 /* ChatMessage.swift */; };
-		A1000013 /* FrameData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000013 /* FrameData.swift */; };
-		A1000014 /* ModelDownloadState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000014 /* ModelDownloadState.swift */; };
-		A1000015 /* PipelineConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000015 /* PipelineConfig.swift */; };
 		A1000016 /* Prompts in Resources */ = {isa = PBXBuildFile; fileRef = B1000016 /* Prompts */; };
 		A1000017 /* BundleCompat.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000019 /* BundleCompat.swift */; };
 		A1000018 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B1000020 /* Assets.xcassets */; };
@@ -35,18 +29,12 @@
 		B1000001 /* HoibeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoibeApp.swift; sourceTree = "<group>"; };
 		B1000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B1000003 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
-		B1000004 /* ModelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelManager.swift; sourceTree = "<group>"; };
-		B1000005 /* FrameExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameExtractor.swift; sourceTree = "<group>"; };
 		B1000006 /* PromptEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptEngine.swift; sourceTree = "<group>"; };
 		B1000007 /* SipDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SipDetector.swift; sourceTree = "<group>"; };
 		B1000008 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		B1000009 /* AnalysisResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisResult.swift; sourceTree = "<group>"; };
 		B1000010 /* AnalysisState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisState.swift; sourceTree = "<group>"; };
 		B1000011 /* BeerFillLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeerFillLevel.swift; sourceTree = "<group>"; };
-		B1000012 /* ChatMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessage.swift; sourceTree = "<group>"; };
-		B1000013 /* FrameData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameData.swift; sourceTree = "<group>"; };
-		B1000014 /* ModelDownloadState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelDownloadState.swift; sourceTree = "<group>"; };
-		B1000015 /* PipelineConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineConfig.swift; sourceTree = "<group>"; };
 		B1000016 /* Prompts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Prompts; sourceTree = "<group>"; };
 		B1000017 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B1000018 /* Hoibe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Hoibe.entitlements; sourceTree = "<group>"; };
@@ -103,8 +91,6 @@
 		D1000003 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				B1000004 /* ModelManager.swift */,
-				B1000005 /* FrameExtractor.swift */,
 				B1000006 /* PromptEngine.swift */,
 				B1000007 /* SipDetector.swift */,
 				B1000008 /* Protocols.swift */,
@@ -119,10 +105,6 @@
 				B1000009 /* AnalysisResult.swift */,
 				B1000010 /* AnalysisState.swift */,
 				B1000011 /* BeerFillLevel.swift */,
-				B1000012 /* ChatMessage.swift */,
-				B1000013 /* FrameData.swift */,
-				B1000014 /* ModelDownloadState.swift */,
-				B1000015 /* PipelineConfig.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -163,6 +145,7 @@
 			packageProductDependencies = (
 				P1000001 /* MLXVLM */,
 				P1000002 /* MLXLMCommon */,
+				P1000003 /* VLMPipeline */,
 			);
 			productName = Hoibe;
 			productReference = B1000000 /* Hoibe.app */;
@@ -195,6 +178,7 @@
 			mainGroup = D1000000;
 			packageReferences = (
 				R1000001 /* XCRemoteSwiftPackageReference "mlx-swift-examples" */,
+				R1000002 /* XCLocalSwiftPackageReference "VLMPipeline" */,
 			);
 			productRefGroup = D1000005 /* Products */;
 			projectDirPath = "";
@@ -225,18 +209,12 @@
 				A1000001 /* HoibeApp.swift in Sources */,
 				A1000002 /* ContentView.swift in Sources */,
 				A1000003 /* CameraView.swift in Sources */,
-				A1000004 /* ModelManager.swift in Sources */,
-				A1000005 /* FrameExtractor.swift in Sources */,
 				A1000006 /* PromptEngine.swift in Sources */,
 				A1000007 /* SipDetector.swift in Sources */,
 				A1000008 /* Protocols.swift in Sources */,
 				A1000009 /* AnalysisResult.swift in Sources */,
 				A1000010 /* AnalysisState.swift in Sources */,
 				A1000011 /* BeerFillLevel.swift in Sources */,
-				A1000012 /* ChatMessage.swift in Sources */,
-				A1000013 /* FrameData.swift in Sources */,
-				A1000014 /* ModelDownloadState.swift in Sources */,
-				A1000015 /* PipelineConfig.swift in Sources */,
 				A1000017 /* BundleCompat.swift in Sources */,
 				A1000021 /* DiagnosticLog.swift in Sources */,
 			);
@@ -387,6 +365,13 @@
 		};
 /* End XCRemoteSwiftPackageReference section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		R1000002 /* XCLocalSwiftPackageReference "VLMPipeline" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = VLMPipeline;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		P1000001 /* MLXVLM */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -397,6 +382,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = R1000001 /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
 			productName = MLXLMCommon;
+		};
+		P1000003 /* VLMPipeline */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = VLMPipeline;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
