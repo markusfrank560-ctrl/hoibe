@@ -261,8 +261,7 @@ final class ContentViewModel: ObservableObject {
         let stableURL: URL
         do {
             let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-            let ext = videoURL.pathExtension.isEmpty ? "mov" : videoURL.pathExtension
-            stableURL = docs.appendingPathComponent("analysis_input.\(ext)")
+            stableURL = docs.appendingPathComponent("analysis_input.mp4")
             try? FileManager.default.removeItem(at: stableURL)
             try FileManager.default.copyItem(at: videoURL, to: stableURL)
         } catch {
@@ -352,10 +351,9 @@ struct VideoTransferable: Transferable {
         FileRepresentation(contentType: .movie) { video in
             SentTransferredFile(video.url)
         } importing: { received in
-            let ext = received.file.pathExtension.isEmpty ? "mov" : received.file.pathExtension
             let tempURL = FileManager.default.temporaryDirectory
                 .appendingPathComponent(UUID().uuidString)
-                .appendingPathExtension(ext)
+                .appendingPathExtension("mp4")
             try FileManager.default.copyItem(at: received.file, to: tempURL)
             return Self(url: tempURL)
         }
