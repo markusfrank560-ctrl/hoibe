@@ -124,16 +124,16 @@
 
 ### Views
 
-- [ ] T043 [US3] Implement ContentView: PhotosPicker video selection with duration validation (15–90s, MP4/MOV), Quick/Deep mode toggle, analyze button, model download UI in PawProfiler/PawProfiler/App/ContentView.swift
-- [ ] T044 [P] [US3] Implement AgentProgressView ("Agent 3/6: Stress & Welfare…" with progress indicator) in PawProfiler/PawProfiler/Views/AgentProgressView.swift
-- [ ] T045 [P] [US3] Implement RadarChartView (Feline-Five radar chart with 5 axes using SwiftUI Charts) in PawProfiler/PawProfiler/Views/RadarChartView.swift
-- [ ] T046 [US3] Implement PersonaCardView: archetype label, persona description, top-3 observations, breed affinity, inline stress/health hints in PawProfiler/PawProfiler/Views/PersonaCardView.swift
-- [ ] T047 [P] [US3] Implement GateRejectedView (no-cat/not-a-cat result with species guess and guidance for retrying) in PawProfiler/PawProfiler/Views/GateRejectedView.swift
+- [x] T043 [US3] Implement ContentView: PhotosPicker video selection with duration validation (15–90s, MP4/MOV), Quick/Deep mode toggle, analyze button, model download UI in PawProfiler/PawProfiler/App/ContentView.swift
+- [x] T044 [P] [US3] Implement AgentProgressView ("Agent 3/6: Stress & Welfare…" with progress indicator) in PawProfiler/PawProfiler/Views/AgentProgressView.swift
+- [x] T045 [P] [US3] Implement RadarChartView (Feline-Five radar chart with 5 axes using SwiftUI Charts) in PawProfiler/PawProfiler/Views/RadarChartView.swift
+- [x] T046 [US3] Implement PersonaCardView: archetype label, persona description, top-3 observations, breed affinity, inline stress/health hints in PawProfiler/PawProfiler/Views/PersonaCardView.swift
+- [x] T047 [P] [US3] Implement GateRejectedView (no-cat/not-a-cat result with species guess and guidance for retrying) in PawProfiler/PawProfiler/Views/GateRejectedView.swift
 
 ### Integration
 
-- [ ] T048 [US3] Implement AgentDetailView: per-agent reasoning drill-down with research references, accessible from PersonaCardView (US-2 AC-3) in PawProfiler/PawProfiler/Views/AgentDetailView.swift
-- [ ] T049 [US3] Wire CatAnalysisState to views for state-driven UI transitions (idle → progress → persona card / gate rejected / error) in PawProfiler/PawProfiler/App/ContentView.swift
+- [x] T048 [US3] Implement AgentDetailView: per-agent reasoning drill-down with research references, accessible from PersonaCardView (US-2 AC-3) in PawProfiler/PawProfiler/Views/AgentDetailView.swift
+- [x] T049 [US3] Wire CatAnalysisState to views for state-driven UI transitions (idle → progress → persona card / gate rejected / error) in PawProfiler/PawProfiler/App/ContentView.swift
 
 **Checkpoint**: US-3 fully functional — video selection → analysis with progress → Persona Card or gate rejection. All P1 user stories complete.
 
