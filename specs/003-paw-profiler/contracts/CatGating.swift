@@ -33,7 +33,9 @@ struct CatGateResult: Codable, Equatable, Sendable {
 protocol CatGating: Sendable {
 
     /// Run the cat detection gate on extracted frames.
-    /// Uses majority-vote over `gateVotes` frames (default 3).
+    /// Single VLM call with 3 frames as multi-image input.
+    /// Model returns per-frame cat/no-cat assessment in JSON;
+    /// majority-vote (≥2/3) determines final gate result.
     /// - Parameters:
     ///   - frames: JPEG-encoded frames to evaluate.
     ///   - config: Pipeline configuration with gate parameters.

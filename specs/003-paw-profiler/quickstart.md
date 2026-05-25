@@ -66,8 +66,16 @@ PawProfiler/                    ← PawProfiler app
     │   ├── CompositeProfile.swift
     │   ├── FelineFiveScores.swift
     │   ├── PawProfilerConfig.swift
-    │   └── AnalysisSession.swift
+    │   ├── AnalysisSession.swift
+    │   └── CatAnalysisState.swift
+    ├── Protocols/
+    │   ├── CatGating.swift
+    │   ├── BehaviorAnalyzing.swift
+    │   ├── ProfileCoordinating.swift
+    │   ├── CatProfiling.swift
+    │   └── AgentPromptBuilding.swift
     ├── Agents/
+    │   ├── BaseAgent.swift          Shared agent logic
     │   ├── CatGate.swift
     │   ├── PersonalityAgent.swift
     │   ├── SocialBehaviorAgent.swift
@@ -78,10 +86,14 @@ PawProfiler/                    ← PawProfiler app
     ├── Services/
     │   ├── CatProfiler.swift        Pipeline orchestrator
     │   ├── ProfileCoordinator.swift  Hybrid coordinator
+    │   ├── ArchetypeResolver.swift   Deterministic archetype lookup
     │   └── AgentPromptEngine.swift   Agent-specific prompts
     ├── Views/
     │   ├── PersonaCardView.swift     Cat Persona Card
-    │   └── RadarChartView.swift      Feline Five radar chart
+    │   ├── RadarChartView.swift      Feline Five radar chart
+    │   ├── AgentProgressView.swift   Agent progress indicator
+    │   ├── AgentDetailView.swift     Per-agent reasoning drill-down
+    │   └── GateRejectedView.swift    No-cat / not-a-cat result
     └── Resources/
         └── Prompts/
             ├── gate/v1/system.txt
@@ -96,8 +108,14 @@ PawProfiler/                    ← PawProfiler app
 PawProfilerTests/
 ├── GateTests.swift
 ├── AgentResultParsingTests.swift
+├── AgentPromptEngineTests.swift
 ├── CoordinatorTests.swift
+├── ArchetypeResolverTests.swift
 ├── PipelineIntegrationTests.swift
+├── Mocks/
+│   └── MockModelManager.swift
+└── Fixtures/
+    └── (labeled JSON fixtures)
 └── Fixtures/
     └── (labeled JSON fixtures)
 ```

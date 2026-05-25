@@ -60,7 +60,7 @@ Structured output from a single specialist agent.
 | `timedOut` | Agent exceeded timeout limit |
 | `failed` | Agent encountered an error |
 
-### FelilneFiveScores
+### FelineFiveScores
 
 Aggregated Feline Five personality scores.
 
@@ -181,9 +181,8 @@ PawProfilerConfig ──configures──▶ Pipeline timeouts, frame counts, mod
 idle
   ──startAnalysis──▶ extractingFrames
 extractingFrames
-  ──framesReady──▶ runningGate(vote: 1, of: 3)
-runningGate(vote: N, of: 3)
-  ──voteComplete──▶ runningGate(vote: N+1, of: 3)  [if N < 3]
+  ──framesReady──▶ runningGate
+runningGate
   ──gateComplete(cat_detected)──▶ runningAgent(agent: 1, of: 6, name: "Personality")
   ──gateComplete(no_cat/not_a_cat)──▶ gateRejected(CatGateResult)
 runningAgent(agent: N, of: 6, name: String)

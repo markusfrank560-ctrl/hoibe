@@ -7,7 +7,7 @@ import Foundation
 enum CatAnalysisState: Equatable {
     case idle
     case extractingFrames
-    case runningGate(vote: Int, of: Int)
+    case runningGate
     case gateRejected(CatGateResult)
     case runningAgent(agent: Int, of: Int, name: String)
     case runningCoordinator

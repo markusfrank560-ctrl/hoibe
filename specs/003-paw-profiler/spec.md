@@ -168,7 +168,7 @@ Der Breed & Archetype Agent vermutet anhand visueller Merkmale die wahrscheinlic
 
 **Cat Gate (analog zu Fill-Level Gate in 002)**:
 
-- **FR-004**: System MUSS vor der Detail-Analyse einen Cat Gate ausführen: Ist überhaupt eine Katze im Bild? Majority-Vote über 3 Frames (schärfste Frames, analog 002 Fill-Level Gate). Ergebnis: Mehrheit (≥ 2/3) entscheidet
+- **FR-004**: System MUSS vor der Detail-Analyse einen Cat Gate ausführen: Ist überhaupt eine Katze im Bild? 1 VLM-Call mit 3 Frames (schärfste Frames) als Multi-Image-Input. Majority-Vote über die 3 Frame-Bewertungen im JSON-Output. Ergebnis: Mehrheit (≥ 2/3) entscheidet. Gesamte Gate = 1 Inference-Call
 - **FR-005**: Cat Gate MUSS `cat_detected`, `no_cat_detected`, oder `not_a_cat` (mit Tierart-Vermutung) zurückgeben. Bei `no_cat_detected`/`not_a_cat` werden keine Detail-Agenten gestartet
 
 **Multi-Agent Pipeline**:
@@ -190,7 +190,7 @@ Der Breed & Archetype Agent vermutet anhand visueller Merkmale die wahrscheinlic
 - **FR-010**: System MUSS einen Hybrid-Coordinator implementieren:
   - **Code-basiert** (deterministic): Feline-Five-Score-Aggregation (confidence-gewichteter Durchschnitt über alle Agenten die Trait-Scores liefern), Archetyp-Lookup aus der definierten Tabelle, Stress-/Gesundheitsflags-Sammlung
   - **VLM-basiert** (1 Inference-Call): Generiert die menschenlesbare Persona-Beschreibung, Top-Beobachtungen, und kontextuelle Erklärungen aus den aggregierten Agent-Ergebnissen. Output ist strukturiertes JSON mit narrativen Feldern (`persona_description`, `top_observations[]`, `contextual_notes[]`) — JSON-Envelope erfüllt Principle III, narrative Inhalte dienen ausschließlich der User-Facing-Darstellung
-- **FR-011**: Coordinator MUSS auch bei teilweisen Agent-Ergebnissen (Timeout, `not_observable`) ein sinnvolles Profil generieren können. Code-basierte Aggregation arbeitet mit verfügbaren Scores; VLM-Call erhält Hinweis auf fehlende Agenten
+- **FR-011**: Coordinator MUSS auch bei teilweisen Agent-Ergebnissen (Timeout, `not_observable`) ein sinnvolles Profil generieren können. Code-basierte Aggregation arbeitet mit verfügbaren Scores; VLM-Call erhält Hinweis auf fehlende Agenten. **Minimum-Schwelle**: ≥ 3 Agenten mit Status `completed` für ein gültiges Profil; bei < 3 gilt die Analyse als `insufficient` mit Empfehlung (bessere Beleuchtung, längerer Clip)
 
 **Output & Persistence**:
 

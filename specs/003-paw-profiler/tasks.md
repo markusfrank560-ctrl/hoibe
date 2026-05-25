@@ -19,7 +19,7 @@
 - **PawProfiler/PawProfiler/**: PawProfiler app source
 - **PawProfilerTests/**: PawProfiler test target
 - **ios/Hoibe/**: Existing Hoibe app (modified to import VLMPipeline)
-
+> **Phase mapping**: tasks.md uses story-driven phases (1–5) while plan.md uses implementation-step numbering (2.0–2.7, 3). Phase 1 = plan 2.0+2.1, Phase 2 = plan 2.1 models+2.3, Phase 3 = plan 2.2+2.4+2.5+2.6, Phase 4 = plan 2.7, Phase 5 = plan post-implementation.
 ---
 
 ## Phase 1: Setup (VLMPipeline Extraction + PawProfiler Project)
@@ -58,6 +58,7 @@
 ### Prompt Engine & Prompts
 
 - [ ] T016 Implement AgentPromptEngine conforming to AgentPromptBuilding protocol (buildGateMessages, buildAgentMessages, buildCoordinatorMessages) in PawProfiler/PawProfiler/Services/AgentPromptEngine.swift
+- [ ] T016b [P] Write AgentPromptEngineTests: template loading per agent, message construction format, coordinator message with aggregated data in PawProfilerTests/AgentPromptEngineTests.swift
 - [ ] T017 [P] Create gate system prompt (cat detection, species classification, JSON schema) in PawProfiler/PawProfiler/Resources/Prompts/gate/v1/system.txt
 - [ ] T018 [P] Create 6 agent system prompts with embedded research context in PawProfiler/PawProfiler/Resources/Prompts/{personality,social,play,stress,health,breed}/v1/system.txt
 - [ ] T019 [P] Create coordinator system prompt (persona prose generation, archetype table, JSON schema) in PawProfiler/PawProfiler/Resources/Prompts/coordinator/v1/system.txt
@@ -65,7 +66,7 @@
 ### Test Infrastructure
 
 - [ ] T020 [P] Create MockModelManager for deterministic testing (returns pre-recorded responses per agent) in PawProfilerTests/Mocks/MockModelManager.swift
-- [ ] T021 [P] Create test fixtures (10+ labeled JSON files covering all 7 categories: playful-cat, relaxed-cat, stressed-cat, no-cat, not-a-cat, dark-clip, multiple-cats) in PawProfilerTests/Fixtures/
+- [ ] T021 [P] Create test fixtures (10+ labeled JSON files covering all 7 categories: playful-cat, relaxed-cat, stressed-cat, no-cat, not-a-cat, dark-clip, multiple-cats; include edge cases: short-clip <5s, all-agents-fail) in PawProfilerTests/Fixtures/
 
 **Checkpoint**: All models compile, prompts load, MockModelManager returns fixture responses. User story implementation can begin.
 
@@ -104,11 +105,12 @@
 ### Pipeline Orchestrator (FR-020, FR-021, FR-023, NFR-006)
 
 - [ ] T037 [US1] Create CatAnalysisState as @Observable enum for SwiftUI state binding (idle → extracting → gate → agents → coordinator → complete/error) in PawProfiler/PawProfiler/Models/CatAnalysisState.swift
+- [ ] T037b [US1] Create protocol definition source files from contracts/ (CatGating, BehaviorAnalyzing, ProfileCoordinating, CatProfiling, AgentPromptBuilding) in PawProfiler/PawProfiler/Protocols/
 - [ ] T038 [US1] Implement CatProfiler conforming to CatProfiling — full pipeline: extract frames → gate → 6 agents sequential → coordinator → profile in PawProfiler/PawProfiler/Services/CatProfiler.swift
 - [ ] T039 [US1] Implement Quick/Deep mode switching in CatProfiler (windowsPerAgent: 1 vs 3, sliding window frame distribution) in PawProfiler/PawProfiler/Services/CatProfiler.swift
 - [ ] T040 [US1] Implement thermal management in CatProfiler: cooldown escalation at .serious (5s), pause at .critical with state update in PawProfiler/PawProfiler/Services/CatProfiler.swift
 - [ ] T041 [US1] Implement cancellation support in CatProfiler (Task cancellation, discard partial results, return to idle) in PawProfiler/PawProfiler/Services/CatProfiler.swift
-- [ ] T042 [US1] Write PipelineIntegrationTests: full pipeline with MockModelManager (gate → 6 agents → coordinator), cancellation, gate rejection path in PawProfilerTests/PipelineIntegrationTests.swift
+- [ ] T042 [US1] Write PipelineIntegrationTests: full pipeline with MockModelManager (gate → 6 agents → coordinator), cancellation, gate rejection path, all-agents-fail path (≥ 3 threshold), minimum-agent-count insufficient path in PawProfilerTests/PipelineIntegrationTests.swift
 
 **Checkpoint**: Full pipeline works end-to-end with MockModelManager. CompositeProfile produced with correct scores, archetype, and observations. US-1 and US-2 independently testable.
 
@@ -122,7 +124,7 @@
 
 ### Views
 
-- [ ] T043 [US3] Implement ContentView: PhotosPicker video selection (15–90s), Quick/Deep mode toggle, analyze button, model download UI in PawProfiler/PawProfiler/App/ContentView.swift
+- [ ] T043 [US3] Implement ContentView: PhotosPicker video selection with duration validation (15–90s, MP4/MOV), Quick/Deep mode toggle, analyze button, model download UI in PawProfiler/PawProfiler/App/ContentView.swift
 - [ ] T044 [P] [US3] Implement AgentProgressView ("Agent 3/6: Stress & Welfare…" with progress indicator) in PawProfiler/PawProfiler/Views/AgentProgressView.swift
 - [ ] T045 [P] [US3] Implement RadarChartView (Feline-Five radar chart with 5 axes using SwiftUI Charts) in PawProfiler/PawProfiler/Views/RadarChartView.swift
 - [ ] T046 [US3] Implement PersonaCardView: archetype label, persona description, top-3 observations, breed affinity, inline stress/health hints in PawProfiler/PawProfiler/Views/PersonaCardView.swift
@@ -130,7 +132,8 @@
 
 ### Integration
 
-- [ ] T048 [US3] Wire CatAnalysisState to views for state-driven UI transitions (idle → progress → persona card / gate rejected / error) in PawProfiler/PawProfiler/App/ContentView.swift
+- [ ] T048 [US3] Implement AgentDetailView: per-agent reasoning drill-down with research references, accessible from PersonaCardView (US-2 AC-3) in PawProfiler/PawProfiler/Views/AgentDetailView.swift
+- [ ] T049 [US3] Wire CatAnalysisState to views for state-driven UI transitions (idle → progress → persona card / gate rejected / error) in PawProfiler/PawProfiler/App/ContentView.swift
 
 **Checkpoint**: US-3 fully functional — video selection → analysis with progress → Persona Card or gate rejection. All P1 user stories complete.
 
@@ -140,10 +143,10 @@
 
 **Purpose**: Build verification, validation, and cleanup across all user stories.
 
-- [ ] T049 [P] Verify PawProfiler builds clean (xcodebuild build -project PawProfiler/PawProfiler.xcodeproj)
-- [ ] T050 [P] Verify Hoibe still builds and tests pass after VLMPipeline extraction (xcodebuild test -project Hoibe.xcodeproj)
-- [ ] T051 Run full PawProfiler test suite and verify all tests pass (xcodebuild test)
-- [ ] T052 Run quickstart.md validation: build, test, basic flow on device
+- [ ] T050 [P] Verify PawProfiler builds clean (xcodebuild build -project PawProfiler/PawProfiler.xcodeproj)
+- [ ] T051 [P] Verify Hoibe still builds and tests pass after VLMPipeline extraction (xcodebuild test -project Hoibe.xcodeproj)
+- [ ] T052 Run full PawProfiler test suite and verify all tests pass (xcodebuild test)
+- [ ] T053 Run quickstart.md validation: build, test, basic flow on device
 
 ---
 
@@ -171,7 +174,7 @@
 - BaseAgent (T024) before specialist agents (T025–T030)
 - ArchetypeResolver (T032) before ProfileCoordinator (T034)
 - ProfileCoordinator (T034) before CatProfiler (T038)
-- CatProfiler (T038) before UI integration (T043–T048)
+- CatProfiler (T038) before UI integration (T043–T049)
 
 ### Parallel Opportunities
 

@@ -16,7 +16,7 @@ Build PawProfiler, a standalone iOS app that profiles cat behavior and personali
 **Target Platform**: iOS 17.0+ (iPhone 15 Pro, 16 Pro, 16e — 8 GB RAM)  
 **Project Type**: mobile-app (multi-screen SwiftUI), local Swift Package (VLMPipeline)  
 **Performance Goals**: Quick Profile < 12 min, Deep Profile < 30 min on iPhone 15 Pro  
-**Constraints**: RAM peak < 6.5 GB, offline-only analysis, sequential inference (1 at a time), 8 total VLM calls (Quick) / 20 (Deep)  
+**Constraints**: RAM peak < 6.5 GB, offline-only analysis, sequential inference (1 at a time), 8 total VLM calls (Quick: 1 gate + 6 agents + 1 coordinator) / 20 (Deep: 1 gate + 18 agent windows + 1 coordinator)  
 **Scale/Scope**: VLMPipeline package + PawProfiler app (6 agents, 1 coordinator, 8 agent prompts, persona card UI)  
 **Base Feature**: 002-ios-on-device (provides shared infrastructure via VLMPipeline extraction)
 
@@ -96,6 +96,7 @@ PawProfiler/                         ← NEW: PawProfiler app
 │   │   └── PawProfilerConfig.swift
 │   ├── Agents/
 │   │   ├── CatGate.swift
+│   │   ├── BaseAgent.swift              Shared agent logic
 │   │   ├── PersonalityAgent.swift
 │   │   ├── SocialBehaviorAgent.swift
 │   │   ├── PlayActivityAgent.swift
@@ -111,6 +112,7 @@ PawProfiler/                         ← NEW: PawProfiler app
 │   │   ├── PersonaCardView.swift        Cat Persona Card
 │   │   ├── RadarChartView.swift         Feline-Five radar chart
 │   │   ├── AgentProgressView.swift      "Agent 3/6: Stress..." UI
+│   │   ├── AgentDetailView.swift        Per-agent reasoning drill-down
 │   │   └── GateRejectedView.swift       No-cat / not-a-cat result
 │   └── Resources/
 │       └── Prompts/
@@ -125,7 +127,13 @@ PawProfiler/                         ← NEW: PawProfiler app
 └── PawProfilerTests/
     ├── GateTests.swift
     ├── AgentResultParsingTests.swift
+    ├── AgentPromptEngineTests.swift
     ├── CoordinatorTests.swift
+    ├── ArchetypeResolverTests.swift
+    ├── PipelineIntegrationTests.swift
+    ├── Mocks/
+    │   └── MockModelManager.swift
+    └── Fixtures/
     ├── ArchetypeResolverTests.swift
     ├── PipelineIntegrationTests.swift
     └── Fixtures/
@@ -236,7 +244,7 @@ Extract shared infrastructure from `ios/Hoibe/` into `VLMPipeline/` local Swift 
 |------|-------------|-------|
 | 2.2.1 | Create gate system prompt (`gate/v1/system.txt`) | `Resources/Prompts/gate/v1/` |
 | 2.2.2 | Implement `CatGate` conforming to `CatGating` protocol | `Agents/CatGate.swift` |
-| 2.2.3 | Implement gate majority-vote logic (≥2/3 = cat detected) | `Agents/CatGate.swift` |
+| 2.2.3 | Implement gate: 1 VLM call with 3 frames as multi-image input, majority-vote over JSON output (≥2/3 = cat detected) | `Agents/CatGate.swift` |
 | 2.2.4 | Unit tests: gate with mock responses (cat, no-cat, not-a-cat, multiple) | `PawProfilerTests/GateTests.swift` |
 
 ### Phase 2.3 — Agent Prompt Engine
@@ -246,7 +254,7 @@ Extract shared infrastructure from `ios/Hoibe/` into `VLMPipeline/` local Swift 
 | 2.3.1 | Create `AgentPromptEngine` conforming to `AgentPromptBuilding` | `Services/AgentPromptEngine.swift` |
 | 2.3.2 | Create 6 agent system prompts with embedded research context | `Resources/Prompts/{agent}/v1/system.txt` |
 | 2.3.3 | Create coordinator system prompt | `Resources/Prompts/coordinator/v1/system.txt` |
-| 2.3.4 | Unit tests: prompt construction, message format, template loading | `PawProfilerTests/PromptEngineTests.swift` |
+| 2.3.4 | Unit tests: prompt construction, message format, template loading | `PawProfilerTests/AgentPromptEngineTests.swift` |
 
 **Agent prompt structure** (each agent):
 - System prompt: role definition, observable indicators, research citations, JSON output schema
