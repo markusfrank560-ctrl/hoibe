@@ -215,7 +215,7 @@ Der Breed & Archetype Agent vermutet anhand visueller Merkmale die wahrscheinlic
   - **Deep Profile** (`windowsPerAgent: 3`): 3 Sliding-Window-Aufrufe pro Agent mit je 2–3 Frames. Gesamtzeit ~20–30 Minuten. Opt-in via UI-Toggle
 - **FR-022**: UI MUSS Fortschritt pro Agent anzeigen (z.B. „Agent 3/6: Stress & Welfare…")
 - **FR-023**: System MUSS laufende Analyse abbrechen können (User-Cancel). Bei Abbruch werden bis dahin vorliegende Agent-Ergebnisse verworfen, UI kehrt zum Startbildschirm zurück
-- **FR-024**: Agent-Prompt-Versionen MÜSSEN dem Schema `{agent_id}/v{N}/system.txt` folgen (z.B. `personality/v1/system.txt`). Jede Prompt-Änderung erfordert Version-Bump. `analysis_version` im Output enthält die verwendete Prompt-Version
+- **FR-024**: Agent-Prompt-Versionen MÜSSEN dem Schema `{agent_id}/v{N}/system.txt` folgen (z.B. `personality/v1/system.txt`). Jede Prompt-Änderung erfordert Version-Bump. `analysis_version` im Output enthält die verwendete Prompt-Version und deckt auch Schema-Änderungen ab (Prompt-Version = Schema-Version)
 
 ### Non-Functional Requirements
 
@@ -231,7 +231,7 @@ Der Breed & Archetype Agent vermutet anhand visueller Merkmale die wahrscheinlic
 - **CatProfile** `[v2]`: Langzeit-Profil einer Katze, aggregiert aus mehreren AnalysisSessions. Enthält Name, Foto, Verhaltenstrends, stabile Feline-Five-Scores
 - **AnalysisSession**: Einzelne Analyse-Durchführung mit Input-Medium, Zeitstempel, und AgentResults
 - **AgentResult**: Strukturiertes Teilergebnis eines spezialisierten Agenten. Schema: `{ agent_id, domain, trait_scores, observations[], flags[], confidence, status }`
-- **CompositeProfile**: Coordinator-Output: zusammengeführtes Profil aus allen AgentResults einer Session. Schema: `{ feline_five_scores, archetype_label, overall_mood, breed_estimate, stress_indicators, health_flags, confidence_per_agent }`
+- **CompositeProfile**: Coordinator-Output: zusammengeführtes Profil aus allen AgentResults einer Session. Schema: `{ feline_five_scores, archetype_label, overall_mood, breed_estimate, stress_indicators, health_flags, confidence_per_agent, model_name, analysis_version }`
 - **CatPersonaCard**: Visuelles Artefakt generiert aus CompositeProfile — Radar-Chart, Archetyp, Beobachtungen, teilbare Grafik
 - **MediaInput**: Video-Clip oder Foto als Eingabe. Reuses 002 `VideoClip`/`FrameSet` patterns
 - **CatGateResult**: Ergebnis der Vorprüfung: `cat_detected` / `no_cat_detected` / `not_a_cat(species:)`
@@ -274,7 +274,7 @@ Archetypen werden aus Feline-Five-Score-Kombinationen abgeleitet:
 | The Social Butterfly | High Agreeableness (>0.7) + High Extraversion (>0.7) |
 | The Chaotic Acrobat | High Extraversion (>0.7) + High Impulsiveness (>0.7) + Low Neuroticism (<0.3) |
 
-*Wenn keine Archetyp-Bedingung erfüllt ist, wird „The Everyday Cat" als Fallback-Label zugewiesen. Archetyp-Tabelle wird im Coordinator-Prompt versioniert und ist erweiterbar.*
+*Archetyp-Auswertungsregel: Most-specific match wins — Archetypen mit mehr Trait-Bedingungen haben Vorrang. Bei gleicher Spezifität wird der in der Tabelle weiter oben stehende Archetyp gewählt. Wenn keine Bedingung erfüllt ist, wird „The Everyday Cat" als Fallback-Label zugewiesen. Archetyp-Tabelle wird im Coordinator-Prompt versioniert und ist erweiterbar.*
 
 ## Success Criteria *(mandatory)*
 
