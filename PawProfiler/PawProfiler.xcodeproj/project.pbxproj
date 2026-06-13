@@ -1,0 +1,507 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 60;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A0000001 /* PawProfilerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000001 /* PawProfilerApp.swift */; };
+		A0000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000002 /* ContentView.swift */; };
+		A0000003 /* BaseAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000003 /* BaseAgent.swift */; };
+		A0000004 /* BreedArchetypeAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000004 /* BreedArchetypeAgent.swift */; };
+		A0000005 /* CatGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000005 /* CatGate.swift */; };
+		A0000006 /* HealthBehaviorAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000006 /* HealthBehaviorAgent.swift */; };
+		A0000007 /* PersonalityAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000007 /* PersonalityAgent.swift */; };
+		A0000008 /* PlayActivityAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000008 /* PlayActivityAgent.swift */; };
+		A0000009 /* SocialBehaviorAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000009 /* SocialBehaviorAgent.swift */; };
+		A0000010 /* StressWelfareAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000010 /* StressWelfareAgent.swift */; };
+		A0000011 /* AgentResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000011 /* AgentResult.swift */; };
+		A0000012 /* AnalysisSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000012 /* AnalysisSession.swift */; };
+		A0000013 /* BreedEstimate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000013 /* BreedEstimate.swift */; };
+		A0000014 /* CatAnalysisState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000014 /* CatAnalysisState.swift */; };
+		A0000015 /* CatGateResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000015 /* CatGateResult.swift */; };
+		A0000016 /* CompositeProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000016 /* CompositeProfile.swift */; };
+		A0000017 /* FelineFiveScores.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000017 /* FelineFiveScores.swift */; };
+		A0000018 /* PawProfilerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000018 /* PawProfilerConfig.swift */; };
+		A0000019 /* AgentPromptBuilding.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000019 /* AgentPromptBuilding.swift */; };
+		A0000020 /* BehaviorAnalyzing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000020 /* BehaviorAnalyzing.swift */; };
+		A0000021 /* CatGating.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000021 /* CatGating.swift */; };
+		A0000022 /* CatProfiling.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000022 /* CatProfiling.swift */; };
+		A0000023 /* ProfileCoordinating.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000023 /* ProfileCoordinating.swift */; };
+		A0000024 /* AgentPromptEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000024 /* AgentPromptEngine.swift */; };
+		A0000025 /* ArchetypeResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000025 /* ArchetypeResolver.swift */; };
+		A0000026 /* CatProfiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000026 /* CatProfiler.swift */; };
+		A0000027 /* ProfileCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000027 /* ProfileCoordinator.swift */; };
+		A0000028 /* AgentDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000028 /* AgentDetailView.swift */; };
+		A0000029 /* AgentProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000029 /* AgentProgressView.swift */; };
+		A0000030 /* GateRejectedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000030 /* GateRejectedView.swift */; };
+		A0000031 /* PersonaCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000031 /* PersonaCardView.swift */; };
+		A0000032 /* RadarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000032 /* RadarChartView.swift */; };
+		A0000033 /* Prompts in Resources */ = {isa = PBXBuildFile; fileRef = B0000033 /* Prompts */; };
+		A0000040 /* MLXVLM in Frameworks */ = {isa = PBXBuildFile; productRef = P0000001 /* MLXVLM */; };
+		A0000041 /* MLXLMCommon in Frameworks */ = {isa = PBXBuildFile; productRef = P0000002 /* MLXLMCommon */; };
+		A0000042 /* VLMPipeline in Frameworks */ = {isa = PBXBuildFile; productRef = P0000003 /* VLMPipeline */; };
+		A0000043 /* BundleCompat.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000036 /* BundleCompat.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		B0000000 /* PawProfiler.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PawProfiler.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B0000001 /* PawProfilerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PawProfilerApp.swift; sourceTree = "<group>"; };
+		B0000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B0000003 /* BaseAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseAgent.swift; sourceTree = "<group>"; };
+		B0000004 /* BreedArchetypeAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedArchetypeAgent.swift; sourceTree = "<group>"; };
+		B0000005 /* CatGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatGate.swift; sourceTree = "<group>"; };
+		B0000006 /* HealthBehaviorAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthBehaviorAgent.swift; sourceTree = "<group>"; };
+		B0000007 /* PersonalityAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalityAgent.swift; sourceTree = "<group>"; };
+		B0000008 /* PlayActivityAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayActivityAgent.swift; sourceTree = "<group>"; };
+		B0000009 /* SocialBehaviorAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialBehaviorAgent.swift; sourceTree = "<group>"; };
+		B0000010 /* StressWelfareAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StressWelfareAgent.swift; sourceTree = "<group>"; };
+		B0000011 /* AgentResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentResult.swift; sourceTree = "<group>"; };
+		B0000012 /* AnalysisSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisSession.swift; sourceTree = "<group>"; };
+		B0000013 /* BreedEstimate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedEstimate.swift; sourceTree = "<group>"; };
+		B0000014 /* CatAnalysisState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatAnalysisState.swift; sourceTree = "<group>"; };
+		B0000015 /* CatGateResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatGateResult.swift; sourceTree = "<group>"; };
+		B0000016 /* CompositeProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositeProfile.swift; sourceTree = "<group>"; };
+		B0000017 /* FelineFiveScores.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FelineFiveScores.swift; sourceTree = "<group>"; };
+		B0000018 /* PawProfilerConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PawProfilerConfig.swift; sourceTree = "<group>"; };
+		B0000019 /* AgentPromptBuilding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentPromptBuilding.swift; sourceTree = "<group>"; };
+		B0000020 /* BehaviorAnalyzing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BehaviorAnalyzing.swift; sourceTree = "<group>"; };
+		B0000021 /* CatGating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatGating.swift; sourceTree = "<group>"; };
+		B0000022 /* CatProfiling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatProfiling.swift; sourceTree = "<group>"; };
+		B0000023 /* ProfileCoordinating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCoordinating.swift; sourceTree = "<group>"; };
+		B0000024 /* AgentPromptEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentPromptEngine.swift; sourceTree = "<group>"; };
+		B0000025 /* ArchetypeResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchetypeResolver.swift; sourceTree = "<group>"; };
+		B0000026 /* CatProfiler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatProfiler.swift; sourceTree = "<group>"; };
+		B0000027 /* ProfileCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCoordinator.swift; sourceTree = "<group>"; };
+		B0000028 /* AgentDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentDetailView.swift; sourceTree = "<group>"; };
+		B0000029 /* AgentProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentProgressView.swift; sourceTree = "<group>"; };
+		B0000030 /* GateRejectedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GateRejectedView.swift; sourceTree = "<group>"; };
+		B0000031 /* PersonaCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonaCardView.swift; sourceTree = "<group>"; };
+		B0000032 /* RadarChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadarChartView.swift; sourceTree = "<group>"; };
+		B0000033 /* Prompts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Prompts; sourceTree = "<group>"; };
+		B0000034 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B0000035 /* PawProfiler.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PawProfiler.entitlements; sourceTree = "<group>"; };
+		B0000036 /* BundleCompat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleCompat.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C0000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A0000041 /* MLXLMCommon in Frameworks */,
+				A0000040 /* MLXVLM in Frameworks */,
+				A0000042 /* VLMPipeline in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D0000000 = {
+			isa = PBXGroup;
+			children = (
+				D0000001 /* PawProfiler */,
+				D0000009 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D0000001 /* PawProfiler */ = {
+			isa = PBXGroup;
+			children = (
+				D0000002 /* App */,
+				D0000003 /* Agents */,
+				D0000004 /* Models */,
+				D0000005 /* Protocols */,
+				D0000006 /* Services */,
+				D0000007 /* Views */,
+				D0000008 /* Resources */,
+				B0000034 /* Info.plist */,
+				B0000035 /* PawProfiler.entitlements */,
+			);
+			path = PawProfiler;
+			sourceTree = "<group>";
+		};
+		D0000002 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				B0000001 /* PawProfilerApp.swift */,
+				B0000002 /* ContentView.swift */,
+				B0000036 /* BundleCompat.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		D0000003 /* Agents */ = {
+			isa = PBXGroup;
+			children = (
+				B0000003 /* BaseAgent.swift */,
+				B0000004 /* BreedArchetypeAgent.swift */,
+				B0000005 /* CatGate.swift */,
+				B0000006 /* HealthBehaviorAgent.swift */,
+				B0000007 /* PersonalityAgent.swift */,
+				B0000008 /* PlayActivityAgent.swift */,
+				B0000009 /* SocialBehaviorAgent.swift */,
+				B0000010 /* StressWelfareAgent.swift */,
+			);
+			path = Agents;
+			sourceTree = "<group>";
+		};
+		D0000004 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B0000011 /* AgentResult.swift */,
+				B0000012 /* AnalysisSession.swift */,
+				B0000013 /* BreedEstimate.swift */,
+				B0000014 /* CatAnalysisState.swift */,
+				B0000015 /* CatGateResult.swift */,
+				B0000016 /* CompositeProfile.swift */,
+				B0000017 /* FelineFiveScores.swift */,
+				B0000018 /* PawProfilerConfig.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		D0000005 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				B0000019 /* AgentPromptBuilding.swift */,
+				B0000020 /* BehaviorAnalyzing.swift */,
+				B0000021 /* CatGating.swift */,
+				B0000022 /* CatProfiling.swift */,
+				B0000023 /* ProfileCoordinating.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		D0000006 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				B0000024 /* AgentPromptEngine.swift */,
+				B0000025 /* ArchetypeResolver.swift */,
+				B0000026 /* CatProfiler.swift */,
+				B0000027 /* ProfileCoordinator.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		D0000007 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B0000028 /* AgentDetailView.swift */,
+				B0000029 /* AgentProgressView.swift */,
+				B0000030 /* GateRejectedView.swift */,
+				B0000031 /* PersonaCardView.swift */,
+				B0000032 /* RadarChartView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		D0000008 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B0000033 /* Prompts */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		D0000009 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B0000000 /* PawProfiler.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E0000001 /* PawProfiler */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F0000003 /* Build configuration list for PBXNativeTarget "PawProfiler" */;
+			buildPhases = (
+				E0000002 /* Sources */,
+				C0000001 /* Frameworks */,
+				E0000003 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PawProfiler;
+			packageProductDependencies = (
+				P0000001 /* MLXVLM */,
+				P0000002 /* MLXLMCommon */,
+				P0000003 /* VLMPipeline */,
+			);
+			productName = PawProfiler;
+			productReference = B0000000 /* PawProfiler.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D0000099 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					E0000001 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
+			};
+			buildConfigurationList = F0000001 /* Build configuration list for PBXProject "PawProfiler" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D0000000;
+			packageReferences = (
+				R0000001 /* XCRemoteSwiftPackageReference "mlx-swift-examples" */,
+				R0000002 /* XCLocalSwiftPackageReference "../VLMPipeline" */,
+			);
+			productRefGroup = D0000009 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E0000001 /* PawProfiler */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E0000003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A0000033 /* Prompts in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E0000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A0000001 /* PawProfilerApp.swift in Sources */,
+				A0000002 /* ContentView.swift in Sources */,
+				A0000003 /* BaseAgent.swift in Sources */,
+				A0000004 /* BreedArchetypeAgent.swift in Sources */,
+				A0000005 /* CatGate.swift in Sources */,
+				A0000006 /* HealthBehaviorAgent.swift in Sources */,
+				A0000007 /* PersonalityAgent.swift in Sources */,
+				A0000008 /* PlayActivityAgent.swift in Sources */,
+				A0000009 /* SocialBehaviorAgent.swift in Sources */,
+				A0000010 /* StressWelfareAgent.swift in Sources */,
+				A0000011 /* AgentResult.swift in Sources */,
+				A0000012 /* AnalysisSession.swift in Sources */,
+				A0000013 /* BreedEstimate.swift in Sources */,
+				A0000014 /* CatAnalysisState.swift in Sources */,
+				A0000015 /* CatGateResult.swift in Sources */,
+				A0000016 /* CompositeProfile.swift in Sources */,
+				A0000017 /* FelineFiveScores.swift in Sources */,
+				A0000018 /* PawProfilerConfig.swift in Sources */,
+				A0000019 /* AgentPromptBuilding.swift in Sources */,
+				A0000020 /* BehaviorAnalyzing.swift in Sources */,
+				A0000021 /* CatGating.swift in Sources */,
+				A0000022 /* CatProfiling.swift in Sources */,
+				A0000023 /* ProfileCoordinating.swift in Sources */,
+				A0000024 /* AgentPromptEngine.swift in Sources */,
+				A0000025 /* ArchetypeResolver.swift in Sources */,
+				A0000026 /* CatProfiler.swift in Sources */,
+				A0000027 /* ProfileCoordinator.swift in Sources */,
+				A0000028 /* AgentDetailView.swift in Sources */,
+				A0000029 /* AgentProgressView.swift in Sources */,
+				A0000030 /* GateRejectedView.swift in Sources */,
+				A0000031 /* PersonaCardView.swift in Sources */,
+				A0000032 /* RadarChartView.swift in Sources */,
+				A0000043 /* BundleCompat.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		F0000010 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		F0000011 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 5.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F0000020 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = PawProfiler/PawProfiler.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XB5H84M34T;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = PawProfiler/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PawProfiler;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pawprofiler.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F0000021 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = PawProfiler/PawProfiler.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XB5H84M34T;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = PawProfiler/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PawProfiler;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pawprofiler.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F0000001 /* Build configuration list for PBXProject "PawProfiler" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F0000010 /* Debug */,
+				F0000011 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F0000003 /* Build configuration list for PBXNativeTarget "PawProfiler" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F0000020 /* Debug */,
+				F0000021 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		R0000002 /* XCLocalSwiftPackageReference "../VLMPipeline" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../VLMPipeline;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		R0000001 /* XCRemoteSwiftPackageReference "mlx-swift-examples" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ml-explore/mlx-swift-examples.git";
+			requirement = {
+				kind = exactVersion;
+				version = 2.29.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		P0000001 /* MLXVLM */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = R0000001 /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
+			productName = MLXVLM;
+		};
+		P0000002 /* MLXLMCommon */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = R0000001 /* XCRemoteSwiftPackageReference "mlx-swift-examples" */;
+			productName = MLXLMCommon;
+		};
+		P0000003 /* VLMPipeline */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = R0000002 /* XCLocalSwiftPackageReference "../VLMPipeline" */;
+			productName = VLMPipeline;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = D0000099 /* Project object */;
+}

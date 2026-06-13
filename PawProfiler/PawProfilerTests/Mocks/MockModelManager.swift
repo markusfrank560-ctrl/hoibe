@@ -6,6 +6,7 @@ import VLMPipeline
 final class MockModelManager: ModelManaging, @unchecked Sendable {
     var state: ModelDownloadState = .ready
     var isReady: Bool = true
+    var onProgress: (@Sendable (Double) -> Void)?
 
     /// Map of response keys to pre-recorded responses.
     /// Keys are matched against the system prompt content to route responses.
@@ -15,15 +16,15 @@ final class MockModelManager: ModelManaging, @unchecked Sendable {
     var defaultResponse: String = "{}"
 
     /// Track calls for verification.
-    private(set) var generateCalls: [(messages: [ChatMessage], maxTokens: Int, temperature: Double)] = []
+    private(set) var generateCalls: [(messages: [ChatMessage], maxTokens: Int, temperature: Double, imageResizeSize: Int?)] = []
 
     func tryLoadCached() async -> Bool { true }
     func startDownload(allowCellular: Bool) async throws {}
     func pauseDownload() {}
     func deleteModel() throws {}
 
-    func generate(messages: [ChatMessage], maxTokens: Int, temperature: Double) async throws -> String {
-        generateCalls.append((messages, maxTokens, temperature))
+    func generate(messages: [ChatMessage], maxTokens: Int, temperature: Double, imageResizeSize: Int?) async throws -> String {
+        generateCalls.append((messages, maxTokens, temperature, imageResizeSize))
 
         // Route response based on system prompt content
         let systemContent = messages.first(where: { $0.role == .system })?.text ?? ""

@@ -10,7 +10,7 @@
     "labeled_at": "2026-05-25",
     "notes": "Edge case: gate passes but all agents fail. Profile should be marked as insufficient (<3 completed agents)."
   },
-  "mock_responses": {
+  "recorded_responses": {
     "gate": "{\"frame_assessments\":[{\"frame_index\":0,\"cat_detected\":true,\"confidence\":0.6,\"species_guess\":null,\"multiple_cats\":false},{\"frame_index\":1,\"cat_detected\":true,\"confidence\":0.55,\"species_guess\":null,\"multiple_cats\":false},{\"frame_index\":2,\"cat_detected\":true,\"confidence\":0.58,\"species_guess\":null,\"multiple_cats\":false}],\"majority_vote\":{\"cat_detected\":true,\"status\":\"cat_detected\",\"confidence\":0.58,\"species_guess\":null,\"multiple_cats\":false}}",
     "personality": "{\"agent_id\":\"personality\",\"domain\":\"Personality & Traits\",\"status\":\"not_observable\",\"trait_scores\":null,\"observations\":[],\"flags\":[],\"confidence\":0.0,\"reasoning\":\"Cat obscured, cannot assess personality\",\"prompt_version\":\"v1\"}",
     "social": "{\"agent_id\":\"social\",\"domain\":\"Social Behavior & Human Bonding\",\"status\":\"not_observable\",\"trait_scores\":null,\"observations\":[],\"flags\":[],\"confidence\":0.0,\"reasoning\":\"No social context visible\",\"prompt_version\":\"v1\"}",

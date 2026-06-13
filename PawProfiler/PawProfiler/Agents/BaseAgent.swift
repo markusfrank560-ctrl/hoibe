@@ -26,8 +26,9 @@ struct BaseAgent: BehaviorAnalyzing, @unchecked Sendable {
             response = try await withThrowingTimeout(seconds: config.agentTimeout) {
                 try await modelManager.generate(
                     messages: messages,
-                    maxTokens: 2048,
-                    temperature: config.temperature
+                    maxTokens: config.agentMaxTokens,
+                    temperature: config.temperature,
+                    imageResizeSize: config.imageResizeSize
                 )
             }
         } catch is TimeoutError {

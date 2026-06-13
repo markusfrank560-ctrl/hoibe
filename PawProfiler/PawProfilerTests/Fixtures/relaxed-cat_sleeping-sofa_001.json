@@ -9,7 +9,7 @@
     "labeler": "manual",
     "labeled_at": "2026-05-25"
   },
-  "mock_responses": {
+  "recorded_responses": {
     "gate": "{\"frame_assessments\":[{\"frame_index\":0,\"cat_detected\":true,\"confidence\":0.85,\"species_guess\":null,\"multiple_cats\":false},{\"frame_index\":1,\"cat_detected\":true,\"confidence\":0.87,\"species_guess\":null,\"multiple_cats\":false},{\"frame_index\":2,\"cat_detected\":true,\"confidence\":0.83,\"species_guess\":null,\"multiple_cats\":false}],\"majority_vote\":{\"cat_detected\":true,\"status\":\"cat_detected\",\"confidence\":0.85,\"species_guess\":null,\"multiple_cats\":false}}",
     "personality": "{\"agent_id\":\"personality\",\"domain\":\"Personality & Traits\",\"status\":\"completed\",\"trait_scores\":{\"neuroticism\":0.2,\"extraversion\":0.15,\"dominance\":0.3,\"impulsiveness\":0.1,\"agreeableness\":0.7},\"observations\":[\"Deeply relaxed posture with slow breathing\",\"No response to ambient sounds suggests low neuroticism\"],\"flags\":[],\"confidence\":0.7,\"reasoning\":\"Limited behavioral range visible during sleep\",\"prompt_version\":\"v1\"}",
     "play": "{\"agent_id\":\"play\",\"domain\":\"Play, Activity & Predatory Behavior\",\"status\":\"not_observable\",\"trait_scores\":null,\"observations\":[],\"flags\":[],\"confidence\":0.0,\"reasoning\":\"Cat is sleeping, no play or activity to assess\",\"prompt_version\":\"v1\"}",

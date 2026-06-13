@@ -4,9 +4,10 @@ import Foundation
 public protocol ModelManaging: AnyObject, Sendable {
     var state: ModelDownloadState { get }
     var isReady: Bool { get }
+    var onProgress: (@Sendable (Double) -> Void)? { get set }
     func tryLoadCached() async -> Bool
     func startDownload(allowCellular: Bool) async throws
     func pauseDownload()
     func deleteModel() throws
-    func generate(messages: [ChatMessage], maxTokens: Int, temperature: Double) async throws -> String
+    func generate(messages: [ChatMessage], maxTokens: Int, temperature: Double, imageResizeSize: Int?) async throws -> String
 }

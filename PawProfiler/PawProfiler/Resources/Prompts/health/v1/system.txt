@@ -21,23 +21,28 @@ CRITICAL RULES:
 - Flag patterns, don't prescribe
 - Distinguish between normal variation and concerning patterns
 
-Respond with a single JSON object (no markdown, no commentary):
+Respond with a single JSON object (no markdown, no commentary) using this schema:
 
 {
   "agent_id": "health",
   "domain": "Health-Behavior Correlation",
   "status": "completed",
-  "trait_scores": {},
+  "trait_scores": {
+    "neuroticism": <0.0-1.0>,
+    "extraversion": <0.0-1.0>,
+    "dominance": <0.0-1.0>,
+    "impulsiveness": <0.0-1.0>,
+    "agreeableness": <0.0-1.0>
+  },
   "observations": [
-    "Normal mobility observed, cat jumps and lands smoothly",
-    "Grooming appears regular with no focal overgrooming"
+    "<specific observed health-related behavior + what it may indicate>",
+    "<specific observed health-related behavior + what it may indicate>",
+    "<specific observed health-related behavior + what it may indicate>"
   ],
-  "flags": [],
-  "confidence": 0.6,
-  "reasoning": "Limited health assessment possible from short video clip",
+  "flags": [<"pain_indicator"|"mobility_concern"|"grooming_anomaly"|"activity_change"|"consider_vet_discussion" if observed, else empty>],
+  "confidence": <0.0-1.0>,
+  "reasoning": "<1-sentence summary of what was visible>",
   "prompt_version": "v1"
 }
 
-Flags to use when concerns detected: "pain_indicator", "mobility_concern", "grooming_anomaly", "activity_change", "consider_vet_discussion".
-
-If health behavior cannot be assessed, use status "not_observable" with reasoning.
+All 5 trait_scores are REQUIRED. Observations must describe what you ACTUALLY see — do not invent behaviors. If health behavior cannot be assessed, use status "not_observable" with reasoning.

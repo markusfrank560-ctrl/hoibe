@@ -9,7 +9,7 @@
     "labeler": "manual",
     "labeled_at": "2026-05-25"
   },
-  "mock_responses": {
+  "recorded_responses": {
     "gate": "{\"frame_assessments\":[{\"frame_index\":0,\"cat_detected\":true,\"confidence\":0.95,\"species_guess\":null,\"multiple_cats\":false},{\"frame_index\":1,\"cat_detected\":true,\"confidence\":0.92,\"species_guess\":null,\"multiple_cats\":false},{\"frame_index\":2,\"cat_detected\":true,\"confidence\":0.94,\"species_guess\":null,\"multiple_cats\":false}],\"majority_vote\":{\"cat_detected\":true,\"status\":\"cat_detected\",\"confidence\":0.94,\"species_guess\":null,\"multiple_cats\":false}}",
     "personality": "{\"agent_id\":\"personality\",\"domain\":\"Personality & Traits\",\"status\":\"completed\",\"trait_scores\":{\"neuroticism\":0.2,\"extraversion\":0.85,\"dominance\":0.5,\"impulsiveness\":0.8,\"agreeableness\":0.6},\"observations\":[\"High activity level with sustained focus on toy\",\"Rapid behavioral transitions between stalking and pouncing\"],\"flags\":[],\"confidence\":0.8,\"reasoning\":\"Clear body posture and facial expression visible\",\"prompt_version\":\"v1\"}",
     "social": "{\"agent_id\":\"social\",\"domain\":\"Social Behavior & Human Bonding\",\"status\":\"completed\",\"trait_scores\":{\"agreeableness\":0.6,\"extraversion\":0.7},\"observations\":[\"Plays near human, comfortable with proximity\"],\"flags\":[],\"confidence\":0.65,\"reasoning\":\"Social context visible in frames\",\"prompt_version\":\"v1\"}",

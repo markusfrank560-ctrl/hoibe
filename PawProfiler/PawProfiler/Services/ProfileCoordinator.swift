@@ -51,8 +51,9 @@ struct ProfileCoordinator: ProfileCoordinating {
 
         let vlmResponse = try await modelManager.generate(
             messages: messages,
-            maxTokens: 2048,
-            temperature: config.temperature
+            maxTokens: config.coordinatorMaxTokens,
+            temperature: config.temperature,
+            imageResizeSize: nil
         )
 
         let personaOutput = parseCoordinatorResponse(vlmResponse)

@@ -4,8 +4,12 @@ import SwiftUI
 import VLMPipeline
 
 struct ContentView: View {
+    private static let defaultConfig = PawProfilerConfig()
+
     @State private var profiler = CatProfiler(
-        modelManager: ModelManager(),
+        modelManager: ModelManager(
+            modelId: defaultConfig.modelId
+        ),
         frameExtractor: FrameExtractor()
     )
 
@@ -14,9 +18,11 @@ struct ContentView: View {
     @State private var videoDuration: TimeInterval?
     @State private var profileMode: ProfileMode = .quick
     @State private var durationError: String?
+    @State private var showDebugLog = false
 
-    private let minDuration: TimeInterval = 15
-    private let maxDuration: TimeInterval = 90
+    private var config: PawProfilerConfig { profileMode == .deep ? .deep() : .quick() }
+    private var minDuration: TimeInterval { config.minVideoDuration }
+    private var maxDuration: TimeInterval { config.maxVideoDuration }
 
     var body: some View {
         NavigationStack {
@@ -24,6 +30,9 @@ struct ContentView: View {
                 switch profiler.analysisState {
                 case .idle:
                     idleView
+
+                case .downloadingModel(let progress):
+                    modelDownloadView(progress: progress)
 
                 case .extractingFrames:
                     PipelineStageView(stage: "Extracting frames…", icon: "film")
@@ -49,6 +58,11 @@ struct ContentView: View {
 
                 case .error(let message):
                     errorView(message)
+                }
+            }
+            .safeAreaInset(edge: .bottom) {
+                if profiler.analysisState != .idle && !profiler.debugLog.isEmpty {
+                    debugLogPanel
                 }
             }
             .navigationTitle("PawProfiler")
@@ -189,6 +203,88 @@ struct ContentView: View {
             .tint(.orange)
         }
         .padding()
+    }
+
+    // MARK: - Model Download View
+
+    private func modelDownloadView(progress: Double) -> some View {
+        VStack(spacing: 20) {
+            Image(systemName: "arrow.down.circle")
+                .font(.system(size: 48))
+                .foregroundStyle(.orange)
+                .symbolEffect(.pulse)
+
+            Text("Downloading Model…")
+                .font(.title2.bold())
+
+            ProgressView(value: progress)
+                .tint(.orange)
+                .padding(.horizontal, 40)
+
+            Text("\(Int(progress * 100))%")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+
+            Text("Qwen3-VL 4B (≈2.5 GB)")
+                .font(.caption)
+                .foregroundStyle(.tertiary)
+        }
+        .padding()
+    }
+
+    // MARK: - Debug Log Panel
+
+    private var debugLogPanel: some View {
+        VStack(spacing: 0) {
+            Button {
+                withAnimation { showDebugLog.toggle() }
+            } label: {
+                HStack {
+                    Image(systemName: "ladybug")
+                        .font(.caption)
+                    Text(profiler.debugLog.last?.message ?? "")
+                        .font(.caption2)
+                        .lineLimit(1)
+                    Spacer()
+                    Image(systemName: showDebugLog ? "chevron.down" : "chevron.up")
+                        .font(.caption2)
+                }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+                .background(.ultraThinMaterial)
+            }
+            .buttonStyle(.plain)
+
+            if showDebugLog {
+                ScrollViewReader { proxy in
+                    ScrollView {
+                        LazyVStack(alignment: .leading, spacing: 2) {
+                            ForEach(profiler.debugLog) { entry in
+                                HStack(alignment: .top, spacing: 6) {
+                                    Text(entry.elapsed)
+                                        .font(.system(.caption2, design: .monospaced))
+                                        .foregroundStyle(.tertiary)
+                                        .frame(width: 44, alignment: .trailing)
+                                    Text(entry.message)
+                                        .font(.system(.caption2, design: .monospaced))
+                                        .foregroundStyle(.secondary)
+                                }
+                                .id(entry.id)
+                            }
+                        }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                    }
+                    .frame(maxHeight: 160)
+                    .background(.ultraThinMaterial)
+                    .onChange(of: profiler.debugLog.count) { _, _ in
+                        if let last = profiler.debugLog.last {
+                            proxy.scrollTo(last.id, anchor: .bottom)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     // MARK: - Logic

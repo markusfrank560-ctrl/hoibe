@@ -10,7 +10,7 @@
     "labeled_at": "2026-05-25",
     "notes": "Edge case: clip too short for meaningful analysis. Should result in low confidence across agents."
   },
-  "mock_responses": {
+  "recorded_responses": {
     "gate": "{\"frame_assessments\":[{\"frame_index\":0,\"cat_detected\":true,\"confidence\":0.7,\"species_guess\":null,\"multiple_cats\":false},{\"frame_index\":1,\"cat_detected\":true,\"confidence\":0.65,\"species_guess\":null,\"multiple_cats\":false},{\"frame_index\":2,\"cat_detected\":true,\"confidence\":0.6,\"species_guess\":null,\"multiple_cats\":false}],\"majority_vote\":{\"cat_detected\":true,\"status\":\"cat_detected\",\"confidence\":0.65,\"species_guess\":null,\"multiple_cats\":false}}",
     "personality": "{\"agent_id\":\"personality\",\"domain\":\"Personality & Traits\",\"status\":\"completed\",\"trait_scores\":{\"neuroticism\":0.5,\"extraversion\":0.5,\"dominance\":0.5,\"impulsiveness\":0.5,\"agreeableness\":0.5},\"observations\":[\"Insufficient observation time for confident assessment\"],\"flags\":[],\"confidence\":0.25,\"reasoning\":\"Very short clip limits behavioral analysis\",\"prompt_version\":\"v1\"}"
   }

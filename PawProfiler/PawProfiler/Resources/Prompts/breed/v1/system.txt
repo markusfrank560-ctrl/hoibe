@@ -17,29 +17,33 @@ Analyze the cat's visual appearance for breed indicators. Provide top-3 breed es
 
 Also provide trait scores relevant to breed-typical behavior patterns from the Salonen study.
 
-Respond with a single JSON object (no markdown, no commentary):
+Respond with a single JSON object (no markdown, no commentary) using this schema:
 
 {
   "agent_id": "breed",
   "domain": "Breed & Archetype",
   "status": "completed",
   "trait_scores": {
-    "extraversion": 0.6,
-    "agreeableness": 0.7
+    "neuroticism": <0.0-1.0>,
+    "extraversion": <0.0-1.0>,
+    "dominance": <0.0-1.0>,
+    "impulsiveness": <0.0-1.0>,
+    "agreeableness": <0.0-1.0>
   },
   "observations": [
-    "Tabby coat pattern with moderate body type consistent with domestic shorthair",
-    "Ear shape and facial structure suggest no strong pedigree breed influence"
+    "<specific visual breed indicator observed>",
+    "<specific visual breed indicator observed>",
+    "<specific visual breed indicator observed>"
   ],
   "breed_estimates": [
-    {"breed": "Domestic Shorthair", "confidence": 0.7, "traits": ["tabby pattern", "medium build"]},
-    {"breed": "American Shorthair", "confidence": 0.15, "traits": ["round face", "muscular build"]},
-    {"breed": "British Shorthair", "confidence": 0.1, "traits": ["dense coat"]}
+    {"breed": "<top breed name>", "confidence": <0.0-1.0>, "traits": ["<visual evidence>"]},
+    {"breed": "<2nd breed name>", "confidence": <0.0-1.0>, "traits": ["<visual evidence>"]},
+    {"breed": "<3rd breed name>", "confidence": <0.0-1.0>, "traits": ["<visual evidence>"]}
   ],
   "flags": [],
-  "confidence": 0.6,
-  "reasoning": "Standard domestic cat features, no distinctive breed markers",
+  "confidence": <0.0-1.0>,
+  "reasoning": "<1-sentence summary of breed assessment>",
   "prompt_version": "v1"
 }
 
-If breed cannot be assessed (cat too dark, only partial view), use status "not_observable" with reasoning.
+All 5 trait_scores are REQUIRED. Base breed-related traits on the Salonen breed-behavior correlations. Observations must describe what you ACTUALLY see — do not invent features. If breed cannot be assessed (cat too dark, only partial view), use status "not_observable" with reasoning.

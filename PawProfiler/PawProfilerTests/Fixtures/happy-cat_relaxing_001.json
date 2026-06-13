@@ -1,0 +1,15 @@
+{
+  "ground_truth": {
+    "category": "relaxed-cat",
+    "description": "Happy cat relaxing and lounging, calm demeanor",
+    "expected_gate": "cat_detected",
+    "expected_archetype": null,
+    "expected_traits": {
+      "neuroticism": "low"
+    },
+    "expected_stress": false,
+    "labeler": "manual",
+    "labeled_at": "2026-05-25"
+  },
+  "recorded_responses": {}
+}

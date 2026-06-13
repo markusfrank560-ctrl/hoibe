@@ -9,7 +9,7 @@
     "labeler": "manual",
     "labeled_at": "2026-05-25"
   },
-  "mock_responses": {
+  "recorded_responses": {
     "gate": "{\"frame_assessments\":[{\"frame_index\":0,\"cat_detected\":true,\"confidence\":0.55,\"species_guess\":null,\"multiple_cats\":false},{\"frame_index\":1,\"cat_detected\":true,\"confidence\":0.5,\"species_guess\":null,\"multiple_cats\":false},{\"frame_index\":2,\"cat_detected\":false,\"confidence\":0.4,\"species_guess\":null,\"multiple_cats\":false}],\"majority_vote\":{\"cat_detected\":true,\"status\":\"cat_detected\",\"confidence\":0.48,\"species_guess\":null,\"multiple_cats\":false}}",
     "personality": "{\"agent_id\":\"personality\",\"domain\":\"Personality & Traits\",\"status\":\"completed\",\"trait_scores\":{\"neuroticism\":0.5,\"extraversion\":0.5,\"dominance\":0.5,\"impulsiveness\":0.5,\"agreeableness\":0.5},\"observations\":[\"Limited visibility prevents confident trait assessment\"],\"flags\":[],\"confidence\":0.3,\"reasoning\":\"Dark environment severely limits analysis quality\",\"prompt_version\":\"v1\"}",
     "stress": "{\"agent_id\":\"stress\",\"domain\":\"Stress, Anxiety & Welfare\",\"status\":\"not_observable\",\"trait_scores\":null,\"observations\":[],\"flags\":[],\"confidence\":0.0,\"reasoning\":\"Too dark to assess stress indicators\",\"prompt_version\":\"v1\"}"

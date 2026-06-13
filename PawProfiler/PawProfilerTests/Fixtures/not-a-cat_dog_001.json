@@ -9,7 +9,7 @@
     "labeler": "manual",
     "labeled_at": "2026-05-25"
   },
-  "mock_responses": {
+  "recorded_responses": {
     "gate": "{\"frame_assessments\":[{\"frame_index\":0,\"cat_detected\":false,\"confidence\":0.92,\"species_guess\":\"dog\",\"multiple_cats\":false},{\"frame_index\":1,\"cat_detected\":false,\"confidence\":0.9,\"species_guess\":\"dog\",\"multiple_cats\":false},{\"frame_index\":2,\"cat_detected\":false,\"confidence\":0.91,\"species_guess\":\"dog\",\"multiple_cats\":false}],\"majority_vote\":{\"cat_detected\":false,\"status\":\"not_a_cat\",\"confidence\":0.91,\"species_guess\":\"dog\",\"multiple_cats\":false}}"
   }
 }

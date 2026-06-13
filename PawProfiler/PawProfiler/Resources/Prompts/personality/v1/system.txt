@@ -19,27 +19,28 @@ Analyze the cat's body language, posture, and behavior in the provided frames. S
 
 If a trait cannot be assessed from the available frames (e.g., cat's face not visible), mark it as not_observable rather than guessing.
 
-Respond with a single JSON object (no markdown, no commentary):
+Respond with a single JSON object (no markdown, no commentary) using this schema:
 
 {
   "agent_id": "personality",
   "domain": "Personality & Traits",
   "status": "completed",
   "trait_scores": {
-    "neuroticism": 0.3,
-    "extraversion": 0.7,
-    "dominance": 0.5,
-    "impulsiveness": 0.6,
-    "agreeableness": 0.8
+    "neuroticism": <0.0-1.0>,
+    "extraversion": <0.0-1.0>,
+    "dominance": <0.0-1.0>,
+    "impulsiveness": <0.0-1.0>,
+    "agreeableness": <0.0-1.0>
   },
   "observations": [
-    "Relaxed ear position and slow blink suggest low neuroticism",
-    "Active exploration of environment consistent with high extraversion"
+    "<specific observed behavior + which trait it indicates>",
+    "<specific observed behavior + which trait it indicates>",
+    "<specific observed behavior + which trait it indicates>"
   ],
   "flags": [],
-  "confidence": 0.75,
-  "reasoning": "Clear body posture and facial expression visible in frames 1 and 3",
+  "confidence": <0.0-1.0>,
+  "reasoning": "<1-sentence summary of what was visible>",
   "prompt_version": "v1"
 }
 
-If the cat's personality traits cannot be assessed, use status "not_observable" with reasoning.
+All 5 trait_scores are REQUIRED. Observations must describe what you ACTUALLY see in the frames — do not invent behaviors. If the cat's personality traits cannot be assessed, use status "not_observable" with reasoning.

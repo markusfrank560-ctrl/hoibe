@@ -7,11 +7,13 @@ import VLMPipeline
 @Observable
 final class CatProfiler: CatProfiling, @unchecked Sendable {
     private(set) var analysisState: CatAnalysisState = .idle
+    private(set) var debugLog: [DebugEntry] = []
 
     private let modelManager: any ModelManaging
     private let frameExtractor: any FrameExtracting
     private let promptEngine: AgentPromptEngine
     private var currentTask: Task<CompositeProfile, Error>?
+    private var pipelineStart: Date?
 
     init(
         modelManager: any ModelManaging,
@@ -43,6 +45,30 @@ final class CatProfiler: CatProfiling, @unchecked Sendable {
         currentTask?.cancel()
         currentTask = nil
         analysisState = .idle
+        log("Pipeline cancelled")
+    }
+
+    // MARK: - Debug Logging
+
+    struct DebugEntry: Identifiable, Sendable {
+        let id = UUID()
+        let timestamp: Date
+        let message: String
+        var elapsed: String {
+            String(format: "%.1fs", timestamp.timeIntervalSinceNow * -1)
+        }
+    }
+
+    private func log(_ message: String) {
+        let entry = DebugEntry(timestamp: Date(), message: message)
+        debugLog.append(entry)
+        print("[PawProfiler] \(message)")
+    }
+
+    private func logElapsed(_ label: String) {
+        guard let start = pipelineStart else { return }
+        let elapsed = Date().timeIntervalSince(start)
+        log("\(label) [\(String(format: "%.1f", elapsed))s total]")
     }
 
     // MARK: - Pipeline
@@ -51,8 +77,29 @@ final class CatProfiler: CatProfiling, @unchecked Sendable {
         videoURL: URL,
         config: PawProfilerConfig
     ) async throws -> CompositeProfile {
+        debugLog = []
+        pipelineStart = Date()
+        log("Pipeline started")
+
+        // 0. Ensure model is downloaded and ready
+        if !modelManager.isReady {
+            analysisState = .downloadingModel(progress: 0)
+            log("Model not cached — downloading…")
+            let mgr = modelManager
+            mgr.onProgress = { [weak self] frac in
+                Task { @MainActor in
+                    self?.analysisState = .downloadingModel(progress: frac)
+                }
+            }
+            try await mgr.startDownload(allowCellular: true)
+            logElapsed("Model downloaded ✓")
+        } else {
+            log("Model already cached ✓")
+        }
+
         // 1. Extract frames
         analysisState = .extractingFrames
+        log("Extracting frames…")
         try Task.checkCancellation()
 
         let frameData = try await frameExtractor.extractSharpestFrames(
@@ -68,13 +115,18 @@ final class CatProfiler: CatProfiling, @unchecked Sendable {
         let gateFrameCount = min(config.framesPerCall, frameData.framesJPEG.count)
         let topIndices = Array(frameData.indicesBySharpness.prefix(gateFrameCount))
         let gateFrames = topIndices.map { frameData.framesJPEG[$0] }
+        logElapsed("Extracted \(frameData.framesJPEG.count) frames")
+        let allTimestamps = frameData.timestamps.map { String(format: "%.1fs", $0) }.joined(separator: ", ")
+        log("Frame timestamps: [\(allTimestamps)]")
 
         // 2. Cat Gate
         analysisState = .runningGate
+        log("Gate: checking \(gateFrames.count) frames for cat…")
         try Task.checkCancellation()
 
         let gate = CatGate(modelManager: modelManager, promptEngine: promptEngine)
         let gateResult = try await gate.runGate(frames: gateFrames, config: config)
+        logElapsed("Gate result: cat=\(gateResult.catDetected)")
 
         try await applyCooldown(config: config)
 
@@ -89,6 +141,7 @@ final class CatProfiler: CatProfiling, @unchecked Sendable {
 
         for (index, agent) in agents.enumerated() {
             analysisState = .runningAgent(agent: index + 1, of: agents.count, name: agent.domain)
+            log("Agent \(index + 1)/\(agents.count): \(agent.domain) — inference…")
             try Task.checkCancellation()
 
             let agentFrames = selectAgentFrames(
@@ -96,6 +149,8 @@ final class CatProfiler: CatProfiling, @unchecked Sendable {
                 config: config,
                 windowIndex: 0
             )
+            let agentTs = agentFrames.timestamps.map { String(format: "%.1fs", $0) }.joined(separator: ", ")
+            log("  → using \(agentFrames.frames.count) frames at [\(agentTs)]")
 
             let result = try await agent.analyze(
                 frames: agentFrames.frames,
@@ -103,6 +158,7 @@ final class CatProfiler: CatProfiling, @unchecked Sendable {
                 config: config
             )
             agentResults.append(result)
+            logElapsed("Agent \(agent.domain) done (conf: \(String(format: "%.2f", result.confidence)))")
 
             try await applyCooldown(config: config)
         }
@@ -119,6 +175,7 @@ final class CatProfiler: CatProfiling, @unchecked Sendable {
 
         // 4. Coordinator
         analysisState = .runningCoordinator
+        log("Coordinator: synthesizing profile…")
         try Task.checkCancellation()
 
         let coordinator = ProfileCoordinator(
@@ -138,6 +195,7 @@ final class CatProfiler: CatProfiling, @unchecked Sendable {
         )
 
         analysisState = .complete(profile)
+        logElapsed("Pipeline complete ✓")
         return profile
     }
 
@@ -165,6 +223,8 @@ final class CatProfiler: CatProfiling, @unchecked Sendable {
                     config: config,
                     windowIndex: windowIndex
                 )
+                let agentTs = agentFrames.timestamps.map { String(format: "%.1fs", $0) }.joined(separator: ", ")
+                log("Agent \(index + 1)/\(agents.count): \(agent.domain) (window \(windowIndex + 1)) — \(agentFrames.frames.count) frames at [\(agentTs)]")
 
                 let result = try await agent.analyze(
                     frames: agentFrames.frames,
@@ -192,12 +252,12 @@ final class CatProfiler: CatProfiling, @unchecked Sendable {
 
     private func createAgents() -> [any BehaviorAnalyzing] {
         [
+            BreedArchetypeAgent(modelManager: modelManager, promptEngine: promptEngine),
             PersonalityAgent(modelManager: modelManager, promptEngine: promptEngine),
             SocialBehaviorAgent(modelManager: modelManager, promptEngine: promptEngine),
             PlayActivityAgent(modelManager: modelManager, promptEngine: promptEngine),
             StressWelfareAgent(modelManager: modelManager, promptEngine: promptEngine),
             HealthBehaviorAgent(modelManager: modelManager, promptEngine: promptEngine),
-            BreedArchetypeAgent(modelManager: modelManager, promptEngine: promptEngine),
         ]
     }
 
@@ -215,26 +275,16 @@ final class CatProfiler: CatProfiling, @unchecked Sendable {
     ) -> AgentFrameSelection {
         let totalFrames = frameData.framesJPEG.count
         let framesNeeded = min(config.framesPerCall, totalFrames)
+        let windowCount = max(config.windowsPerAgent, 1)
 
-        if config.windowsPerAgent <= 1 || totalFrames <= framesNeeded {
-            // Quick mode or not enough frames: use top N by sharpness
-            let indices = Array(frameData.indicesBySharpness.prefix(framesNeeded))
-            let sortedByTime = indices.sorted()
-            return AgentFrameSelection(
-                frames: sortedByTime.map { frameData.framesJPEG[$0] },
-                timestamps: sortedByTime.map { frameData.timestamps[$0] }
-            )
-        }
-
-        // Deep mode: distribute frames across temporal windows
-        let windowCount = config.windowsPerAgent
+        // Divide candidates (already time-sorted by index) into windowCount temporal slices
         let windowSize = totalFrames / windowCount
         let start = windowIndex * windowSize
-        let end = min(start + windowSize, totalFrames)
-        let windowFrames = Array(start..<end)
+        let end = (windowIndex == windowCount - 1) ? totalFrames : start + windowSize
+        let sliceIndices = Array(start..<end)
 
-        // Pick top frames by sharpness within this window
-        let ranked = windowFrames
+        // Pick top framesPerCall by sharpness within this slice
+        let ranked = sliceIndices
             .sorted { frameData.sharpnessScores[$0] > frameData.sharpnessScores[$1] }
         let selected = Array(ranked.prefix(framesNeeded)).sorted()
 

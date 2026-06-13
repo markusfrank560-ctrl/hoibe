@@ -10,27 +10,24 @@ struct AgentPromptEngineTests {
 
     // MARK: - Gate Messages
 
-    @Test("buildGateMessages single image returns system + user")
-    func gateMessagesSingle() throws {
-        let imageData = Data([0xFF, 0xD8, 0xFF]) // minimal JPEG header
-        let messages = engine.buildGateMessages(imageData: imageData)
-
-        #expect(messages.count == 2)
-        #expect(messages[0].role == .system)
-        #expect(messages[1].role == .user)
-        #expect(messages[0].text.contains("cat detection specialist"))
-        #expect(messages[1].images.count == 1)
-        #expect(messages[1].text.contains("/no_think"))
-    }
-
-    @Test("buildGateMessages multi-frame returns all frames in images array")
-    func gateMessagesMultiFrame() throws {
+    @Test("buildGateMessages returns system prompt + user task instruction")
+    func gateMessages() throws {
         let frames = (0..<3).map { _ in Data([0xFF, 0xD8, 0xFF]) }
         let messages = engine.buildGateMessages(framesData: frames)
 
         #expect(messages.count == 2)
-        #expect(messages[1].images.count == 3)
+        #expect(messages[0].role == .system)
         #expect(messages[0].text.contains("cat detection specialist"))
+        // Domain knowledge in system, user has only task instruction + images
+        #expect(messages[1].role == .user)
+        #expect(messages[1].text.contains("Analyze these frames"))
+        #expect(messages[1].images.count == 3)
+    }
+
+    @Test("buildGateMessages single frame")
+    func gateMessagesSingle() throws {
+        let messages = engine.buildGateMessages(framesData: [Data([0xFF, 0xD8, 0xFF])])
+        #expect(messages[1].images.count == 1)
     }
 
     // MARK: - Agent Messages
@@ -50,7 +47,6 @@ struct AgentPromptEngineTests {
         #expect(messages[1].role == .user)
         #expect(messages[1].images.count == 1)
         #expect(messages[1].text.contains("00:05.0"))
-        #expect(messages[1].text.contains("/no_think"))
         // System prompt should not be empty
         #expect(!messages[0].text.isEmpty)
     }
@@ -83,7 +79,6 @@ struct AgentPromptEngineTests {
         #expect(messages[0].role == .system)
         #expect(messages[0].text.contains("cat persona writer"))
         #expect(messages[1].text.contains("feline_five_scores"))
-        #expect(messages[1].text.contains("/no_think"))
         #expect(messages[1].images.isEmpty)
     }
 
@@ -119,6 +114,8 @@ struct AgentPromptEngineTests {
             timestamps: ["00:00.0"]
         )
 
-        #expect(messages[0].text.contains(expectedKeyword))
+        // Domain knowledge is in the system message (proper role separation).
+        let systemText = messages[0].text
+        #expect(systemText.contains(expectedKeyword))
     }
 }

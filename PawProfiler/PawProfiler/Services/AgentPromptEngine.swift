@@ -2,8 +2,16 @@ import Foundation
 import VLMPipeline
 
 /// Builds chat messages for specialist agent prompts.
-/// Each agent has its own system prompt with embedded research context,
-/// loaded from bundled Resources/Prompts/{agentId}/v{N}/system.txt.
+///
+/// ## Prompt architecture (2026-05-25)
+///
+/// System role carries the full domain knowledge: persona, scientific
+/// framework, scoring scales, observable indicators, flag vocabularies,
+/// and the expected JSON response schema. User role carries only the
+/// concrete task instruction and attached images/data.
+///
+/// Prompt text files under `Resources/Prompts/{agentId}/v1/system.txt` are
+/// the single source of truth and are loaded at runtime.
 struct AgentPromptEngine: AgentPromptBuilding {
 
     /// Load a prompt template from the bundle.
@@ -22,19 +30,11 @@ struct AgentPromptEngine: AgentPromptBuilding {
 
     // MARK: - Gate
 
-    func buildGateMessages(imageData: Data) -> [ChatMessage] {
-        let system = loadPrompt(subdirectory: "gate/v1")
-        return [
-            ChatMessage(role: .system, text: system),
-            ChatMessage(role: .user, text: "Analyze these frames. Is there a cat? Respond with JSON only.\n/no_think", images: [imageData])
-        ]
-    }
-
     func buildGateMessages(framesData: [Data]) -> [ChatMessage] {
         let system = loadPrompt(subdirectory: "gate/v1")
         return [
             ChatMessage(role: .system, text: system),
-            ChatMessage(role: .user, text: "Analyze these frames. For each frame, determine if a cat is present. Respond with JSON only.\n/no_think", images: framesData)
+            ChatMessage(role: .user, text: "Analyze these frames. For each frame, determine if a cat is present. Respond with JSON only.", images: framesData)
         ]
     }
 
@@ -47,7 +47,8 @@ struct AgentPromptEngine: AgentPromptBuilding {
     ) -> [ChatMessage] {
         let system = loadPrompt(subdirectory: "\(agentId)/v1")
         let timestampList = timestamps.joined(separator: ", ")
-        let userText = "Analyze this cat's behavior from the following frames (timestamps: \(timestampList)). Respond with JSON only.\n/no_think"
+
+        let userText = "Frames at timestamps: \(timestampList)\n\nAnalyze ONLY what you see in these specific frames. Do not use generic or placeholder observations. Respond with JSON only."
         return [
             ChatMessage(role: .system, text: system),
             ChatMessage(role: .user, text: userText, images: framesData)
@@ -63,7 +64,7 @@ struct AgentPromptEngine: AgentPromptBuilding {
         }
         return [
             ChatMessage(role: .system, text: system),
-            ChatMessage(role: .user, text: "Generate the persona description and contextual observations for this cat profile:\n\n\(jsonString)\n\nRespond with JSON only.\n/no_think")
+            ChatMessage(role: .user, text: "Generate the persona description for this cat profile:\n\n\(jsonString)\n\nRespond with JSON only.")
         ]
     }
 

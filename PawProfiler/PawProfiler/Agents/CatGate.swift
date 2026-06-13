@@ -14,8 +14,9 @@ struct CatGate: CatGating {
         let messages = promptEngine.buildGateMessages(framesData: frames)
         let response = try await modelManager.generate(
             messages: messages,
-            maxTokens: 1024,
-            temperature: config.temperature
+            maxTokens: config.gateMaxTokens,
+            temperature: config.temperature,
+            imageResizeSize: config.imageResizeSize
         )
 
         let gateResponse = try parseGateResponse(response)
@@ -59,11 +60,31 @@ struct CatGate: CatGating {
             throw GateError.invalidResponse
         }
 
-        do {
-            return try JSONDecoder().decode(GateResponse.self, from: data)
-        } catch {
-            throw GateError.parseFailed(error.localizedDescription)
+        // Try full schema first
+        if let full = try? JSONDecoder().decode(GateResponse.self, from: data) {
+            return full
         }
+
+        // Fallback: simplified {"frame_1": true, "frame_2": false, ...} format
+        if let dict = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
+            let assessments: [FrameAssessment] = dict.compactMap { key, value in
+                guard let detected = value as? Bool else { return nil }
+                let index = Int(key.replacingOccurrences(of: "frame_", with: "")) ?? 0
+                return FrameAssessment(
+                    frameIndex: index,
+                    catDetected: detected,
+                    confidence: detected ? 0.9 : 0.1,
+                    speciesGuess: nil,
+                    multipleCats: false
+                )
+            }.sorted { $0.frameIndex < $1.frameIndex }
+
+            if !assessments.isEmpty {
+                return GateResponse(frameAssessments: assessments)
+            }
+        }
+
+        throw GateError.parseFailed("Could not parse gate response: \(cleaned.prefix(200))")
     }
 
     // MARK: - Majority Vote (code-based, not trusting VLM)

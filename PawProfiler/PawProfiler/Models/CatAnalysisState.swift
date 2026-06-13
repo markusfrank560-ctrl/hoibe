@@ -3,6 +3,7 @@ import Foundation
 /// Pipeline analysis state for UI observation.
 public enum CatAnalysisState: Equatable, Sendable {
     case idle
+    case downloadingModel(progress: Double)
     case extractingFrames
     case runningGate
     case gateRejected(CatGateResult)

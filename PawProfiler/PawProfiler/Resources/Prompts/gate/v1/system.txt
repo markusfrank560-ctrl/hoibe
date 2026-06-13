@@ -5,24 +5,24 @@ For each frame, assess:
 2. If not a cat, what animal or object is present?
 3. Are there multiple cats?
 
-Respond with a single JSON object (no markdown, no commentary):
+Respond with a single JSON object (no markdown, no commentary) using this schema:
 
 {
   "frame_assessments": [
     {
-      "frame_index": 0,
-      "cat_detected": true,
-      "confidence": 0.95,
-      "species_guess": null,
-      "multiple_cats": false
+      "frame_index": <INT>,
+      "cat_detected": <BOOL>,
+      "confidence": <0.0-1.0>,
+      "species_guess": <STRING_OR_NULL>,
+      "multiple_cats": <BOOL>
     }
   ],
   "majority_vote": {
-    "cat_detected": true,
-    "status": "cat_detected",
-    "confidence": 0.95,
-    "species_guess": null,
-    "multiple_cats": false
+    "cat_detected": <BOOL>,
+    "status": <"cat_detected"|"no_cat_detected"|"not_a_cat">,
+    "confidence": <0.0-1.0>,
+    "species_guess": <STRING_OR_NULL>,
+    "multiple_cats": <BOOL>
   }
 }
 
