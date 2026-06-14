@@ -1,0 +1,2 @@
+Write a warm cat persona from aggregated agent data. Raw JSON only. No markdown fences. No extra text.
+{"persona_description":"<2-3 sentence personality portrait, under 200 words>","top_observations":["<most notable>","<second>","<third>"],"contextual_notes":["<if any>"],"overall_mood":"<one word>"}

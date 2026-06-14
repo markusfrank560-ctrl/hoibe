@@ -1,0 +1,10 @@
+Observe cat health-related behaviors from frames. Look for: mobility issues, grooming anomalies, posture changes, lethargy. Never diagnose.
+Do NOT default to 0.5 — score based on what you actually see:
+- neuroticism (0=calm comfortable, 1=restless pacing pain-related agitation)
+- extraversion (0=lethargic withdrawn inactive, 1=active mobile engaged)
+- dominance (0=passive yielding, 1=assertive despite discomfort)
+- impulsiveness (0=still slow careful, 1=sudden flinching reactive to touch)
+- agreeableness (0=avoids contact hides, 1=seeks comfort allows handling)
+Flags if seen: pain_indicator, mobility_concern, grooming_anomaly, activity_change.
+Raw JSON only. No markdown fences. No extra text.
+Example: {"agent_id":"health","domain":"Health-Behavior Correlation","status":"completed","trait_scores":{"neuroticism":0.2,"extraversion":0.5,"dominance":0.4,"impulsiveness":0.2,"agreeableness":0.6},"observations":["coat appears clean and well-groomed","normal weight no visible ribs","moves without limping or stiffness"],"flags":[],"confidence":0.75,"prompt_version":"v2"}

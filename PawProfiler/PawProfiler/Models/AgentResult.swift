@@ -32,6 +32,25 @@ public struct AgentResult: Codable, Equatable, Sendable {
         case promptVersion = "prompt_version"
     }
 
+    public init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        agentId = try c.decode(String.self, forKey: .agentId)
+        domain = try c.decode(String.self, forKey: .domain)
+        status = try c.decode(AgentStatus.self, forKey: .status)
+        traitScores = try c.decodeIfPresent([String: Double].self, forKey: .traitScores)
+        observations = (try? c.decode([String].self, forKey: .observations)) ?? []
+        confidence = try c.decode(Double.self, forKey: .confidence)
+        reasoning = try c.decodeIfPresent(String.self, forKey: .reasoning)
+        promptVersion = (try? c.decode(String.self, forKey: .promptVersion)) ?? "v2"
+
+        // Model sometimes outputs {} (empty object) instead of [] (empty array) for flags
+        if let arr = try? c.decode([String].self, forKey: .flags) {
+            flags = arr
+        } else {
+            flags = []
+        }
+    }
+
     public init(
         agentId: String,
         domain: String,

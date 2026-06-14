@@ -34,7 +34,8 @@ struct ProfileCoordinator: ProfileCoordinating {
 
         // 6. Build confidence-per-agent map
         let confidencePerAgent = Dictionary(
-            uniqueKeysWithValues: agentResults.map { ($0.agentId, $0.confidence) }
+            agentResults.map { ($0.agentId, $0.confidence) },
+            uniquingKeysWith: { _, latest in latest }
         )
 
         // 7. VLM call for persona prose
@@ -55,6 +56,7 @@ struct ProfileCoordinator: ProfileCoordinating {
             temperature: config.temperature,
             imageResizeSize: nil
         )
+        print("[Coordinator] Raw response: \(vlmResponse)")
 
         let personaOutput = parseCoordinatorResponse(vlmResponse)
 
@@ -72,7 +74,7 @@ struct ProfileCoordinator: ProfileCoordinating {
             contextualNotes: personaOutput.contextualNotes,
             confidencePerAgent: confidencePerAgent,
             agentResults: agentResults,
-            modelName: "qwen3-vl-4b",
+            modelName: config.modelId,
             analysisVersion: "v1",
             analyzedAt: now,
             profileMode: config.windowsPerAgent == 1 ? "quick" : "deep"

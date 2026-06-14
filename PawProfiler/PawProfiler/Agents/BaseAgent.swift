@@ -31,6 +31,7 @@ struct BaseAgent: BehaviorAnalyzing, @unchecked Sendable {
                     imageResizeSize: config.imageResizeSize
                 )
             }
+            print("[\(agentId)] Raw response: \(response)")
         } catch is TimeoutError {
             return AgentResult(
                 agentId: agentId,
@@ -57,11 +58,61 @@ struct BaseAgent: BehaviorAnalyzing, @unchecked Sendable {
             return notObservableResult(reason: "Invalid UTF-8 response")
         }
 
-        do {
-            return try JSONDecoder().decode(AgentResult.self, from: data)
-        } catch {
-            return notObservableResult(reason: "JSON parse failed: \(error.localizedDescription)")
+        // Try parsing as-is first, then attempt to repair truncated JSON
+        let decoded: AgentResult
+        if let result = try? JSONDecoder().decode(AgentResult.self, from: data) {
+            decoded = result
+        } else if let repaired = Self.repairTruncatedJSON(cleaned),
+                  let repairedData = repaired.data(using: .utf8),
+                  let result = try? JSONDecoder().decode(AgentResult.self, from: repairedData) {
+            print("[\(agentId)] Repaired truncated JSON successfully")
+            decoded = result
+        } else {
+            return notObservableResult(reason: "JSON parse failed for \(cleaned.count) chars")
         }
+
+        // Override model's agent_id — it often hallucinates (e.g. "cat" for all agents)
+        return AgentResult(
+            agentId: agentId,
+            domain: domain,
+            status: decoded.status,
+            traitScores: decoded.traitScores,
+            observations: decoded.observations,
+            flags: decoded.flags,
+            confidence: decoded.confidence,
+            reasoning: decoded.reasoning,
+            promptVersion: decoded.promptVersion
+        )
+    }
+
+    /// Attempt to close unclosed brackets/braces in truncated JSON from token limit.
+    private static func repairTruncatedJSON(_ json: String) -> String? {
+        var stack: [Character] = []
+        var inString = false
+        var escaped = false
+        for ch in json {
+            if escaped { escaped = false; continue }
+            if ch == "\\" && inString { escaped = true; continue }
+            if ch == "\"" { inString = !inString; continue }
+            if inString { continue }
+            switch ch {
+            case "{": stack.append("}")
+            case "[": stack.append("]")
+            case "}", "]":
+                if let last = stack.last, last == ch { stack.removeLast() }
+            default: break
+            }
+        }
+        guard !stack.isEmpty else { return nil } // wasn't truncated
+        // Close all open brackets in reverse order
+        var repaired = json
+        // Trim trailing comma or incomplete value
+        let trimChars = CharacterSet.whitespacesAndNewlines.union(CharacterSet(charactersIn: ",:\""))
+        while let last = repaired.last, trimChars.contains(Unicode.Scalar(String(last))!) {
+            repaired.removeLast()
+        }
+        repaired += stack.reversed().map(String.init).joined()
+        return repaired
     }
 
     private func notObservableResult(reason: String) -> AgentResult {

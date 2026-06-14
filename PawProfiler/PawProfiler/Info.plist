@@ -20,5 +20,9 @@
 	<dict/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>PawProfiler needs access to your photo library to select cat videos for analysis.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>processing</string>
+	</array>
 </dict>
 </plist>

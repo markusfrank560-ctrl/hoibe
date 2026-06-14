@@ -18,9 +18,10 @@ struct CatGate: CatGating {
             temperature: config.temperature,
             imageResizeSize: config.imageResizeSize
         )
+        print("[Gate] Raw response: \(response)")
 
         let gateResponse = try parseGateResponse(response)
-        return applyMajorityVote(gateResponse, modelName: "qwen3-vl-4b")
+        return applyMajorityVote(gateResponse, modelName: config.modelDisplayName)
     }
 
     // MARK: - Response Parsing
@@ -60,13 +61,29 @@ struct CatGate: CatGating {
             throw GateError.invalidResponse
         }
 
-        // Try full schema first
+        // Try full schema first: {"frame_assessments": [...]}
         if let full = try? JSONDecoder().decode(GateResponse.self, from: data) {
             return full
         }
 
+        // Fallback: bare FrameAssessment object {"frame_index":0,"cat_detected":true,...}
+        if let single = try? JSONDecoder().decode(FrameAssessment.self, from: data) {
+            return GateResponse(frameAssessments: [single])
+        }
+
         // Fallback: simplified {"frame_1": true, "frame_2": false, ...} format
         if let dict = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
+            // Try cat_detected key in a flat dict
+            if let detected = dict["cat_detected"] as? Bool {
+                let index = (dict["frame_index"] as? Int) ?? 0
+                let conf = (dict["confidence"] as? Double) ?? (detected ? 0.9 : 0.1)
+                let species = dict["species_guess"] as? String
+                let multi = (dict["multiple_cats"] as? Bool) ?? false
+                return GateResponse(frameAssessments: [
+                    FrameAssessment(frameIndex: index, catDetected: detected, confidence: conf, speciesGuess: species, multipleCats: multi)
+                ])
+            }
+
             let assessments: [FrameAssessment] = dict.compactMap { key, value in
                 guard let detected = value as? Bool else { return nil }
                 let index = Int(key.replacingOccurrences(of: "frame_", with: "")) ?? 0

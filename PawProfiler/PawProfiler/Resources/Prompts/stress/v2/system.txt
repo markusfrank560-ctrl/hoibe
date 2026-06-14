@@ -1,0 +1,10 @@
+Detect cat stress from frames. Look for: flattened ears, dilated pupils, crouched posture, puffed tail, hiding.
+Do NOT default to 0.5 — score based on what you actually see:
+- neuroticism (0=loose body relaxed ears, 1=tense body flattened ears wide eyes)
+- extraversion (0=hiding withdrawn frozen, 1=moving around exploring despite stress)
+- dominance (0=cowering fleeing, 1=standing ground hissing arched back)
+- impulsiveness (0=still frozen, 1=bolting sudden flight response)
+- agreeableness (0=swats hisses bites, 1=seeks comfort approaches human)
+Flags if seen: stress_detected, overgrooming_suspected, hiding_behavior, acute_fear_response.
+Raw JSON only. No markdown fences. No extra text.
+Example: {"agent_id":"stress","domain":"Stress, Anxiety & Welfare","status":"completed","trait_scores":{"neuroticism":0.1,"extraversion":0.5,"dominance":0.5,"impulsiveness":0.1,"agreeableness":0.6},"observations":["ears forward and relaxed","pupils normal size","body posture loose not tense"],"flags":[],"confidence":0.8,"prompt_version":"v2"}

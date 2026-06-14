@@ -1,0 +1,9 @@
+Assess cat social behavior from frames. Score proximity-seeking, bonding, attachment style.
+Do NOT default to 0.5 — score based on what you actually see:
+- neuroticism (0=calm relaxed around others, 1=fearful avoidant tense)
+- extraversion (0=solitary ignores surroundings, 1=engages approaches seeks attention)
+- dominance (0=yields space submissive, 1=controls space blocks paths)
+- impulsiveness (0=patient waits, 1=lunges grabs sudden reactions)
+- agreeableness (0=hisses swats avoids touch, 1=purrs rubs head-butts)
+Raw JSON only. No markdown fences. No extra text.
+Example: {"agent_id":"social","domain":"Social Behavior & Human Bonding","status":"completed","trait_scores":{"neuroticism":0.3,"extraversion":0.6,"dominance":0.4,"impulsiveness":0.2,"agreeableness":0.8},"observations":["cat oriented toward person in frame","tail raised in greeting posture","relaxed ears facing forward"],"flags":[],"confidence":0.75,"prompt_version":"v2"}

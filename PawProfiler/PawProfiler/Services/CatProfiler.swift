@@ -1,5 +1,6 @@
 import Foundation
 import Observation
+import UIKit
 import VLMPipeline
 
 /// Orchestrates the full cat profiling pipeline.
@@ -11,18 +12,15 @@ final class CatProfiler: CatProfiling, @unchecked Sendable {
 
     private let modelManager: any ModelManaging
     private let frameExtractor: any FrameExtracting
-    private let promptEngine: AgentPromptEngine
     private var currentTask: Task<CompositeProfile, Error>?
     private var pipelineStart: Date?
 
     init(
         modelManager: any ModelManaging,
-        frameExtractor: any FrameExtracting,
-        promptEngine: AgentPromptEngine = AgentPromptEngine()
+        frameExtractor: any FrameExtracting
     ) {
         self.modelManager = modelManager
         self.frameExtractor = frameExtractor
-        self.promptEngine = promptEngine
     }
 
     // MARK: - CatProfiling
@@ -31,11 +29,13 @@ final class CatProfiler: CatProfiling, @unchecked Sendable {
         videoURL: URL,
         mode: ProfileMode
     ) async throws -> CompositeProfile {
-        let config = mode == .deep ? PawProfilerConfig.deep() : PawProfilerConfig.quick()
+        var config = mode == .deep ? PawProfilerConfig.deep() : PawProfilerConfig.quick()
+        config = PawProfilerConfig.adapted(from: config)
+        let versionedEngine = AgentPromptEngine(promptVersion: config.promptVersion)
 
         let task = Task { [weak self] () -> CompositeProfile in
             guard let self else { throw ProfilerError.cancelled }
-            return try await self.runPipeline(videoURL: videoURL, config: config)
+            return try await self.runPipeline(videoURL: videoURL, config: config, promptEngine: versionedEngine)
         }
         currentTask = task
         return try await task.value
@@ -75,24 +75,70 @@ final class CatProfiler: CatProfiling, @unchecked Sendable {
 
     private func runPipeline(
         videoURL: URL,
-        config: PawProfilerConfig
+        config: PawProfilerConfig,
+        promptEngine: AgentPromptEngine
     ) async throws -> CompositeProfile {
         debugLog = []
         pipelineStart = Date()
         log("Pipeline started")
 
+        // Keep screen on and request background time so inference survives app switching
+        await MainActor.run { UIApplication.shared.isIdleTimerDisabled = true }
+        let bgTaskId = UIApplication.shared.beginBackgroundTask(withName: "PawProfiler.inference") {}
+        defer {
+            UIApplication.shared.endBackgroundTask(bgTaskId)
+            Task { @MainActor in UIApplication.shared.isIdleTimerDisabled = false }
+        }
+
         // 0. Ensure model is downloaded and ready
         if !modelManager.isReady {
-            analysisState = .downloadingModel(progress: 0)
-            log("Model not cached — downloading…")
-            let mgr = modelManager
-            mgr.onProgress = { [weak self] frac in
-                Task { @MainActor in
-                    self?.analysisState = .downloadingModel(progress: frac)
+            // Check available disk space before attempting download
+            let freeBytes = (try? URL(fileURLWithPath: NSHomeDirectory())
+                .resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])
+                .volumeAvailableCapacityForImportantUsage) ?? 0
+            let freeGB = Double(freeBytes) / 1_073_741_824
+            log("Disk free: \(String(format: "%.1f", freeGB)) GB")
+
+            // Log all app cache usage (models, tmp, etc.)
+            let cacheInfo = ModelManager.totalAppCacheInfo()
+            for (label, bytes) in cacheInfo {
+                log("  Cache \(label): \(bytes / 1_048_576) MB")
+            }
+
+            // Log cached models specifically
+            let cachedModels = ModelManager.cachedModels()
+            log("Cached models: \(cachedModels.count)")
+            for (id, bytes) in cachedModels {
+                log("  • \(id): \(bytes / 1_048_576) MB")
+            }
+
+            if freeGB < 4.0 {
+                // Try freeing space by purging models we no longer need
+                let freed = ModelManager.purgeOtherModels(keeping: config.modelId)
+                let freedGB = Double(freed) / 1_073_741_824
+                log("Purged old models: freed \(String(format: "%.1f", freedGB)) GB")
+                let newFreeGB = freeGB + freedGB
+                if newFreeGB < 4.0 {
+                    throw ProfilerError.insufficientStorage(freeGB: newFreeGB)
                 }
             }
-            try await mgr.startDownload(allowCellular: true)
-            logElapsed("Model downloaded ✓")
+
+            // Try loading from local cache first (no network required)
+            let cached = await modelManager.tryLoadCached()
+            if cached {
+                logElapsed("Model loaded from cache ✓")
+            } else {
+                analysisState = .downloadingModel(progress: 0)
+                log("Model not cached — downloading…")
+                let mgr = modelManager
+                mgr.onProgress = { [weak self] frac in
+                    Task { @MainActor in
+                        self?.analysisState = .downloadingModel(progress: frac)
+                    }
+                }
+                try await mgr.startDownload(allowCellular: true)
+                logElapsed("Model downloaded ✓")
+            }
         } else {
             log("Model already cached ✓")
         }
@@ -136,7 +182,7 @@ final class CatProfiler: CatProfiling, @unchecked Sendable {
         }
 
         // 3. Run 6 specialist agents sequentially
-        let agents = createAgents()
+        let agents = createAgents(promptEngine: promptEngine)
         var agentResults: [AgentResult] = []
 
         for (index, agent) in agents.enumerated() {
@@ -159,6 +205,7 @@ final class CatProfiler: CatProfiling, @unchecked Sendable {
             )
             agentResults.append(result)
             logElapsed("Agent \(agent.domain) done (conf: \(String(format: "%.2f", result.confidence)))")
+
 
             try await applyCooldown(config: config)
         }
@@ -250,7 +297,7 @@ final class CatProfiler: CatProfiling, @unchecked Sendable {
 
     // MARK: - Agent Creation
 
-    private func createAgents() -> [any BehaviorAnalyzing] {
+    private func createAgents(promptEngine: AgentPromptEngine) -> [any BehaviorAnalyzing] {
         [
             BreedArchetypeAgent(modelManager: modelManager, promptEngine: promptEngine),
             PersonalityAgent(modelManager: modelManager, promptEngine: promptEngine),
@@ -321,6 +368,7 @@ final class CatProfiler: CatProfiling, @unchecked Sendable {
 enum ProfilerError: Error, LocalizedError {
     case gateRejected(CatGateResult)
     case insufficientAgents(completed: Int, required: Int)
+    case insufficientStorage(freeGB: Double)
     case cancelled
 
     var errorDescription: String? {
@@ -332,6 +380,8 @@ enum ProfilerError: Error, LocalizedError {
             return "No cat detected in the video"
         case .insufficientAgents(let completed, let required):
             return "Only \(completed) agents completed (minimum \(required) required)"
+        case .insufficientStorage(let freeGB):
+            return "Not enough storage (\(String(format: "%.1f", freeGB)) GB free, need ≥4 GB)"
         case .cancelled:
             return "Analysis was cancelled"
         }

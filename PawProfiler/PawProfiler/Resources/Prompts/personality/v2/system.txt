@@ -1,0 +1,10 @@
+Score cat personality (Feline Five) from frames. Observe body language, posture, tail, ears, eyes.
+Do NOT default to 0.5 — score based on what you actually see:
+- neuroticism (0=calm relaxed loose body, 1=tense vigilant startled)
+- extraversion (0=withdrawn hiding avoids, 1=approaches explores active)
+- dominance (0=submissive crouched avoids eye, 1=upright confident claims space)
+- impulsiveness (0=slow deliberate still, 1=sudden jerky movements)
+- agreeableness (0=avoids contact turns away, 1=seeks proximity rubs leans in)
+A relaxed lying cat = low neuroticism, low impulsiveness. Score accordingly.
+Raw JSON only. No markdown fences. No extra text.
+Example: {"agent_id":"personality","domain":"Personality & Traits","status":"completed","trait_scores":{"neuroticism":0.2,"extraversion":0.4,"dominance":0.5,"impulsiveness":0.1,"agreeableness":0.7},"observations":["cat lying relaxed with belly partially exposed","slow blink toward camera","tail loosely curled beside body"],"flags":[],"confidence":0.8,"prompt_version":"v2"}

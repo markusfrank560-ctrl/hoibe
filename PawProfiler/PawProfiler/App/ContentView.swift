@@ -3,6 +3,20 @@ import PhotosUI
 import SwiftUI
 import VLMPipeline
 
+private enum HFModelSizeService {
+    static func fetchSize(for modelId: String) async -> String? {
+        let encoded = modelId.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? modelId
+        guard let url = URL(string: "https://huggingface.co/api/models/\(encoded)?blobs=true"),
+              let (data, _) = try? await URLSession.shared.data(from: url),
+              let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let siblings = json["siblings"] as? [[String: Any]]
+        else { return nil }
+        let totalBytes = siblings.compactMap { $0["size"] as? Int }.reduce(0, +)
+        guard totalBytes > 0 else { return nil }
+        return String(format: "%.1f", Double(totalBytes) / 1_073_741_824)
+    }
+}
+
 struct ContentView: View {
     private static let defaultConfig = PawProfilerConfig()
 
@@ -19,6 +33,7 @@ struct ContentView: View {
     @State private var profileMode: ProfileMode = .quick
     @State private var durationError: String?
     @State private var showDebugLog = false
+    @State private var modelSizeLabel: String = "…"
 
     private var config: PawProfilerConfig { profileMode == .deep ? .deep() : .quick() }
     private var minDuration: TimeInterval { config.minVideoDuration }
@@ -69,6 +84,13 @@ struct ContentView: View {
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
             #endif
+            .task {
+                if let gb = await HFModelSizeService.fetchSize(for: Self.defaultConfig.modelId) {
+                    modelSizeLabel = gb
+                } else {
+                    modelSizeLabel = Self.defaultConfig.modelDownloadGB
+                }
+            }
         }
     }
 
@@ -225,7 +247,7 @@ struct ContentView: View {
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
 
-            Text("Qwen3-VL 4B (≈2.5 GB)")
+            Text("\(Self.defaultConfig.modelDisplayName) (≈\(modelSizeLabel) GB)")
                 .font(.caption)
                 .foregroundStyle(.tertiary)
         }

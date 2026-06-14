@@ -6,6 +6,10 @@ import Foundation
 /// Extracts frames from video, computes sharpness, and returns JPEG data.
 public struct FrameExtractor: FrameExtracting {
 
+    /// Shared CIContext — heavyweight object with internal GPU caches.
+    /// Creating one per frame leaks ~30 MB each until autoreleasepool drains.
+    private static let ciContext = CIContext(options: [.useSoftwareRenderer: false])
+
     public init() {}
 
     public func extractFrames(
@@ -39,9 +43,12 @@ public struct FrameExtractor: FrameExtracting {
 
         for time in times {
             let (cgImage, actualTime) = try await generator.image(at: time)
-            let ciImage = CIImage(cgImage: cgImage)
-            let sharpness = computeSharpness(ciImage)
-            let jpeg = encodeJPEG(cgImage: cgImage, quality: jpegQuality)
+            let (sharpness, jpeg) = autoreleasepool {
+                let ciImage = CIImage(cgImage: cgImage)
+                let s = computeSharpness(ciImage)
+                let j = encodeJPEG(cgImage: cgImage, quality: jpegQuality)
+                return (s, j)
+            }
 
             framesJPEG.append(jpeg)
             timestamps.append(actualTime.seconds)
@@ -76,11 +83,10 @@ public struct FrameExtractor: FrameExtracting {
         let extent = image.extent
         guard extent.width > 0, extent.height > 0 else { return 0 }
 
-        let context = CIContext()
         let width = Int(min(extent.width, 512))
         let height = Int(min(extent.height, 512))
 
-        guard let cgImage = context.createCGImage(image, from: CGRect(x: 0, y: 0, width: width, height: height)) else {
+        guard let cgImage = Self.ciContext.createCGImage(image, from: CGRect(x: 0, y: 0, width: width, height: height)) else {
             return 0
         }
 
@@ -121,8 +127,7 @@ public struct FrameExtractor: FrameExtracting {
 
     private func encodeJPEG(cgImage: CGImage, quality: Double) -> Data {
         let ciImage = CIImage(cgImage: cgImage)
-        let context = CIContext()
         let colorSpace = cgImage.colorSpace ?? CGColorSpace(name: CGColorSpace.sRGB)!
-        return context.jpegRepresentation(of: ciImage, colorSpace: colorSpace, options: [kCGImageDestinationLossyCompressionQuality as CIImageRepresentationOption: quality]) ?? Data()
+        return Self.ciContext.jpegRepresentation(of: ciImage, colorSpace: colorSpace, options: [kCGImageDestinationLossyCompressionQuality as CIImageRepresentationOption: quality]) ?? Data()
     }
 }

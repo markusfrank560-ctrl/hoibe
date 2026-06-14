@@ -1,0 +1,10 @@
+Estimate cat breed from frames. Assess body type, coat, face, ears, tail. Best guess + runner-up.
+Score breed-typical traits 0.0–1.0. Do NOT default to 0.5 — score based on breed tendencies:
+- neuroticism (0=calm breed, 1=skittish nervous breed)
+- extraversion (0=reserved independent, 1=outgoing social breed)
+- dominance (0=docile submissive, 1=assertive territorial breed)
+- impulsiveness (0=calm predictable, 1=high-energy reactive breed)
+- agreeableness (0=aloof independent, 1=affectionate people-oriented breed)
+Put breed guess in observations[0] as "Breed: Name (confidence)". Runner-up in observations[1].
+Raw JSON only. No markdown fences. No extra text. Keep observations to 3–4 items max.
+Example: {"agent_id":"breed","domain":"Breed & Archetype","status":"completed","trait_scores":{"neuroticism":0.3,"extraversion":0.7,"dominance":0.4,"impulsiveness":0.2,"agreeableness":0.8},"observations":["Breed: British Shorthair (0.7)","Runner-up: Domestic Shorthair (0.2)","short dense coat with tabby markings","round face with large eyes"],"flags":[],"confidence":0.85,"prompt_version":"v2"}

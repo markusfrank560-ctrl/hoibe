@@ -14,8 +14,14 @@ import VLMPipeline
 /// the single source of truth and are loaded at runtime.
 struct AgentPromptEngine: AgentPromptBuilding {
 
+    let promptVersion: String
+
+    init(promptVersion: String) {
+        self.promptVersion = promptVersion
+    }
+
     /// Load a prompt template from the bundle.
-    /// Path: Prompts/{subdirectory}/system.txt
+    /// Path: Prompts/{agentId}/{promptVersion}/system.txt
     private func loadPrompt(subdirectory: String) -> String {
         // SPM resources: Bundle.module, subdirectory under "Prompts"
         guard let url = Bundle.module.url(
@@ -31,7 +37,7 @@ struct AgentPromptEngine: AgentPromptBuilding {
     // MARK: - Gate
 
     func buildGateMessages(framesData: [Data]) -> [ChatMessage] {
-        let system = loadPrompt(subdirectory: "gate/v1")
+        let system = loadPrompt(subdirectory: "gate/\(promptVersion)")
         return [
             ChatMessage(role: .system, text: system),
             ChatMessage(role: .user, text: "Analyze these frames. For each frame, determine if a cat is present. Respond with JSON only.", images: framesData)
@@ -45,7 +51,7 @@ struct AgentPromptEngine: AgentPromptBuilding {
         framesData: [Data],
         timestamps: [String]
     ) -> [ChatMessage] {
-        let system = loadPrompt(subdirectory: "\(agentId)/v1")
+        let system = loadPrompt(subdirectory: "\(agentId)/\(promptVersion)")
         let timestampList = timestamps.joined(separator: ", ")
 
         let userText = "Frames at timestamps: \(timestampList)\n\nAnalyze ONLY what you see in these specific frames. Do not use generic or placeholder observations. Respond with JSON only."
@@ -58,7 +64,7 @@ struct AgentPromptEngine: AgentPromptBuilding {
     // MARK: - Coordinator
 
     func buildCoordinatorMessages(aggregatedData: Data) -> [ChatMessage] {
-        let system = loadPrompt(subdirectory: "coordinator/v1")
+        let system = loadPrompt(subdirectory: "coordinator/\(promptVersion)")
         guard let jsonString = String(data: aggregatedData, encoding: .utf8) else {
             fatalError("Cannot encode aggregated data as UTF-8")
         }
